@@ -19,7 +19,7 @@ class RegistrationController extends AbstractController
     {
         //Création d'un compte 
         $user = new Compte();
-
+        $erreur = '';
         //Céation du formulaire
         $form = $this->createForm(RegistrationFormType::class, $user);
 
@@ -34,20 +34,24 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            if (!$entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $user->getAdresseMailCOmpte()])) {
+                $entityManager->persist($user);
+                $entityManager->flush();
+                //Création d'un mail
+                $mail = new MailService();
+                $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            
-            //Création d'un mail
-            $mail = new MailService();
-            $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
-
-            //Redirection vers la page main
-            return $this->redirectToRoute('main');
+                //Redirection vers la page main
+                return $this->redirectToRoute('main');
+            }else {
+                $erreur = "Un compte existe déjà avec cette adresse";
+                
+            }
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+            'erreur' => $erreur,
         ]);
     }
 }

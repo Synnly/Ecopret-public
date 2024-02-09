@@ -4,3 +4,7 @@ function afficherCacherMdp(){
     //Changement de l'image selon si le mot de passe est visible ou non
     document.getElementById('VCmdp').src = (document.getElementById('VCmdp').src.endsWith('oeil.png')) ? '/img/cacher.png' : '/img/oeil.png';
 }
+
+function afficherAlerte(message){
+    alert(message);
+}

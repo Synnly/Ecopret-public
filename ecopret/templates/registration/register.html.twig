@@ -10,46 +10,51 @@
 {% block title %}Hello CreateAccountController!
 {% endblock %}
 {% block body %}
-	<div class="div-sign-up-Centrer">
-		<div>
-			<h1>Création d’un compte</h1>
-		</div>
-		<div class="div-sign-up-all-input">
-			{{ form_start(registrationForm) }}
-			<div class="div-sign-up-input">
-				<label><img src="/img/utilisateur.png" width="48" height="48" class="sign-up-logo"></label>
-				{{ form_row(registrationForm.NomCompte, {label: false, attr: {
+{% if erreur is defined %}
+	<script>
+		afficherAlerte("{{ erreur }}");
+	</script>
+{% endif %}
+<div class="div-sign-up-Centrer">
+	<div>
+		<h1>Création d’un compte</h1>
+	</div>
+	<div class="div-sign-up-all-input">
+		{{ form_start(registrationForm) }}
+		<div class="div-sign-up-input">
+			<label><img src="/img/utilisateur.png" width="48" height="48" class="sign-up-logo"></label>
+			{{ form_row(registrationForm.NomCompte, {label: false, attr: {
                     class: 'sign-up-input',
                     placeholder: 'Nom'
                 }})  }}
-			</div>
-			<div class="div-sign-up-input">
-				<label><img src="/img/utilisateur.png" width="48" height="48" class="sign-up-logo"></label>
-				{{ form_row(registrationForm.PrenomCompte, {label: false, attr: {
+		</div>
+		<div class="div-sign-up-input">
+			<label><img src="/img/utilisateur.png" width="48" height="48" class="sign-up-logo"></label>
+			{{ form_row(registrationForm.PrenomCompte, {label: false, attr: {
                     class: 'sign-up-input',
                     placeholder: 'Prénom'
                 }})  }}
-			</div>
-			<div class="div-sign-up-input">
-				<label><img src="/img/email.png" width="48" height="48" class="sign-up-logo"></label>
-				{{ form_row(registrationForm.AdresseMailCOmpte, {label: false, attr: {
+		</div>
+		<div class="div-sign-up-input">
+			<label><img src="/img/email.png" width="48" height="48" class="sign-up-logo"></label>
+			{{ form_row(registrationForm.AdresseMailCOmpte, {label: false, attr: {
                     class: 'sign-up-input',
                     placeholder: 'Email'
                 }})}}
-			</div>
-			<div class="div-sign-up-input">
-				<label><img src="/img/mot-de-passe.png" width="55" height="55" class="sign-up-logo"></label>
-                <label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="sign-up-logo-oeil" onclick="afficherCacherMdp()"></label>
-				{{ form_row(registrationForm.plainPassword, {
+		</div>
+		<div class="div-sign-up-input">
+			<label><img src="/img/mot-de-passe.png" width="55" height="55" class="sign-up-logo"></label>
+			<label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="sign-up-logo-oeil" onclick="afficherCacherMdp()"></label>
+			{{ form_row(registrationForm.plainPassword, {
                     label: false, 
                     attr: {
                          class: 'sign-up-input',
                          placeholder: 'Mot de passe'
                         }
                 }) }}
-			</div>
-			<div class="sign-up-agree-terms">
-                {{ form_row(registrationForm.agreeTerms, {
+		</div>
+		<div class="sign-up-agree-terms">
+			{{ form_row(registrationForm.agreeTerms, {
                     label: 'Veuillez accepter les termes et conditions d\'utilisations de vos données',
                     }) }}
             </div>
