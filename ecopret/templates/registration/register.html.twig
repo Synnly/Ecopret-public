@@ -7,10 +7,10 @@
 {% block javascripts %}
 	<script src="{{ asset('js/controllers/sign-up/sign-up.js') }}"></script>
 {% endblock %}
-{% block title %}Hello CreateAccountController!
+{% block title %}Création d'un compte
 {% endblock %}
 {% block body %}
-{% if erreur is defined %}
+{% if erreur is defined and erreur is not empty %}
 	<script>
 		afficherAlerte("{{ erreur }}");
 	</script>

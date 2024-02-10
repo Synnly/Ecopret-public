@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/login/login.js') }}"></script>
+{% endblock %}
+{% block title %}Connexion
+{% endblock %}
+
+{% block body %}
+	<form method="post">
+		{% if error is defined and error is not empty %}
+			<script>
+				afficherAlerte("{{ error.messageKey|trans(error.messageData, 'security') }}");
+			</script>
+		{% endif %}
+
+		{% if app.user %}
+			<div class="mb-3">
+				You are logged in as
+				{{ app.user.userIdentifier }},
+				<a href="{{ path('app_logout') }}">Logout</a>
+			</div>
+		{% endif %}
+		<div class="div-login-Centrer">
+			<div>
+				<h1 class="login-titre">Connexion</h1>
+			</div>
+			<div class="div-login-all-input">
+				<div class="div-login-input">
+					<label><img src="/img/email.png" width="48" height="48" class="login-logo"></label>
+					<input type="email" value="{{ last_username }}" name="AdresseMailCOmpte" id="inputAdresseMailCOmpte" class="login-input" autocomplete="email" placeholder="Mail" required autofocus>
+				</div>
+				<div class="div-login-input">
+					<label><img src="/img/mot-de-passe.png" width="55" height="55" class="login-logo-mdp"></label>
+					<label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="login-logo-oeil" onclick="afficherCacherMdp()"></label>
+					<input type="password" name="password" id="inputPassword" class="login-input" autocomplete="current-password" placeholder="Mot de passe" required>
+				</div>
+				<div class="div-login-input">
+					<input class"login-input" type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				</div>
+				<div class="div-login-mdpOublie">
+					<a href="" id="mdp-oublie">Mot de passe oublié ?</a>
+				</div>
+				<button class="login-btn" type="submit">
+					Connexion >
+				</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

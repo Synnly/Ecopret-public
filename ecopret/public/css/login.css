@@ -1,0 +1,70 @@
+.div-login-all-input{
+    margin-top: 5%;
+    font-size: 200%;
+    margin-left: 10%;
+}
+
+.div-login-input{
+    margin-bottom: 8%;
+    margin-left: -10%;
+}
+
+.login-titre{
+    margin-top: 5%;
+}
+
+.login-input{
+    font-size: 130%;
+    width: 100%;
+    background-color: transparent;
+    border-style: solid;
+    border-radius: 12px;
+    border-color: #949393;
+}
+
+.div-login-Centrer{
+    display:grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.login-btn {
+    margin-top: 3%;
+    font-size: 100%;
+    font-weight: 900;
+    width: 40%;
+    height: 20%;
+    margin-left: 25%;
+    margin-top: 7%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+}
+
+.login-logo{
+    margin-bottom: -9%;
+    margin-left: -8%;
+}
+
+.login-logo-oeil{
+    margin-left: 102%;
+    margin-bottom: -9%;
+}
+
+.login-logo-mdp{
+    margin-bottom: -14.5%;
+    margin-left: -7.5%;
+}
+
+.div-login-mdpOublie{
+    display:grid;
+    justify-content: center;
+    align-content: center;
+    margin-left: -10%;   
+}
+
+#mdp-oublie {
+    color: #171717;
+}
