@@ -1,6 +1,6 @@
 .div-sign-up-all-input{
     margin-top: -3%;
-    font-size: 200%;
+    font-size: 180%;
     margin-left: 20%;
 }
 
@@ -10,25 +10,30 @@
 }
 
 .div-sign-up-Centrer{
+    margin-top: 3%;
     display:grid;
     justify-content: center;
     align-content: center;
 }
 
 .sign-up-input{
-    font-size: 130%;
+    font-size: 100%;
     width: 80%;
     background-color: transparent;
 }
 
 .sign-up-logo{
     margin-bottom: -6%;
-    margin-left: -5%;
+    margin-left: -8%;
 }
 
 .sign-up-logo-oeil{
     margin-left: 83%;
     margin-bottom: -6%;
+}
+.sign-up-logo-mdp{
+    margin-bottom: -11%;
+    margin-left: -8%;
 }
 
 .sign-up-agree-terms {
@@ -45,15 +50,22 @@
 .sign-up-btn {
     margin-top: 3%;
     font-size: 100%;
-    width: 30%;
-    margin-left: 20%;
-    color: #658864;
+    font-weight: 900;
+    width: 40%;
+    height: 20%;
+    margin-left: 17%;
+    margin-top: 7%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
 }
 
 li {
-    margin-top: -8%;
-    margin-bottom: -1%;
-    margin-left: -7%;
+    margin-top: -10%;
+    width: 150%;
+    margin-left: -10%;
     font-size: 70%;
     color: red;
 }

@@ -1,6 +1,6 @@
 .div-login-all-input{
     margin-top: 5%;
-    font-size: 200%;
+    font-size: 180%;
     margin-left: 10%;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .login-input{
-    font-size: 130%;
+    font-size: 100%;
     width: 100%;
     background-color: transparent;
     border-style: solid;
@@ -23,6 +23,7 @@
 }
 
 .div-login-Centrer{
+    margin-top: 2%;
     display:grid;
     justify-content: center;
     align-content: center;
@@ -45,17 +46,17 @@
 
 .login-logo{
     margin-bottom: -9%;
-    margin-left: -8%;
+    margin-left: -12%;
 }
 
 .login-logo-oeil{
     margin-left: 102%;
-    margin-bottom: -9%;
+    margin-bottom: -10%;
 }
 
 .login-logo-mdp{
-    margin-bottom: -14.5%;
-    margin-left: -7.5%;
+    margin-bottom: -16.5%;
+    margin-left: -12%;
 }
 
 .div-login-mdpOublie{
