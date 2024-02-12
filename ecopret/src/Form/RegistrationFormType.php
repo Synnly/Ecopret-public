@@ -27,7 +27,7 @@ class RegistrationFormType extends AbstractType
 
                     //Regex pour tester l'adresse mail
                     new Regex([
-                        'pattern' => '/(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/',
+                        'pattern' => '/^[a-zA-Z]([a-zA-Z0-9-]*\.)?[a-zA-Z0-9-]+@[a-zA-Z-]+\.[a-zA-Z]{2,}$/',
                         'message' => 'Votre adresse mail n\' est pas valide.'
                     ])
                 ],
@@ -37,7 +37,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Le nom est requis.']),
                     new Regex([
-                        'pattern' => '/^[A-Z][A-Z-]{2,20}$/',
+                        'pattern' => '/^[A-Z][A-Z-]{0,18}[A-Z]$/',
                         'message' => 'Votre nom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres majuscules ou - .'
                     ])
                 ],
@@ -46,7 +46,7 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Le prénom est requis.']),
                     new Regex([
-                        'pattern' => '/^[A-Z][A-Za-z-]{2,20}$/',
+                        'pattern' => '/^[A-Z][A-Za-z-]{0,18}[a-zA-Z]$/',
                         'message' => 'Votre prénom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres ou - .'
                     ])
                 ],

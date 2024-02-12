@@ -38,8 +38,8 @@ class RegistrationController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
                 //Création d'un mail
-                $mail = new MailService();
-                $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
+                //$mail = new MailService();
+                //$mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
 
                 //Redirection vers la page main
                 return $this->redirectToRoute('main');
