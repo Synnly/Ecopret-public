@@ -20,7 +20,8 @@ class RegistrationControllerTest extends WebTestCase
                                                                     'registration_form[PrenomCompte]' => 'Test',
                                                                     'registration_form[AdresseMailCOmpte]' => 'test@test.com',
                                                                     'registration_form[plainPassword]' => 'Testtest123',
-                                                                    'registration_form[agreeTerms]' => '1']);
+                                                                    'registration_form[agreeTerms]' => '1',
+            'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
         // Confirmation
         $crawler->selectButton('Création du compte');
@@ -44,7 +45,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => 'Test',
                 'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
 
@@ -57,7 +59,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => 'Test',
                 'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
 
@@ -86,7 +89,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => substr($prenom, 0, $i),
                 'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
 
@@ -99,7 +103,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => substr($PRENOM, 0, $i),
                 'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
 
@@ -123,7 +128,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => 'Test',
                 'registration_form[AdresseMailCOmpte]' => $email,
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
             $this->assertAnySelectorTextSame("li", "Votre adresse mail n' est pas valide.", "La création d'un compte invalide (email=\"$email\") a réussi");
@@ -141,7 +147,8 @@ class RegistrationControllerTest extends WebTestCase
                 'registration_form[PrenomCompte]' => 'Test',
                 'registration_form[AdresseMailCOmpte]' => $email,
                 'registration_form[plainPassword]' => 'Testtest123',
-                'registration_form[agreeTerms]' => '1']);
+                'registration_form[agreeTerms]' => '1',
+                'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu']);
 
             $crawler->selectButton('Création du compte');
             $this->assertAnySelectorTextSame("li", "Votre adresse mail n' est pas valide.", "La création d'un compte invalide (email=\"$email\") a réussi");
