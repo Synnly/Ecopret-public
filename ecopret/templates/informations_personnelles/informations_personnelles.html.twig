@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Informations peronnelles{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/sign-up.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <h1>Informations personnelles</h1>
+    <p>Nom : {{ nom }}</p>
+    <p>Prénom : {{ prenom }}</p>
+    <p>E-mail : {{ mail }}</p>
+    <p>Lieu : {{ lieu }}</p>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier ses informations personnelles{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/sign-up.css') }}">
+
+{% endblock %}
+
+{% block body %}
+
+    <h1>Modifier ses informations personnelles</h1>
+    {{ form_start(InformationsPersonnellesForm) }}
+    <div class="form-group">
+        {{ form_label(InformationsPersonnellesForm.NomCompte) }}
+        {{ form_widget(InformationsPersonnellesForm.NomCompte) }}
+        {{ form_errors(InformationsPersonnellesForm.NomCompte) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(InformationsPersonnellesForm.PrenomCompte) }}
+        {{ form_widget(InformationsPersonnellesForm.PrenomCompte) }}
+        {{ form_errors(InformationsPersonnellesForm.PrenomCompte) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(InformationsPersonnellesForm.AdresseMailCOmpte) }}
+        {{ form_widget(InformationsPersonnellesForm.AdresseMailCOmpte) }}
+        {{ form_errors(InformationsPersonnellesForm.AdresseMailCOmpte) }}
+    </div>
+
+{% endblock %}
