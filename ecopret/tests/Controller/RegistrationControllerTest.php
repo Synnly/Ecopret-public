@@ -30,8 +30,9 @@ class RegistrationControllerTest extends WebTestCase
 
     public function testCreationCompteNom1a22Caracteres(): void
     {
-        $nom = "testtesttesttesttest";
-        $NOM = "TESTTESTTESTTESTTEST";
+        $nom = "testtesttesttesttesttest";
+        $NOM = "TESTTESTTESTTESTTESTTEST";
+        $suffixeEmail = "abcdefghijklmnopqrstuvwxyz";
         $client = static::createClient();
 
         for ($i = 1; $i <= 22; $i++) {
@@ -41,7 +42,7 @@ class RegistrationControllerTest extends WebTestCase
 
             $crawler = $client->submitForm("Création du compte", ['registration_form[NomCompte]' => substr($nom, 0, $i),
                 'registration_form[PrenomCompte]' => 'Test',
-                'registration_form[AdresseMailCOmpte]' => 'test@test.com',
+                'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
                 'registration_form[agreeTerms]' => '1']);
 
@@ -54,13 +55,13 @@ class RegistrationControllerTest extends WebTestCase
 
             $crawler = $client->submitForm("Création du compte", ['registration_form[NomCompte]' => substr($NOM, 0, $i),
                 'registration_form[PrenomCompte]' => 'Test',
-                'registration_form[AdresseMailCOmpte]' => 'test@test.com',
+                'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
                 'registration_form[agreeTerms]' => '1']);
 
             $crawler->selectButton('Création du compte');
 
-            if($i <= 20 and $i >= 2) {
+            if($i <= 20 && $i >= 2) {
                 $this->assertResponseRedirects('/main', null, "La création d'un compte valide a échoué (nom = '".substr($NOM, 0, $i)."', len=$i)");
             }
             else {
@@ -71,8 +72,9 @@ class RegistrationControllerTest extends WebTestCase
 
     public function testCreationCompteprenom1a22Caracteres(): void
     {
-        $prenom = "testtesttesttesttest";
-        $PRENOM = "TESTTESTTESTTESTTEST";
+        $prenom = "testtesttesttesttesttest";
+        $PRENOM = "TESTTESTTESTTESTTESTTEST";
+        $suffixeEmail = "abcdefghijklmnopqrstuvwxyz";
         $client = static::createClient();
 
         for ($i = 1; $i <= 22; $i++) {
@@ -82,7 +84,7 @@ class RegistrationControllerTest extends WebTestCase
 
             $crawler = $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST',
                 'registration_form[PrenomCompte]' => substr($prenom, 0, $i),
-                'registration_form[AdresseMailCOmpte]' => 'test@test.com',
+                'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
                 'registration_form[agreeTerms]' => '1']);
 
@@ -95,13 +97,13 @@ class RegistrationControllerTest extends WebTestCase
 
             $crawler = $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST',
                 'registration_form[PrenomCompte]' => substr($PRENOM, 0, $i),
-                'registration_form[AdresseMailCOmpte]' => 'test@test.com',
+                'registration_form[AdresseMailCOmpte]' => "test@test".substr($suffixeEmail, $i, 1).".com",
                 'registration_form[plainPassword]' => 'Testtest123',
                 'registration_form[agreeTerms]' => '1']);
 
             $crawler->selectButton('Création du compte');
 
-            if($i <= 20 and $i >= 2) {
+            if($i <= 20 && $i >= 2) {
                 $this->assertResponseRedirects('/main', null, "La création d'un compte valide a échoué (nom = '".substr($PRENOM, 0, $i)."', len=$i)");
             }
             else {
@@ -145,6 +147,5 @@ class RegistrationControllerTest extends WebTestCase
             $this->assertAnySelectorTextSame("li", "Votre adresse mail n' est pas valide.", "La création d'un compte invalide (email=\"$email\") a réussi");
         }
     }
-
 
 }
