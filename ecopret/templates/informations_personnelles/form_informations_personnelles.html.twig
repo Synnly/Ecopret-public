@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('js/controllers/sign-up/sign-up.js') }}"></script>
+    <script src="{{ asset('js/controllers/infos_perso/modif_infos_perso.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -57,19 +57,50 @@
             <div class="div-modif-infos-input">
                 {{ form_errors(InformationsPersonnellesForm.motDePasseCompte) }}
                 {{ form_label(InformationsPersonnellesForm.motDePasseCompte, "Mot de passe")}}
-                {{ form_widget(InformationsPersonnellesForm.motDePasseCompte, {
-                    'attr': {
-                        'class': 'modif-infos-input'} }) }}
+                <div class="div_champ_mdp">
+                    {{ form_widget(InformationsPersonnellesForm.motDePasseCompte, {
+                        'attr': {
+                            'class': 'modif-infos-input'} }) }}
+                    <label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="sign-up-logo-oeil" onclick="afficherCacherMdp()"></label>
+                </div>
             </div>
 
-            <div class="div-modif-infos-input">
+            {#  <div class="div-modif-infos-input">
                 {{ form_errors(InformationsPersonnellesForm.lieu) }}
                 {{ form_label(InformationsPersonnellesForm.lieu, "Lieu")}}
                 {{ form_widget(InformationsPersonnellesForm.lieu, {
                     'attr': {
                         'class': 'modif-infos-input'} }) }}
+            </div> #}
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.numero_carte) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.numero_carte, "Numéro de carte bancaire")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.numero_carte, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
             </div>
-            <button type="submit" class="modif_btn"><b>Modifier</b></button>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.date_expiration) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.date_expiration, "Date d'expiration")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.date_expiration, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.code_cvv) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.code_cvv, "Code CVV")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.code_cvv, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div_buttons">
+                <button type="button" class="modif_btn"><a href="/infos"><b>Annuler</b></a></button>
+                <button type="submit" class="modif_btn"><b>Modifier</b></button>
+            </div>
 
             {{ form_end(InformationsPersonnellesForm) }}
         </div>

@@ -45,7 +45,7 @@ class CarteCredit
         return $this->date_expiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $date_expiration): static
+    public function setDateExpiration(?\DateTimeInterface $date_expiration): static
     {
         $this->date_expiration = $date_expiration;
 

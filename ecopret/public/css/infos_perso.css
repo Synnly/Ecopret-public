@@ -1,11 +1,12 @@
 .div-modif-infos-all-input{
     font-size: 180%;
     width: 100%;
+    display: block;
 }
 
 .div-modif-infos-input{
     margin-bottom: 2%;
-    width: 60%;
+    width: calc(60% + 56px);
     padding: 0 20%;
 }
 
@@ -15,7 +16,8 @@
 
 .modif-infos-input{
     font-size: 100%;
-    width: 100%;
+    width: calc(100% - 56px);
+    height: 38px;
     background-color: transparent;
     border-style: solid;
     border-radius: 12px;
@@ -34,8 +36,8 @@
     font-size: 100%;
     font-weight: 900;
     width: 40%;
-    margin: 0 30%;
     height: 20%;
+    margin: 0 5%;
     background-color: #658864;
     color: white;
     border-radius: 30px;
@@ -70,6 +72,40 @@ img#background{
     transform: scaleX(-1);
 }
 
+.div_champ_mdp{
+    display: flex;
+    padding: 0;
+    align-items: center;
+    align-content: space-between;
+}
+
+.div_champ_mdp > input {
+    height: 32px;
+    margin-right: 8px;
+}
+
 body{
     background: white;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    font-size: 70%;
+    color: red;
+    list-style-type: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.div_buttons {
+    display: flex;
+    width: calc(60% + 56px);
+    padding: 0 20%;
 }
