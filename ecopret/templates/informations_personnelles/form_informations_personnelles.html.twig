@@ -5,7 +5,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/infos_perso.css') }}">
-
 {% endblock %}
 
 {% block javascripts %}
@@ -64,14 +63,6 @@
                     <label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="sign-up-logo-oeil" onclick="afficherCacherMdp()"></label>
                 </div>
             </div>
-
-            {#  <div class="div-modif-infos-input">
-                {{ form_errors(InformationsPersonnellesForm.lieu) }}
-                {{ form_label(InformationsPersonnellesForm.lieu, "Lieu")}}
-                {{ form_widget(InformationsPersonnellesForm.lieu, {
-                    'attr': {
-                        'class': 'modif-infos-input'} }) }}
-            </div> #}
 
             <div class="div-modif-infos-input">
                 {{ form_errors(InformationsPersonnellesForm.carte_credit.numero_carte) }}

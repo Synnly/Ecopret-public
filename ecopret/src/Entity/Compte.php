@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CompteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,6 +44,9 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CarteCredit $carte_credit = null;
+
+    #[ORM\Column(type: Types::BINARY, nullable: true)]
+    private $carte_identite = null;
 
     public function __construct()
     {
@@ -234,5 +238,17 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->motDePasseCompte;
+    }
+
+    public function getCarteIdentite()
+    {
+        return $this->carte_identite;
+    }
+
+    public function setCarteIdentite($carte_identite): static
+    {
+        $this->carte_identite = $carte_identite;
+
+        return $this;
     }
 }

@@ -3,14 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Compte;
+use App\Entity\Lieu;
+use App\Entity\Prestataire;
+use App\Entity\Utilisateur;
 use App\Form\CarteBancaireType;
-use App\Form\InformationsPersonnellesFormType;
+use App\Form\InformationsPersonnellesType;
+use App\Form\ModifierInformationsPersonnellesFormType;
+use App\Repository\PrestataireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\BooleanNode;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,31 +26,23 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\File;
 
 class InformationsPersonnellesController extends AbstractController
 {
+    /**
+     * Affiche la page des informations personnelles
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/infos', name: 'app_infos')]
-    public function afficherInformations(EntityManagerInterface $entityManager): Response
+    public function afficherInformations(Request $request, EntityManagerInterface $entityManager): Response
     {
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
         $user = $this->getUser();
-
-        return $this->render('informations_personnelles/informations_personnelles.html.twig', [
-            'nom' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getNomCompte(),
-            'prenom' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getPrenomCompte(),
-            'mail' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getAdresseMailCOmpte(),
-            'lieu' => (($lieu = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()) == null ? 'N/A': $lieu),
-        ]);
-    }
-
-    #[Route('/infos/modif', name:'app_infos_modif')]
-    public function modifierInformations(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
-    {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
 
         // Connexion bdd
         try{
@@ -54,17 +53,108 @@ class InformationsPersonnellesController extends AbstractController
         }
 
         // Récupération des lieux
-//        $sql = "SELECT nom_lieu FROM lieu ORDER BY nom_lieu ASC";
-//        $resultat = $pdo->prepare($sql);
-//        $resultat->execute();
-//        $villes = array();
-//        foreach($resultat as $row => $nom) {
-//            if ($row != null) $villes[$nom[0]] = $nom[0];
-//        }
+        $sql = "SELECT * FROM lieu ORDER BY nom_lieu ASC";
+        $resultat = $pdo->prepare($sql);
+        $resultat->execute();
+        $villes = array();
+        foreach($resultat as $row => $nom) {
+            if ($row != null) $villes[$nom[1]] = $nom[0];
+        }
+
+        // Création du formulaire
+        $form = $this->createForm(InformationsPersonnellesType::class)
+            ->add('lieu', ChoiceType::class, [
+                'required' => 'true',
+                'mapped' => false,
+                'choices' => $villes,
+                'constraints' => [new NotBlank(['message' => 'Le lieu est requis.'])]
+            ])
+            ->add('annonce', ChoiceType::class, [
+                    'choices' => [
+                        'Oui' => 'oui',
+                        'Non' => 'non',
+                    ],
+                    'mapped' => false,
+                    'data' => ($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]) == null || ($prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['no_utilisateur_id' => $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte()])) == null ? 'non' : 'oui'),
+                    'expanded' => true,
+            ])
+            ->add('carte_identite', FileType::class, [
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '10m',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez choisir un fichier valide',
+                    ])
+                ]
+            ]);
+
+        $form->handleRequest($request);
+
+        // Traitement du formulaire
+        if($form->isSubmitted() && $form->isValid()){
+
+            print $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getId();
+            // Si pas d'utilisateur associé au compte, on en crée un
+            if($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]) == null){
+                $utilisateur = new Utilisateur();
+                $utilisateur->setNoCompte($entityManager->getRepository(Compte::class)->findOneBy(['id' => $user]));
+                $utilisateur->setEstVerifie(false);
+                $utilisateur->setEstGele(false);
+                $utilisateur->setPaiement(false);
+                $utilisateur->setAUneReduction(false);
+                $utilisateur->setNbFlorains(0);
+                $entityManager->persist($utilisateur);
+            }
+
+            // Si l'utilisateur veut passer prestataire
+            if($form->get('annonce')->getData() == "Oui" && $prestataire == null) {
+                $prestataire = new Prestataire();
+                $prestataire->setNoUtisateur($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte());
+                $entityManager->persist($prestataire);
+            }
+
+            // Si l'utilisateur ne veut plus etre prestataire
+            if($form->get('annonce')->getData() == "Non" && $prestataire != null) {
+                $entityManager->remove($prestataire);
+            }
+            // Remplacage de l'ancien lieu par le nouveau
+            // A changer si plusieurs lieux utilisés
+            if(($lieu = ($compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user]))->getLieu()->first()) != null){
+                $compte->removeLieu($lieu);
+            }
+            $compte->addLieu($entityManager->getRepository(Lieu::class)->findOneBy(['id' => $form->get('lieu')->getData()]));
+
+            $entityManager->flush();
+            return $this->redirectToRoute('app_main');
+        }
+
+        return $this->render('informations_personnelles/informations_personnelles.html.twig', [
+            'controller_name' => 'InformationsPersonnellesController',
+            'InformationsPersonnellesForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Affiche la page de modification des informations personnelles
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param UserPasswordHasherInterface $userPasswordHasher
+     * @return Response
+     */
+    #[Route('/infos/modif', name:'app_infos_modif')]
+    public function modifierInformations(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
 
         $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
-        $form = $this->createForm(InformationsPersonnellesFormType::class)
+        $form = $this->createForm(ModifierInformationsPersonnellesFormType::class)
             ->add('NomCompte', TextType::class, [
                 'attr' => ['value' => $user->getNomCompte()],
                 'constraints' => [

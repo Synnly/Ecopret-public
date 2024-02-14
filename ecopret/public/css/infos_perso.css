@@ -19,9 +19,8 @@
     width: calc(100% - 56px);
     height: 38px;
     background-color: transparent;
-    border-style: solid;
     border-radius: 12px;
-    border-color: #949393;
+    border: solid #949393 2px;
 }
 
 .div-modif-infos-Centrer{
@@ -108,4 +107,22 @@ a {
     display: flex;
     width: calc(60% + 56px);
     padding: 0 20%;
+}
+
+input[type=radio]{
+    height: 19px;
+    width: 19px;
+
+}
+
+#informations_personnelles_annonce_0{
+    margin-left: 20%;
+}
+
+#informations_personnelles_annonce_1{
+    margin-left: 20%;
+}
+
+html{
+    min-height: 100vh;
 }
