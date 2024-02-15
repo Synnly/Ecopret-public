@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\CarteCredit;
 use App\Entity\Compte;
 use App\Entity\Lieu;
 use App\Entity\Prestataire;
@@ -9,20 +10,15 @@ use App\Entity\Utilisateur;
 use App\Form\CarteBancaireType;
 use App\Form\InformationsPersonnellesType;
 use App\Form\ModifierInformationsPersonnellesFormType;
-use App\Repository\PrestataireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PDO;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Config\Definition\BooleanNode;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -40,7 +36,7 @@ class InformationsPersonnellesController extends AbstractController
      * @return Response
      */
     #[Route('/infos', name: 'app_infos')]
-    public function afficherInformations(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
+    public function afficherInformations(Request $request, EntityManagerInterface $entityManager): Response
     {
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
@@ -86,12 +82,13 @@ class InformationsPersonnellesController extends AbstractController
                 'mapped' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '10m',
+                        'maxSize' => '10M',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
                             'application/pdf'
                         ],
+                        'maxSizeMessage' => "Le fichier doit faire moins de {{ limit }} {{ suffix }}",
                         'mimeTypesMessage' => 'Veuillez choisir un fichier valide',
                     ])
                 ]
@@ -164,6 +161,7 @@ class InformationsPersonnellesController extends AbstractController
     #[Route('/infos/modif', name:'app_infos_modif')]
     public function modifierInformations(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        // Pas connecté
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
@@ -215,7 +213,8 @@ class InformationsPersonnellesController extends AbstractController
                 ],
             ])
             ->add('carte_credit', CarteBancaireType::class, [
-                'attr'=> ['compound' => true,
+                'attr'=> [
+                    'compound' => true,
                 ]
             ]);
 
@@ -229,9 +228,20 @@ class InformationsPersonnellesController extends AbstractController
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('motDePasseCompte')->getData()));
+
+            // Creation d'une nouvelle cb s'il n'existe pas encore
+            if($user->getCarteCredit() == null){
+                $user->setCarteCredit(new CarteCredit());
+            }
+
+            // Modification de la cb
+            $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
+            $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
+            $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+
             $entityManager->persist($user);
             $entityManager->flush();
-            return $this->redirectToRoute('app_main');
+            return $this->redirectToRoute('app_infos');
         }
 
         return $this->render('informations_personnelles/form_informations_personnelles.html.twig', [
