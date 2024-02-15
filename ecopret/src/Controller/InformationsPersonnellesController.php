@@ -13,6 +13,7 @@ use App\Repository\PrestataireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PDO;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\BooleanNode;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -37,7 +40,7 @@ class InformationsPersonnellesController extends AbstractController
      * @return Response
      */
     #[Route('/infos', name: 'app_infos')]
-    public function afficherInformations(Request $request, EntityManagerInterface $entityManager): Response
+    public function afficherInformations(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
@@ -80,12 +83,14 @@ class InformationsPersonnellesController extends AbstractController
             ])
             ->add('carte_identite', FileType::class, [
                 'required' => false,
+                'mapped' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '10m',
                         'mimeTypes' => [
                             'image/png',
                             'image/jpeg',
+                            'application/pdf'
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir un fichier valide',
                     ])
@@ -128,8 +133,19 @@ class InformationsPersonnellesController extends AbstractController
             }
             $compte->addLieu($entityManager->getRepository(Lieu::class)->findOneBy(['id' => $form->get('lieu')->getData()]));
 
+            // Enregistrement de la carte si elle existe
+            if($form['carte_identite']->getData() != null) {
+
+                // Suppression de l'ancien fichier
+                if(($nomFichier = glob("\.\./carteIdUtilisateurs/".$compte->getId().".*")) != []){
+                    unlink($nomFichier[0]);
+                }
+
+                $form['carte_identite']->getData()->move("../carteIdUtilisateurs/", $compte->getId() . "." . $form['carte_identite']->getData()->getClientOriginalExtension());
+            }
+
             $entityManager->flush();
-            return $this->redirectToRoute('app_main');
+            return $this->redirectToRoute('app_infos');
         }
 
         return $this->render('informations_personnelles/informations_personnelles.html.twig', [

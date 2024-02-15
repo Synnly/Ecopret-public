@@ -126,3 +126,8 @@ input[type=radio]{
 html{
     min-height: 100vh;
 }
+
+#modif{
+    margin-top: 30px;
+    width: 100%;
+}

@@ -45,9 +45,6 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CarteCredit $carte_credit = null;
 
-    #[ORM\Column(type: Types::BINARY, nullable: true)]
-    private $carte_identite = null;
-
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -238,17 +235,5 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->motDePasseCompte;
-    }
-
-    public function getCarteIdentite()
-    {
-        return $this->carte_identite;
-    }
-
-    public function setCarteIdentite($carte_identite): static
-    {
-        $this->carte_identite = $carte_identite;
-
-        return $this;
     }
 }
