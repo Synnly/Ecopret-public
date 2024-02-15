@@ -14,14 +14,18 @@ class CarteCredit
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $numero_carte = null;
+    #[ORM\Column(type: "string", length: 16)]
+    private ?string $numero_carte = null;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_expiration = null;
 
     #[ORM\Column]
     private ?int $code_cvv = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nom_carte = null;
 
     public function getId(): ?int
     {
@@ -60,6 +64,18 @@ class CarteCredit
     public function setCodeCvv(int $code_cvv): static
     {
         $this->code_cvv = $code_cvv;
+
+        return $this;
+    }
+
+    public function getNomCarte(): ?string
+    {
+        return $this->nom_carte;
+    }
+
+    public function setNomCarte(string $nom_carte): static
+    {
+        $this->nom_carte = $nom_carte;
 
         return $this;
     }
