@@ -23,7 +23,7 @@ class CreditCardFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('numero_carte', NumberType::class, [
+            ->add('numero_carte', IntegerType::class, [
                 'constraints' => [
                     //Le champs ne doit pas être vide sinon envoie du message
                     new NotBlank(['message' => 'Les numéros de cartes ne doivent pas être vides.']),

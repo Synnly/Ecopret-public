@@ -6,7 +6,8 @@
 
 .input-with-img {
     display: flex; 
-    align-items: center; 
+    align-items: center;
+    position: relative;
 }
 
 .last-two-input {
@@ -78,4 +79,13 @@ li {
     margin-left: -7%;
     font-size: 70%;
     color: red;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
 }
