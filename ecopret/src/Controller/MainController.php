@@ -18,7 +18,7 @@ class MainController extends AbstractController
         //Page Main (il me fallait une redirection)
         //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
         return $this->render('main/index.html.twig', [
-            'controller_name' => 'EcoPrêt',
+            'title' => 'EcoPrêt',
             'user' => $this->getUser(),
         ]);
     }
