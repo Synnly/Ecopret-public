@@ -45,7 +45,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root');
+            $pdo = new PDO('mysql:host=127.0.0.1:3307;dbname=ecopret', 'root');
         }
         catch(Exception $e){
             exit($e->getMessage());

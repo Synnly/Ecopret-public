@@ -9,3 +9,4 @@ function afficherCacherMdp(){
 function afficherAlerte(message){
     alert(message);
 }
+

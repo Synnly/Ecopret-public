@@ -48,16 +48,16 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             'modifier_informations_personnelles_form[PrenomCompte]' => "Test",
             'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test.com",
             'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-            'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-            'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-            'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+            'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+            'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+            'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
 
         ]);
 
         // Confirmation
         $crawler->selectButton("Modifier");
 
-        $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué ");
+        $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué  compte total");
     }
     public function testModificationsInfosPersoNom1a22Caracteres(): void
     {
@@ -98,9 +98,9 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => "CCC",
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
 
             ]);
 
@@ -116,15 +116,15 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => "CCC",
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
 
             if ($i <= 20 && $i >= 2) {
-                $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué (nom = '" . substr($NOM, 0, $i) . "', len=$i)");
+                $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué (nom = '" . substr($NOM, 0, $i) . "', len=$i)");
             } else {
                 $this->assertAnySelectorTextSame("li", "Votre nom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres majuscules ou - .", "La création d'un compte invalide (nom = '" . substr($NOM, 0, $i) . "', len=$i) a réussi");
             }
@@ -168,9 +168,9 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => substr($prenom, 0, $i),
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
@@ -185,15 +185,15 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => substr($PRENOM, 0, $i),
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
 
             if ($i <= 20 && $i >= 2) {
-                $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué (nom = '" . substr($PRENOM, 0, $i) . "', len=$i)");
+                $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué (nom = '" . substr($PRENOM, 0, $i) . "', len=$i)");
             } else {
                 $this->assertAnySelectorTextSame("li", "Votre prénom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres ou - .", "La création d'un compte invalide (nom = '" . substr($PRENOM, 0, $i) . "', len=$i) a réussi");
             }
@@ -233,9 +233,9 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => $email,
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
@@ -276,9 +276,9 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => $email,
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
@@ -340,9 +340,9 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => $mdp,
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
@@ -385,13 +385,13 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => $mdp,
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
-                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
             ]);
 
             $crawler->selectButton('Modifier');
-            $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué (mdp = \"$mdp\")");
+            $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué (mdp = \"$mdp\")");
         }
     }
     public function testInformationsDateValide(): void
@@ -420,20 +420,20 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
 
         $client->request('GET', '/infos/modif');
 
-        $date = "2027-10-10";
+        $date = "10/2027";
         // Remplir le formulaire + CGU
         $crawler = $client->submitForm("Modifier", [
             'modifier_informations_personnelles_form[NomCompte]' => 'TES',
             'modifier_informations_personnelles_form[PrenomCompte]' => "Test",
             'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test.com",
             'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
-            'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
+            'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
             'modifier_informations_personnelles_form[carte_credit][date_expiration]' => $date,
-            'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 111,
+            'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
 
         ]);
         $crawler->selectButton('Modifier');
-        $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué (mdp = \"$date\")");
+        $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué (date = \"$date\")");
     }
 
     public function testModificationsInfosPersoCVVvalide(): void
@@ -461,7 +461,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
         $this->assertResponseRedirects('/main', null, "La connexion d'un compte valide a échoué");
 
 
-        for ($i = 100; $i < 999; $i++) {
+        for ($i = 101; $i < 999; $i++) {
 
             $client->request('GET', '/infos/modif');
             $crawler = $client->submitForm("Modifier", [
@@ -469,13 +469,13 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
             ]);
 
             $crawler->selectButton('Modifier');
-            $this->assertResponseRedirects('/main', null, "La modification d'un compte valide à échoué (CVV = \"$i\")");
+            $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide à échoué (CVV = \"$i\")");
         }
     }
 
@@ -512,8 +512,8 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
             ]);
 
@@ -528,13 +528,71 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
-                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 1047391745783078,
-                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '2027/01/20',
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
             ]);
 
             $crawler->selectButton('Modifier');
             $this->assertAnySelectorTextSame("li", "Le CVV doit contenir 3 chiffres.", "La modification du (CVV =\"$i\") invalide a réussi");
+        }
+    }
+
+    public function testModificationsInfosPersoNumCarteInvalide(): void
+    {
+        $client = static::createClient();
+        // Deplacement vers la page de creation de compte
+        $client->request('GET', '/register');
+
+        // Remplissage du formulaire puis clic sur le bouton de creation
+        $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST', 'registration_form[PrenomCompte]' => 'Test', 'registration_form[AdresseMailCOmpte]' => 'test@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
+
+        // Deplacement vers la page de connexion
+        $client->request('GET', '/login');
+
+
+        // Remplissage du formulaire
+        $crawler = $client->submitForm("Connexion >", [
+            'AdresseMailCOmpte' => 'test@test.com',
+            'password' => 'Testtest123'
+        ]);
+
+        // Confirmation
+        $crawler->selectButton('Connexion >');
+
+        $this->assertResponseRedirects('/main', null, "La connexion d'un compte valide a échoué");
+
+        $listCardValide = [
+            2222400070000005,
+            5555341244441115,
+            5577000055770004,
+            5555444433331111,
+            2222410740360010,
+            5555555555554444,
+            2222410700000002,
+            2222400010000008,
+            2223000048410010,
+            2222400060000007,
+            2223520443560010,
+            2222400030000004,
+            2222400050000009,
+            5103221911199245,
+        ];
+        foreach ($listCardValide as $cv) {
+
+            $client->request('GET', '/infos/modif');
+            $crawler = $client->submitForm("Modifier", [
+                'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
+                'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
+                'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
+                'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
+                'modifier_informations_personnelles_form[carte_credit][numero_carte]' => $cv,
+                'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
+                'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+            ]); 	
+
+            $crawler->selectButton('Modifier');
+            $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide a échoué");
         }
     }
 }

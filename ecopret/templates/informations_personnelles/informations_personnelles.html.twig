@@ -6,7 +6,9 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/infos_perso.css') }}">
 {% endblock %}
-
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/infos_perso/carteIdentite.js') }}"></script>
+{% endblock %}
 {% block body %}
 
     {% if erreur is defined and erreur is not empty %}
@@ -23,7 +25,7 @@
         <h1>Informations personnelles</h1>
     </div>
 
-    {{ form_start(InformationsPersonnellesForm) }}
+    {{ form_start(InformationsPersonnellesForm, {'attr' : {'onsubmit': 'return validerCarteIdentite();'}}) }}
 
     <div class="div-modif-infos-all-input">
 
