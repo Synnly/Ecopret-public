@@ -59,13 +59,13 @@ class InformationsPersonnellesController extends AbstractController
         foreach($resultat as $row => $nom) {
             if ($row != null) $villes[$nom[1]] = $nom[0];
         }
-
         // Création du formulaire
         $form = $this->createForm(InformationsPersonnellesType::class)
             ->add('lieu', ChoiceType::class, [
                 'required' => 'true',
                 'mapped' => false,
                 'choices' => $villes,
+                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()) == [] ? "Choisir une ville" : $lieuCompte[0]->getId()),
                 'constraints' => [new NotBlank(['message' => 'Le lieu est requis.'])]
             ])
             ->add('annonce', ChoiceType::class, [

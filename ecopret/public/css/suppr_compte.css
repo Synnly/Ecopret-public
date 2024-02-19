@@ -3,10 +3,13 @@
 }
 .div-suppr-compte-avertissement{
     font-weight: bold;
+    padding: 0 5%;
 }
 h3{
+    justify-content: left;
     color:grey;
     font-weight: bold;
+    padding:0;
 }
 .div-suppr-compte-boutons {
     display: flex;
