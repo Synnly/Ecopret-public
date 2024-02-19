@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Compte;
 use App\Entity\Utilisateur;
+use App\Form\DegelCompteFormType;
 use App\Form\GelCompteFormType;
 use App\Form\SupprimerCompteFormType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,7 +36,7 @@ class GelController extends AbstractController
             $dateFin = $form->get('fin')->getData();
 
             //Si la date de début est aujourd'hui on le met directement en gel
-            if($dateDebut == new DateType('today UTC')){
+            if($dateDebut == new DateTime('now')){
                 $utilisateur->setEstGele(true);
             }
 
@@ -44,12 +46,42 @@ class GelController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
+            return $this->redirectToRoute('app_main');
         }
 
         return $this->render('gel/gel_compte.html.twig', [
             'controller_name' => 'GelController',
             'GelCompteFormType' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/degel', name: 'app_degel')]
+    public function degel(Request $request,EntityManagerInterface $entityManager): Response
+    {
+        // Si l'utilisateur n'est pas connecté on le redirige vers la page de connection
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+        $user = $this->getUser();
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
+
+        if(!$utilisateur->isEstGele()){
+            return $this->redirectToRoute('app_infos');
+        }
+
+        $form = $this->createForm(DegelCompteFormType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $utilisateur->setEstGele(false);
+            $entityManager->persist($utilisateur);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_main');
+        }
+
+        return $this->render('gel/degel_compte.html.twig', [
+            'controller_name' => 'GelController',
+            'DegelCompteFormType' => $form->createView(),
         ]);
     }
 }
