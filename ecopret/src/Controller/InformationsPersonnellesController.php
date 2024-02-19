@@ -102,8 +102,9 @@ class InformationsPersonnellesController extends AbstractController
 
             print $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getId();
             // Si pas d'utilisateur associé au compte, on en crée un
-            if($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]) == null){
+            if(($utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])) == null){
                 $utilisateur = new Utilisateur();
+            }
                 $utilisateur->setNoCompte($entityManager->getRepository(Compte::class)->findOneBy(['id' => $user]));
                 $utilisateur->setEstVerifie(false);
                 $utilisateur->setEstGele(false);
@@ -111,7 +112,7 @@ class InformationsPersonnellesController extends AbstractController
                 $utilisateur->setAUneReduction(false);
                 $utilisateur->setNbFlorains(0);
                 $entityManager->persist($utilisateur);
-            }
+
 
             // Si l'utilisateur veut passer prestataire
             if($form->get('annonce')->getData() == "Oui" && $prestataire == null) {

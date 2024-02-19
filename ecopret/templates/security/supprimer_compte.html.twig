@@ -21,11 +21,12 @@
         <h3>Êtes-vous sur ?</h3><br>
         <p>Cela va entrainer la suppression de vos informations et de votre compte</p>
     </div>
-</div>
+
     {{ form_start(SupprimerCompteFormType) }}
     <div class="div-suppr-compte-boutons">
         {{ form_row(SupprimerCompteFormType.valider) }}
         {{ form_row(SupprimerCompteFormType.annuler) }}
     </div>
     {{ form_end(SupprimerCompteFormType) }}
+</div>
 {% endblock %}
