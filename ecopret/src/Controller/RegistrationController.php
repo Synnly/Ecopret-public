@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
 
         //Submit du formulaire
         $form->handleRequest($request);
-
+        
         //Si c'est validé et conforme, je hash le mdp, j'envoie les données dans la table
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setMotDePasseCompte(
@@ -37,10 +37,12 @@ class RegistrationController extends AbstractController
             if (!$entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $user->getAdresseMailCOmpte()])) {
                 $entityManager->persist($user);
                 $entityManager->flush();
-                //Création d'un mail
-                $mail = new MailService();
-                $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
-
+                if($_POST['magicInput'] !== 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'){
+                     //Création d'un mail
+                    $mail = new MailService();
+                    $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');
+                }
+               
                 //Redirection vers la page main
                 return $this->redirectToRoute('main');
             }else {

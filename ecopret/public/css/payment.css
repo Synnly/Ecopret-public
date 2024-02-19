@@ -1,0 +1,91 @@
+.div-payment-information-all-input{
+    margin-top: -3%;
+    font-size: 200%;
+    margin-left: 20%;
+}
+
+.input-with-img {
+    display: flex; 
+    align-items: center;
+    position: relative;
+}
+
+.last-two-input {
+    display: flex;
+    align-items: center;
+}
+
+.credit-card-icon {
+    width: 48px;
+    height: 48px;
+    margin-left: 260px;
+    margin-top: 12px;
+    margin-bottom: 17px;
+}
+
+.utilisateur-icon {
+    width: 48px;
+    height: 48px;
+    margin-left: 260px;
+    margin-bottom: 1px;
+}
+
+.div-payment-information-Centrer{
+    display:grid;
+    justify-content: center;
+    align-content: center;    
+}
+
+.payment-information-input{
+    margin-bottom: 10px; 
+    font-size: 130%;
+    width: 170%;
+    background-color: transparent;
+    border-radius: 10px;
+    margin-top: 8px;
+}
+
+.payment-information-small-input {
+    margin-bottom: 10px; 
+    font-size: 130%;
+    width: 80%;
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+.title-input {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.payment-information-btn {
+    margin-top: 3%;
+    font-size: 100%;
+    font-weight: 900;
+    width: 40%;
+    height: 20%;
+    margin-left: 15%;
+    margin-top: 7%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+    
+}
+
+li {
+    margin-top: -8%;
+    margin-bottom: -8%;
+    margin-left: -7%;
+    font-size: 70%;
+    color: red;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
