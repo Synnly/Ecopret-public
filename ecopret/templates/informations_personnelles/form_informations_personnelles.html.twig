@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier ses informations personnelles{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/infos_perso.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/infos_perso/modif_infos_perso.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+    <img src="../img/plante.jpg" id="background">
+
+    <div class="div-modif-infos-Centrer">
+
+        <div class="modif-infos-titre">
+            <h1>Modifier ses informations personnelles</h1>
+        </div>
+
+        {{ form_start(InformationsPersonnellesForm) }}
+
+        <div class="div-modif-infos-all-input">
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.NomCompte) }}
+                {{ form_label(InformationsPersonnellesForm.NomCompte, "Nom")}}
+                {{ form_widget(InformationsPersonnellesForm.NomCompte, {
+                    'attr': {
+                        'class': 'modif-infos-input'}}) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.PrenomCompte) }}
+                {{ form_label(InformationsPersonnellesForm.PrenomCompte, "Prénom")}}
+                {{ form_widget(InformationsPersonnellesForm.PrenomCompte, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.AdresseMailCOmpte) }}
+                {{ form_label(InformationsPersonnellesForm.AdresseMailCOmpte, "Adresse mail")}}
+                {{ form_widget(InformationsPersonnellesForm.AdresseMailCOmpte, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.motDePasseCompte) }}
+                {{ form_label(InformationsPersonnellesForm.motDePasseCompte, "Mot de passe")}}
+                <div class="div_champ_mdp">
+                    {{ form_widget(InformationsPersonnellesForm.motDePasseCompte, {
+                        'attr': {
+                            'class': 'modif-infos-input'} }) }}
+                    <label><img id="VCmdp" src="/img/cacher.png" width="48" height="48" class="sign-up-logo-oeil" onclick="afficherCacherMdp()"></label>
+                </div>
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.numero_carte) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.numero_carte, "Numéro de carte bancaire")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.numero_carte, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.date_expiration) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.date_expiration, "Date d'expiration")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.date_expiration, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.code_cvv) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.code_cvv, "Code CVV")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.code_cvv, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div_buttons">
+                <button type="button" class="modif_btn"><a href="/infos"><b>Annuler</b></a></button>
+                <button type="submit" class="modif_btn"><b>Modifier</b></button>
+            </div>
+
+            {{ form_end(InformationsPersonnellesForm) }}
+        </div>
+    </div>
+
+{% endblock %}

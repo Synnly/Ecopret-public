@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Degel compte{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/gel_compte.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+    <div class="degel-compte">
+        <div class="degel-titre">
+            <h1>Vous êtes de retour ?</h1>
+        </div>
+
+        {{ form_start(DegelCompteFormType) }}
+        <div class="degel-form">
+
+            <div class="degel-button">
+                <div class="gel-text">
+                    {{ form_row(DegelCompteFormType.retour) }}
+                </div>
+
+                {{ form_row(DegelCompteFormType.enregistrer) }}
+            </div>
+        </div>
+        {{ form_end(DegelCompteFormType) }}
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Informations peronnelles{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/infos_perso.css') }}">
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/infos_perso/carteIdentite.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+<img src="../img/plante.jpg" id="background">
+
+<div class="div-modif-infos-Centrer">
+
+    <div class="modif-infos-titre">
+        <h1>Informations personnelles</h1>
+    </div>
+
+    {{ form_start(InformationsPersonnellesForm, {'attr' : {'onsubmit': 'return validerCarteIdentite();'}}) }}
+
+    <div class="div-modif-infos-all-input">
+
+        <div class="div-modif-infos-input">
+            {{ form_errors(InformationsPersonnellesForm.lieu) }}
+            {{ form_label(InformationsPersonnellesForm.lieu, "Lieu")}}
+            {{ form_widget(InformationsPersonnellesForm.lieu, {
+                'attr': {
+                    'class': 'modif-infos-input'} }) }}
+        </div>
+
+        <div class="div-modif-infos-input">
+
+            {{ form_label(InformationsPersonnellesForm.annonce, "Souhaitez vous déposer des annonces ?") }}
+            {{ form_errors(InformationsPersonnellesForm.annonce) }}
+            {{ form_widget(InformationsPersonnellesForm.annonce, {
+                'attr': {
+                    'class': 'modif-infos-input',
+                } }) }}
+        </div>
+        <div class="div-modif-infos-input">
+            {{ form_label(InformationsPersonnellesForm.carte_identite, "Carte d'identité") }}
+            {{ form_errors(InformationsPersonnellesForm.carte_identite) }}
+            {{ form_widget(InformationsPersonnellesForm.carte_identite, {
+                'attr': {
+                    'class': 'modif-infos-input'} }) }}
+        </div>
+
+        <div class="div_buttons">
+            <button type="button" class="modif_btn"><a href="/main"><b>Annuler</b></a></button>
+            <button type="submit" class="modif_btn"><b>Valider</b></button>
+        </div>
+        <div class="div_buttons">
+
+            <button type="button" class="modif_btn" id="modif"><a href="/infos/modif"><b>Modifier ses information personnelles</b></a></button>
+        </div>
+        {{ form_end(InformationsPersonnellesForm) }}
+    </div>
+
+{% endblock %}

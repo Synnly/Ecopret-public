@@ -1,0 +1,32 @@
+.div-suppr-compte{
+    color:grey;
+}
+.div-suppr-compte-avertissement{
+    font-weight: bold;
+    padding: 0 5%;
+}
+h3{
+    justify-content: left;
+    color:grey;
+    font-weight: bold;
+    padding:0;
+}
+.div-suppr-compte-boutons {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    padding: 0 5%;
+    margin: auto;
+}
+.suppr_cmpt_btn {
+    font-size: 100%;
+    font-weight: 900;
+    width: 300%;
+    height: 250%;
+    margin: 0 5%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+}

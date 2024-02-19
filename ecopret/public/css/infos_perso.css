@@ -1,0 +1,133 @@
+.div-modif-infos-all-input{
+    font-size: 180%;
+    width: 100%;
+    display: block;
+}
+
+.div-modif-infos-input{
+    margin-bottom: 2%;
+    width: calc(60% + 56px);
+    padding: 0 20%;
+}
+
+.modif-infos-titre{
+    text-align: center;
+}
+
+.modif-infos-input{
+    font-size: 100%;
+    width: calc(100% - 56px);
+    height: 38px;
+    background-color: transparent;
+    border-radius: 12px;
+    border: solid #949393 2px;
+}
+
+.div-modif-infos-Centrer{
+    width: 80%;
+    margin: 0% 10%;
+    display:grid;
+    justify-content: center;
+    align-content: center;
+}
+
+.modif_btn {
+    font-size: 100%;
+    font-weight: 900;
+    width: 40%;
+    height: 20%;
+    margin: 0 5%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+}
+
+.login-logo{
+    margin-bottom: -9%;
+    margin-left: -12%;
+}
+
+.login-logo-oeil{
+    margin-left: 102%;
+    margin-bottom: -10%;
+}
+
+.login-logo-mdp{
+    margin-bottom: -16.5%;
+    margin-left: -12%;
+}
+
+img#background{
+    position: fixed;
+    z-index: -999;
+    bottom: 0;
+    right: 0;
+    width: 60%;
+    background-repeat: no-repeat;
+    filter: blur(15px);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.div_champ_mdp{
+    display: flex;
+    padding: 0;
+    align-items: center;
+    align-content: space-between;
+}
+
+.div_champ_mdp > input {
+    height: 32px;
+    margin-right: 8px;
+}
+
+body{
+    background: white;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    font-size: 70%;
+    color: red;
+    list-style-type: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.div_buttons {
+    display: flex;
+    width: calc(60% + 56px);
+    padding: 0 20%;
+}
+
+input[type=radio]{
+    height: 19px;
+    width: 19px;
+
+}
+
+#informations_personnelles_annonce_0{
+    margin-left: 20%;
+}
+
+#informations_personnelles_annonce_1{
+    margin-left: 20%;
+}
+
+html{
+    min-height: 100vh;
+}
+
+#modif{
+    margin-top: 30px;
+    width: 100%;
+}

@@ -1,0 +1,38 @@
+.div-gel-compte{
+    color:grey;
+}
+.gel-form{
+    justify-content: center;
+    align-content: center;
+}
+.gel-text{
+    text-align: center;
+    color:grey;
+    font-weight: bold;
+    font-size: 20px;
+}
+.gel-dates{
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+.gel_date{
+    width: 8%;
+    height: 2vh;
+
+}
+.gel_btn {
+    font-size: 100%;
+    font-weight: 900;
+    width: 10%;
+    height: 5vh;
+    margin: 5% 45%;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}

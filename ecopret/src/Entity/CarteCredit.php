@@ -21,8 +21,8 @@ class CarteCredit
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_expiration = null;
 
-    #[ORM\Column]
-    private ?int $code_cvv = null;
+    #[ORM\Column(length: 3)]
+    private ?string $code_cvv = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom_carte = null;
@@ -32,12 +32,12 @@ class CarteCredit
         return $this->id;
     }
 
-    public function getNumeroCarte(): ?int
+    public function getNumeroCarte(): ?string
     {
         return $this->numero_carte;
     }
 
-    public function setNumeroCarte(int $numero_carte): static
+    public function setNumeroCarte(string $numero_carte): static
     {
         $this->numero_carte = $numero_carte;
 
@@ -49,19 +49,19 @@ class CarteCredit
         return $this->date_expiration;
     }
 
-    public function setDateExpiration(\DateTimeInterface $date_expiration): static
+    public function setDateExpiration(?\DateTimeInterface $date_expiration): static
     {
         $this->date_expiration = $date_expiration;
 
         return $this;
     }
 
-    public function getCodeCvv(): ?int
+    public function getCodeCvv(): ?string
     {
         return $this->code_cvv;
     }
 
-    public function setCodeCvv(int $code_cvv): static
+    public function setCodeCvv(string $code_cvv): static
     {
         $this->code_cvv = $code_cvv;
 
