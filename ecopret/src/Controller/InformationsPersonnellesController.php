@@ -57,7 +57,8 @@ class InformationsPersonnellesController extends AbstractController
         $resultat->execute();
         $villes = array();
         foreach($resultat as $row => $nom) {
-            if ($row != null) $villes[$nom[1]] = $nom[0];
+            if ($resultat != null) $villes[$nom[1]] = $nom[0];
+
         }
         // Création du formulaire
         $form = $this->createForm(InformationsPersonnellesType::class)
@@ -172,7 +173,6 @@ class InformationsPersonnellesController extends AbstractController
             ->add('NomCompte', TextType::class, [
                 'attr' => ['value' => $user->getNomCompte()],
                 'constraints' => [
-                    new NotBlank(['message' => 'Le nom est requis.']),
                     new Regex([
                         'pattern' => '/^[A-Z][A-Z-]{0,18}[A-Z]$/',
                         'message' => 'Votre nom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres majuscules ou - .'
@@ -182,7 +182,6 @@ class InformationsPersonnellesController extends AbstractController
             ->add('PrenomCompte', TextType::class, [
                 'attr' => ['value' => $user->getPrenomCompte()],
                 'constraints' => [
-                    new NotBlank(['message' => 'Le prénom est requis.']),
                     new Regex([
                         'pattern' => '/^[A-Z][A-Za-z-]{0,18}[a-zA-Z]$/',
                         'message' => 'Votre prénom doit commencer par une lettre majuscule puis contenir entre 1 et 19 lettres ou - .'
@@ -190,12 +189,9 @@ class InformationsPersonnellesController extends AbstractController
                 ],
             ])
             ->add('motDePasseCompte', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank(['message' => 'Le mot de passe est requis.']),
                     new Regex([
                         'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/',
                         'message' => 'Le mot de passe doit contenir au moins 8 caractères dont une majuscule, une minuscule et un chiffre.'
@@ -205,7 +201,6 @@ class InformationsPersonnellesController extends AbstractController
             ->add('AdresseMailCOmpte', EmailType::class, [
                 'attr' => ['value' => $user->getAdresseMailCOmpte()],
                 'constraints' => [
-                    new NotBlank(['message' => 'L\'adresse mail est requise.']),
                     new Regex([
                         'pattern' => '/^[a-zA-Z]([a-zA-Z0-9-]*\.)?[a-zA-Z0-9-]+@[a-zA-Z-]+\.[a-zA-Z]{2,}$/',
                         'message' => 'Votre adresse mail n\' est pas valide.'
@@ -220,33 +215,57 @@ class InformationsPersonnellesController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $user->setNomCompte($form->get('NomCompte')->getData());
-            $user->setPrenomCompte($form->get('PrenomCompte')->getData());
-            $user->setAdresseMailCOmpte($form->get('AdresseMailCOmpte')->getData());
-            $user->setMotDePasseCompte(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('motDePasseCompte')->getData()));
+        global $erreur;
 
-            // Creation d'une nouvelle cb s'il n'existe pas encore
-            if($user->getCarteCredit() == null){
-                $user->setCarteCredit(new CarteCredit());
+        if($form->isSubmitted() && $form->isValid()){
+
+            // Soit tous les champs de la cb sont renseignés, soit aucun
+            if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null) {
+
+                // Modification de la cb
+                $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
+                $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
+                $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+
+                $entityManager->persist($user);
+            }
+            else{
+                if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null)) {
+                    $erreur = "Remplir tous les champs de la carte bancaire ou retirer les champs.";
+                }
             }
 
-            // Modification de la cb
-            $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
-            $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
-            $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+            if($erreur != null) {
+                return $this->render('informations_personnelles/form_informations_personnelles.html.twig', [
+                    'controller_name' => 'InformationsPersonnellesController',
+                    'InformationsPersonnellesForm' => $form->createView(),
+                    'erreur' => $erreur
+                ]);
+            }
+            else{
+                // Modification des champs qui ont été remplis
+                if($form->get('NomCompte')->getData() != null) $user->setNomCompte($form->get('NomCompte')->getData());
+                if($form->get('PrenomCompte')->getData() != null) $user->setPrenomCompte($form->get('PrenomCompte')->getData());
+                if($form->get('AdresseMailCOmpte')->getData() != null) $user->setAdresseMailCOmpte($form->get('AdresseMailCOmpte')->getData());
+                if($form->get('motDePasseCompte')->getData() != null) $user->setMotDePasseCompte(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('motDePasseCompte')->getData()));
 
-            $entityManager->persist($user);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_infos');
+                // Creation d'une nouvelle cb s'il n'existe pas encore
+                if($user->getCarteCredit() == null){
+                    $user->setCarteCredit(new CarteCredit());
+                }
+
+                $entityManager->flush();
+                return $this->redirectToRoute('app_infos');
+            }
         }
 
         return $this->render('informations_personnelles/form_informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
             'InformationsPersonnellesForm' => $form->createView(),
+            'erreur' => $erreur
         ]);
     }
 }

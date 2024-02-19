@@ -23,9 +23,9 @@ class CarteBancaireType extends AbstractType
         $builder
             ->add('numero_carte', TextType::class, [
                 'attr' => ['placeholder' => 'xxxx xxxx xxxx xxxx'],
+                'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Le numéro de carte est requis.']),
                     new Luhn(null, 'Le numéro de carte est invalide (Luhn)'),
                     new AtLeastOneOf([
                         new CardScheme('MASTERCARD'),
@@ -35,19 +35,19 @@ class CarteBancaireType extends AbstractType
             ])
             ->add('date_expiration', DateType::class, [
                 'html5' => false,
+                'required' => false,
                 'format' => 'M/y',
                 'attr' => ['placeholder' => 'mm/yy'],
                 'mapped' => false,
                 'constraints' => [
-                    new GreaterThanOrEqual('+1 month'),
-                    new NotBlank(['message' => 'La date d\'expiration est obligatoire'])
+                    new GreaterThanOrEqual('+1 month')
                 ]
             ])
             ->add('code_cvv', TextType::class, [
                 'attr' => ['placeholder' => 'xxx'],
+                'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new NotBlank(['message' => 'Le CVV est requis.']),
                     new Regex([
                         'pattern' => '/^[0-9]{3}$/',
                         'message' => 'Le CVV doit contenir 3 chiffres.'

@@ -15,13 +15,18 @@ class InsertLieuxController extends AbstractController
     {
         include_once ("../public/villes.php");
         set_time_limit(0);  // Pas de limite de temps d'execution
+        $nbInsertions = 0;
         foreach($villes as $nomville){
-            $lieu = new Lieu();
-            $lieu->setNomLieu($nomville);
-            $entityManager->persist($lieu);
-            $entityManager->flush();
+            if($entityManager->getRepository(Lieu::class)->findOneBy(['nom_lieu' => $nomville]) == null) {
+                $lieu = new Lieu();
+                $lieu->setNomLieu($nomville);
+                $entityManager->persist($lieu);
+                $entityManager->flush();
+                $nbInsertions ++;
+            }
         }
         set_time_limit(30); // Remise de la limite de temps d'execution
+        print "$nbInsertions insertions<br>";
         return $this->render('insert_lieux/index.html.twig', [
             'controller_name' => 'InsertLieuxController',
         ]);
