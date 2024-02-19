@@ -223,6 +223,8 @@ class InformationsPersonnellesController extends AbstractController
             // Soit tous les champs de la cb sont renseignés, soit aucun
             if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null) {
 
+                if($user->getCarteCredit() == null) $user->setCarteCredit(new CarteCredit());
+
                 // Modification de la cb
                 $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
                 $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
