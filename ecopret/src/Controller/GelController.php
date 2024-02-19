@@ -36,7 +36,7 @@ class GelController extends AbstractController
             $dateFin = $form->get('fin')->getData();
 
             //Si la date de début est aujourd'hui on le met directement en gel
-            if($dateDebut == new DateTime('now')){
+            if($dateDebut < new DateTime('tomorrow') && $dateDebut > new DateTime('yesterday')){
                 $utilisateur->setEstGele(true);
             }
 
