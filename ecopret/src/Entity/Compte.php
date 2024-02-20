@@ -45,8 +45,8 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CarteCredit $carte_credit = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
-    private $resetToken;
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private ?string $resetToken = null;
 
     public function __construct()
     {

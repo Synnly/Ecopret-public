@@ -10,6 +10,7 @@ use App\Entity\Utilisateur;
 use App\Form\CarteBancaireType;
 use App\Form\InformationsPersonnellesType;
 use App\Form\ModifierInformationsPersonnellesFormType;
+use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PDO;
@@ -270,5 +271,20 @@ class InformationsPersonnellesController extends AbstractController
             'InformationsPersonnellesForm' => $form->createView(),
             'erreur' => $erreur
         ]);
+    }
+
+    #[Route('/infos/modif/cancel', name:'cancel_sub')]
+    public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        return $this->render('resiliation/cancel_subscription.html.twig');
+    }
+
+    #[Route('/unsubscribing', name:'unsub')]
+    public function unsub(Request $request, EntityManagerInterface $entityManager, UtilisateurRepository $utilisateurRepository): Response
+    {
+        $user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
+        $user->setPaiement(false);
+
+        return $this->redirectToRoute('main');
     }
 }

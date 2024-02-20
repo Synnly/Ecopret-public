@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/resiliation.css') }}">
+{% endblock %}
+
+{% block title %}Réinitialisation de votre mot de passe{% endblock %}
+
+{% block body %}
+<section class="container my-3">
+    <h1>Etes vous certain de vouloir résilier votre abonnement ?</h1>
+    <div class="button_cancel">
+        <a href="/unsubscribing">Oui, résilier</button>
+        <a href="{{ path("main") }}">Non, garder</a>
+    </div>
+</section>
+
+{% endblock %}

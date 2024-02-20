@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Compte;
+use App\Entity\Utilisateur;
 use App\Mail\MailService;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,7 @@ class RegistrationController extends AbstractController
     {
         //Création d'un compte 
         $user = new Compte();
+        $utilisateur = new Utilisateur();
         $erreur = '';
         //Céation du formulaire
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -35,6 +37,13 @@ class RegistrationController extends AbstractController
                 )
             );
             if (!$entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $user->getAdresseMailCOmpte()])) {
+                $utilisateur->setNoCompte($user);
+                $utilisateur->setEstVerifie(false);
+                $utilisateur->setEstGele(false);
+                $utilisateur->setPaiement(false);
+                $utilisateur->setAUneReduction(false);
+                $utilisateur->setNbFlorains(0);
+                $entityManager->persist($utilisateur);
                 $entityManager->persist($user);
                 $entityManager->flush();
                 if($_POST['magicInput'] !== 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'){

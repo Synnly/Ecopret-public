@@ -21,6 +21,17 @@ class UtilisateurRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilisateur::class);
     }
 
+    public function findOneById($id): Utilisateur
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.id = :val')
+            ->setParameter('val', $id)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects
 //     */
