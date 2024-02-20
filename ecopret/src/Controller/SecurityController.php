@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Compte;
+use App\Form\SupprimerCompteFormType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use App\Form\ResetPasswordRequestFormType;
 use App\Form\ResetPasswordFormType;
 use App\Repository\CompteRepository;
@@ -15,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 
 class SecurityController extends AbstractController
 {
@@ -38,7 +42,44 @@ class SecurityController extends AbstractController
     {
        $this->redirectToRoute('main');
     }
+    #[Route('/infos/supprimer', name: 'app_supprimer_compte')]
+    public function supprimerCompte(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Si l'utilisateur n'est pas connecté on le redirige vers la page de connection
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
 
+        $form = $this->createForm(SupprimerCompteFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('valider')->isClicked()) {
+                // L'utilisateur a confirmé la suppression du compte
+                //Récupération de l'utilisateur courant
+                $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+                $session = new Session();
+                $session->invalidate();
+
+                $entityManager->remove($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_main');
+
+            } elseif ($form->get('annuler')->isClicked()) {
+                // L'utilisateur a annulé la suppression du compte
+                return $this->redirectToRoute('app_infos');
+            }
+        }
+
+
+        return $this->render('security/supprimer_compte.html.twig', [
+            'controller_name' => 'SupprimerCompteController',
+            'SupprimerCompteFormType' => $form->createView(),
+        ]);
+
+    }
     #[Route('/forgotpswd', name:'forgotten_password')]
     public function forgottenPassword(
         Request $request, 
@@ -124,4 +165,5 @@ class SecurityController extends AbstractController
 
         return $this->redirectToRoute('main');
     }
+    
 }

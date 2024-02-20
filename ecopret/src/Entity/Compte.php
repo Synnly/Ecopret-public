@@ -45,9 +45,6 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?CarteCredit $carte_credit = null;
 
-    #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $resetToken = null;
-
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -112,12 +109,12 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdresseMailCompte(): ?string
+    public function getAdresseMailCOmpte(): ?string
     {
         return $this->AdresseMailCOmpte;
     }
 
-    public function setAdresseMailCompte(string $AdresseMailCOmpte): static
+    public function setAdresseMailCOmpte(string $AdresseMailCOmpte): static
     {
         $this->AdresseMailCOmpte = $AdresseMailCOmpte;
 
@@ -238,17 +235,5 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     public function getPassword(): ?string
     {
         return $this->motDePasseCompte;
-    }
-
-    public function getResetToken(): ?string
-    {
-        return $this->resetToken;
-    }
-
-    public function setResetToken(?string $resetToken): self
-    {
-        $this->resetToken = $resetToken;
-
-        return $this;
     }
 }

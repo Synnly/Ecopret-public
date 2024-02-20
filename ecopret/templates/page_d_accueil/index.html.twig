@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/page_accueil.css') }}">
+{% endblock %}
+
+
+{% block title %}{{title}}{% endblock %}
+
+{% block body %}
+    <div>
+        <h1 class="titre" id="titre">{{title}}</h1>
+        <p class="phacrr">Vivez ÉcoPrêt, l'innovation qui encourage le partage et le prêt, pour une vie plus connectée et collaborative.<br>Ensemble, façonnons un mode de vie où le lien social prime, tout en économisant et vivant pleinement chaque expérience !</p>
+          <div class="container">
+            <a href="/register" class="conn">Création d'un compte</a>
+            <a href="/login" class="log">Connexion</a>
+          </div>
+          <div>
+            <img src="/img/arbresD.svg" width="500" height="400" class="fr">
+          </div>
+          <div>
+            <img src="/img/arbresG.svg" width="500" height="400" class="fl">
+          </div>
+    </div>
+{% endblock %}
