@@ -221,7 +221,7 @@ class InformationsPersonnellesController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
 
             // Soit tous les champs de la cb sont renseignés, soit aucun
-            if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null) {
+            if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null && $form['carte_credit']->get('nom_carte')->getData() != null) {
 
                 if($user->getCarteCredit() == null) $user->setCarteCredit(new CarteCredit());
 
@@ -229,11 +229,12 @@ class InformationsPersonnellesController extends AbstractController
                 $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
                 $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
                 $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+                $user->getCarteCredit()->setNomCarte($form['carte_credit']->get('nom_carte')->getData());
 
                 $entityManager->persist($user);
             }
             else{
-                if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null)) {
+                if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null && $form['carte_credit']->get('nom_carte')->getData() == null)) {
                     $erreur = "Remplir tous les champs de la carte bancaire ou retirer les champs.";
                 }
             }

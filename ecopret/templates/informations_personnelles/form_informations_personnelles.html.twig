@@ -73,6 +73,14 @@
             </div>
 
             <div class="div-modif-infos-input">
+                {{ form_errors(InformationsPersonnellesForm.carte_credit.nom_carte) }}
+                {{ form_label(InformationsPersonnellesForm.carte_credit.nom_carte, "Nom sur carte bancaire")}}
+                {{ form_widget(InformationsPersonnellesForm.carte_credit.nom_carte, {
+                    'attr': {
+                        'class': 'modif-infos-input'} }) }}
+            </div>
+
+            <div class="div-modif-infos-input">
                 {{ form_errors(InformationsPersonnellesForm.carte_credit.date_expiration) }}
                 {{ form_label(InformationsPersonnellesForm.carte_credit.date_expiration, "Date d'expiration")}}
                 {{ form_widget(InformationsPersonnellesForm.carte_credit.date_expiration, {
