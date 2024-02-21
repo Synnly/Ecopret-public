@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gel compte{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/gel/gel.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/gel_compte.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+    <div class="gel-compte">
+        <div class="gel-titre">
+            <h1>Gel de son compte</h1>
+        </div>
+        <div class="gel-text">
+            <p>Voulez-vous geler votre compte ?</p>
+        </div>
+        {{ form_start(GelCompteFormType) }}
+        <div class="gel-form">
+            <div class="gel-dates">
+                {{ form_row(GelCompteFormType.deb) }}
+                {{ form_row(GelCompteFormType.fin) }}
+            </div>
+            <div class="gel-button">
+                {{ form_row(GelCompteFormType.valider) }}
+                <button class="gel_btn"><a href="/main">Annuler</a></button>
+            </div>
+        </div>
+        {{ form_end(GelCompteFormType) }}
+
+    </div>
+
+{% endblock %}

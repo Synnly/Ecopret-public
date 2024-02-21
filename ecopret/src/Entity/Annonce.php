@@ -40,6 +40,10 @@ class Annonce
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Transaction::class)]
     private Collection $transaction;
 
+    #[ORM\ManyToOne(inversedBy: 'annonces')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prestataire $prestataire = null;
+
     public function __construct()
     {
         $this->dates_annonce = new ArrayCollection();
@@ -198,6 +202,18 @@ class Annonce
                 $transaction->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrestataire(): ?Prestataire
+    {
+        return $this->prestataire;
+    }
+
+    public function setPrestataire(?Prestataire $prestataire): static
+    {
+        $this->prestataire = $prestataire;
 
         return $this;
     }

@@ -1,11 +1,58 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello MainController!{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
+{% endblock %}
+{% block title %}
+	{{title}}
+{% endblock %}
 
 {% block body %}
 
-<div class="example-wrapper">
-    <h1>{{ controller_name }}</h1>
-    <p>bonjour {{user.getNomCompte()}}</p>
-</div>
+	<nav>
+		<ul>
+			<li>
+				<a href="/main">
+					<img src="/img/leaves-svgrepo-com.svg" width="48" height="48" class="login-logo-mdp">
+					<h3 class="titreMain">{{title}}</h3>
+				</a>
+			</li>
+			<li><input type="text" placeholder="Rechercher" class="inputSearch"></li>
+			<li class="menu-deroulant">
+				<a href="" class="nomUser">{{user.getNomCompte()}}
+				</a>
+				<ul class="sous-menu">
+					<li>
+						<a href="/infos/modif">
+							<h4>Modification des mes informations</h4>
+						</a>
+					</li>
+					<li>
+						<a href="/gel">
+							<h4>Gel/Degel du compte</h4>
+						</a>
+					</li>
+					<li>
+						<a href="/infos/supprimer">
+							<h4>Supprimer son compte</h4>
+						</a>
+					</li>
+					<li>
+						<a href="/logout">
+							<h4>Déconnexion</h4>
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<main></main>
+	<footer>
+		<ul>
+			<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
+			<li><a href=""><h5>Contact</h5></a></li>
+			<li><a href=""><h5>© Copyright 2024 ECOPRET <br> Tous droits réservés.</h5></a></li>
+		</ul>
+	</footer>
+
 {% endblock %}
