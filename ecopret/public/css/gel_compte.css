@@ -1,6 +1,13 @@
 .div-gel-compte{
     color:grey;
 }
+.gel-button{
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    padding: 0 5%;
+    margin: auto;
+}
 .gel-form{
     justify-content: center;
     align-content: center;
@@ -24,15 +31,12 @@
 .gel_btn {
     font-size: 100%;
     font-weight: 900;
-    width: 10%;
-    height: 5vh;
-    margin: 5% 45%;
+    width: 10vw;
+    height: 6vh;
+    margin: 10vh 3%;
     background-color: #658864;
     color: white;
     border-radius: 30px;
     border-color: #658864;
     border: none;
-    text-align: center;
-    justify-content: center;
-    align-content: center;
 }

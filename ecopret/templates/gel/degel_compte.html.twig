@@ -25,8 +25,10 @@
                 <div class="gel-text">
                     {{ form_row(DegelCompteFormType.retour) }}
                 </div>
-
-                {{ form_row(DegelCompteFormType.enregistrer) }}
+                <div class="gel-button">
+                    {{ form_row(DegelCompteFormType.enregistrer) }}
+                    <button class="gel_btn"><a href="/main">Annuler</a></button>
+                </div>
             </div>
         </div>
         {{ form_end(DegelCompteFormType) }}
