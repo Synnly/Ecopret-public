@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use App\Form\ResetPasswordRequestFormType;
 use App\Form\ResetPasswordFormType;
 use App\Repository\CompteRepository;
-use App\Entity\Compte;
 use App\Mail\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
