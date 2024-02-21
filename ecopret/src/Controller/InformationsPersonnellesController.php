@@ -3,15 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\CarteCredit;
+use App\Form\ResiliationFormType;
 use App\Entity\Compte;
 use App\Entity\Lieu;
 use App\Entity\Prestataire;
 use App\Entity\Utilisateur;
 use App\Form\CarteBancaireType;
 use App\Form\InformationsPersonnellesType;
-use App\Form\ResiliationFormType;
 use App\Form\ModifierInformationsPersonnellesFormType;
-use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PDO;
@@ -21,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -69,7 +67,7 @@ class InformationsPersonnellesController extends AbstractController
                 'required' => 'true',
                 'mapped' => false,
                 'choices' => $villes,
-                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()[0]) == null ? "Choisir une ville" : $lieuCompte[0]->getId()),
+                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()) == [] ? "Choisir une ville" : $lieuCompte[0]->getId()),
                 'constraints' => [new NotBlank(['message' => 'Le lieu est requis.'])]
             ])
             ->add('annonce', ChoiceType::class, [
@@ -224,7 +222,7 @@ class InformationsPersonnellesController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
 
             // Soit tous les champs de la cb sont renseignés, soit aucun
-            if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null) {
+            if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null && $form['carte_credit']->get('nom_carte')->getData() != null) {
 
                 if($user->getCarteCredit() == null) $user->setCarteCredit(new CarteCredit());
 
@@ -232,11 +230,12 @@ class InformationsPersonnellesController extends AbstractController
                 $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
                 $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
                 $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+                $user->getCarteCredit()->setNomCarte($form['carte_credit']->get('nom_carte')->getData());
 
                 $entityManager->persist($user);
             }
             else{
-                if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null)) {
+                if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null && $form['carte_credit']->get('nom_carte')->getData() == null)) {
                     $erreur = "Remplir tous les champs de la carte bancaire ou retirer les champs.";
                 }
             }
@@ -274,39 +273,38 @@ class InformationsPersonnellesController extends AbstractController
             'erreur' => $erreur
         ]);
     }
-
-    #[Route('/infos/modif/cancel', name:'cancel_sub')]
-    public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
-
-        $form = $this->createForm(ResiliationFormType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('oui')->isClicked()) {
-                // L'utilisateur a confirmé la suppression du compte
-                //Récupération de l'utilisateur courant
-                //$user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
-                $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
-
-
-                if($user->isPaiement()) {
-                    $user->setPaiement(false);
-                }
-
-                return $this->redirectToRoute('app_main');
-            } elseif ($form->get('non')->isClicked()) {
-                // L'utilisateur a annulé la résiliation de son abonnement
-                return $this->redirectToRoute('app_infos');
+        #[Route('/infos/modif/cancel', name:'cancel_sub')]
+        public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
+        {
+            if(!$this->getUser()){
+                return $this->redirectToRoute('app_login');
             }
+    
+            $form = $this->createForm(ResiliationFormType::class);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->get('oui')->isClicked()) {
+                    // L'utilisateur a confirmé la suppression du compte
+                    //Récupération de l'utilisateur courant
+                    //$user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
+                    $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+    
+    
+                    if($user->isPaiement()) {
+                        $user->setPaiement(false);
+                    }
+    
+                    return $this->redirectToRoute('app_main');
+                } elseif ($form->get('non')->isClicked()) {
+                    // L'utilisateur a annulé la résiliation de son abonnement
+                    return $this->redirectToRoute('app_infos');
+                }
+            }
+    
+            return $this->render('resiliation/cancel_subscription.html.twig', [
+                'controller_name' => 'SupprimerCompteController',
+                'ResiliationFormType' => $form->createView()
+            ]);
         }
-
-        return $this->render('resiliation/cancel_subscription.html.twig', [
-            'controller_name' => 'SupprimerCompteController',
-            'ResiliationFormType' => $form->createView()
-        ]);
     }
-}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Compte;
+use App\Entity\Utilisateur;
 use App\Form\SupprimerCompteFormType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Form\ResetPasswordRequestFormType;
@@ -58,10 +59,12 @@ class SecurityController extends AbstractController
                 // L'utilisateur a confirmé la suppression du compte
                 //Récupération de l'utilisateur courant
                 $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+                $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
+
 
                 $session = new Session();
                 $session->invalidate();
-
+                $entityManager->remove($utilisateur);
                 $entityManager->remove($user);
                 $entityManager->flush();
 
@@ -69,7 +72,7 @@ class SecurityController extends AbstractController
 
             } elseif ($form->get('annuler')->isClicked()) {
                 // L'utilisateur a annulé la suppression du compte
-                return $this->redirectToRoute('app_infos');
+                return $this->redirectToRoute('app_main');
             }
         }
 
@@ -78,7 +81,6 @@ class SecurityController extends AbstractController
             'controller_name' => 'SupprimerCompteController',
             'SupprimerCompteFormType' => $form->createView(),
         ]);
-
     }
     #[Route('/forgotpswd', name:'forgotten_password')]
     public function forgottenPassword(
@@ -94,7 +96,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $user = $entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $form->get('email')->getData()]);
+            $user = $compteRepository->findOneByEmail($form->get('email')->getData());
 
             if($user) {
                 //Génération d'un token pour créer l'URL
@@ -114,8 +116,6 @@ class SecurityController extends AbstractController
                 $mail->sendMail($user, 'Réinitialisation du mot de passe.', "Bonjour,<br> Pour votre demande, veuillez suivre ce lien afin de réinitialiser votre mot de passe : .$url.");
 
                 return $this->redirectToRoute('main');
-            } else { 
-                $this->redirectToRoute('main');
             }
 
             //Si on trouve pas d'utilisateur avec le mail rentré dans le champs

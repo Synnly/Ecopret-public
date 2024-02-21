@@ -33,6 +33,17 @@ class CarteBancaireType extends AbstractType
                     ], null, null, 'Le numéro de carte est invalide (Format non reconnu)', null, false)
                 ]
             ])
+            ->add('nom_carte', TextType::class, [
+                'attr' => ['placeholder' => 'Nom carte'],
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^[A-Z][A-Za-z-]{0,18}[a-zA-Z] [A-Z][A-Za-z-]{0,18}[a-zA-Z]$/',
+                        'message' => 'Le nom et le prénom doivent contenir entre 1 et 19 lettres chacun et doivent être séparés d un espace'
+                    ])
+                ]
+                ])
             ->add('date_expiration', DateType::class, [
                 'html5' => false,
                 'required' => false,

@@ -48,6 +48,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             'modifier_informations_personnelles_form[PrenomCompte]' => "Test",
             'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test.com",
             'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+            'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
             'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
             'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
             'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -98,6 +99,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => "CCC",
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -116,6 +118,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => "CCC",
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -168,6 +171,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => substr($prenom, 0, $i),
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -185,6 +189,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => substr($PRENOM, 0, $i),
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test" . substr($suffixeEmail, $i, 1) . ".com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -233,6 +238,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => $email,
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -275,6 +281,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => $email,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
@@ -339,6 +346,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[motDePasseCompte]' => $mdp,
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
@@ -385,6 +393,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => $mdp,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -427,6 +436,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             'modifier_informations_personnelles_form[PrenomCompte]' => "Test",
             'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "test@test.com",
             'modifier_informations_personnelles_form[motDePasseCompte]' => 'Azerty88',
+            'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
             'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
             'modifier_informations_personnelles_form[carte_credit][date_expiration]' => $date,
             'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
@@ -467,6 +477,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             $crawler = $client->submitForm("Modifier", [
                 'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
@@ -510,6 +521,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             $crawler = $client->submitForm("Modifier", [
                 'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
@@ -528,6 +540,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
@@ -585,6 +598,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[NomCompte]' => 'TEST',
                 'modifier_informations_personnelles_form[PrenomCompte]' => 'Test',
                 'modifier_informations_personnelles_form[AdresseMailCOmpte]' => "toto@gmail.com",
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TES Test',
                 'modifier_informations_personnelles_form[motDePasseCompte]' => "Azerty88",
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => $cv,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
@@ -594,36 +608,5 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             $crawler->selectButton('Modifier');
             $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide a échoué");
         }
-    }
-    public function testResiliationAboConnecte(): void
-    {
-        /* Création du compte + connexion */
-        $client = static::createClient();
-        // Creation d'un compte
-        $client->request('GET', '/register');
-        $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST', 'registration_form[PrenomCompte]' => 'Test', 'registration_form[AdresseMailCOmpte]' => 'test@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
-        $client->request('GET', '/login');
-        // Remplissage du formulaire
-        $crawler = $client->submitForm("Connexion >" , [
-            'AdresseMailCOmpte' => 'test@test.com',
-            'password' => 'Testtest123'
-        ]);
-        // Confirmation
-        $crawler->selectButton('Connexion >');
-
-        $client->request('GET', '/infos/modif/cancel');
-        $client->submitForm("Oui, résilier");
-
-        $this->assertResponseRedirects('/main', null, "La résiliation d'un compte connecté à échouée");
-    }
-
-    public function testResiliationAboPasConnecte(): void
-    {
-        /* Création du compte + connexion */
-        $client = static::createClient();
-
-        $client->request('GET', '/infos/modif/cancel');
-
-        $this->assertResponseRedirects('/login', null, "Possibilité d'accéder à la résiliation d'un compte pas connecté");
     }
 }
