@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Compte;
+use App\Entity\Utilisateur;
 use App\Form\SupprimerCompteFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,10 +51,12 @@ class SecurityController extends AbstractController
                 // L'utilisateur a confirmé la suppression du compte
                 //Récupération de l'utilisateur courant
                 $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+                $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
+
 
                 $session = new Session();
                 $session->invalidate();
-
+                $entityManager->remove($utilisateur);
                 $entityManager->remove($user);
                 $entityManager->flush();
 
