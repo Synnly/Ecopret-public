@@ -23,7 +23,7 @@ class CarteCredit
     #[ORM\Column(length: 3)]
     private ?string $code_cvv = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $nom_carte = null;
 
     public function getId(): ?int

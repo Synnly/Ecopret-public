@@ -1,0 +1,61 @@
+    .titre{
+    font-size: 1000%;
+}
+
+.container{
+    display:grid;
+    align-content: center;
+    justify-content: center;
+    margin-left: 35%;
+    margin-right: 35%;
+    padding-top: 8%;
+    padding-bottom: 8%;
+    border: 10px solid #658864;
+    border-radius: 90px;
+}
+
+.log,.conn {
+    font-size: 300%;
+    color: #658864;
+    font-weight: 900;
+    text-decoration: none;
+    border-radius: 30px;
+    
+}
+
+
+.log {
+    margin-bottom: -10%;
+    width: 100%;
+    text-align: center;
+}
+
+.conn{
+    margin-bottom: 10%;
+    margin-top: -10%;
+    width: 100%;
+    text-align: center;
+}
+
+.log:hover,.conn:hover {
+    color: #40553e;
+}
+.fr {
+    position: absolute;
+    right: 3%;
+    top: 55%;
+}
+
+.fl {
+    position: absolute;
+    left: 3%;
+    top: 55%;
+}
+
+.phacrr{
+    text-align: center;
+    margin-top: -5%;
+    margin-bottom: 7%;
+    font-size: 140%;
+    font-style: italic;
+}

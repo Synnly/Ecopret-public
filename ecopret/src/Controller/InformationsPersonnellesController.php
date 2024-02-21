@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CarteCredit;
+use App\Form\ResiliationFormType;
 use App\Entity\Compte;
 use App\Entity\Lieu;
 use App\Entity\Prestataire;
@@ -272,4 +273,38 @@ class InformationsPersonnellesController extends AbstractController
             'erreur' => $erreur
         ]);
     }
-}
+        #[Route('/infos/modif/cancel', name:'cancel_sub')]
+        public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
+        {
+            if(!$this->getUser()){
+                return $this->redirectToRoute('app_login');
+            }
+    
+            $form = $this->createForm(ResiliationFormType::class);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->get('oui')->isClicked()) {
+                    // L'utilisateur a confirmé la suppression du compte
+                    //Récupération de l'utilisateur courant
+                    //$user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
+                    $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+    
+    
+                    if($user->isPaiement()) {
+                        $user->setPaiement(false);
+                    }
+    
+                    return $this->redirectToRoute('app_main');
+                } elseif ($form->get('non')->isClicked()) {
+                    // L'utilisateur a annulé la résiliation de son abonnement
+                    return $this->redirectToRoute('app_infos');
+                }
+            }
+    
+            return $this->render('resiliation/cancel_subscription.html.twig', [
+                'controller_name' => 'SupprimerCompteController',
+                'ResiliationFormType' => $form->createView()
+            ]);
+        }
+    }

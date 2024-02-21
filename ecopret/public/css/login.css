@@ -66,6 +66,11 @@
     margin-left: -10%;   
 }
 
-#mdp-oublie {
-    color: #171717;
+.mdp_oublie {
+    color: #658864;
+    text-decoration: none;
+}
+
+.mdp_oublie:visited {
+    color: #658864;
 }

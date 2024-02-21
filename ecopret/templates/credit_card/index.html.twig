@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/payment.css') }}">
+{% endblock %}
+
+{% block title %}Paiement annuel{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/payment/payment.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="payment_information_center">
+    <div>
+        <h1>Paiement annuel</h1>
+    </div>
+	<div class="div-payment-information-all-input">
+        {{ form_start(creditCardForm) }}
+		<div class="div-payment-information-input">
+            <label class="title-input">Numéro de carte de crédit</label>
+            <div class="input-with-img">
+                {{ form_row(creditCardForm.numero_carte, {label: false, attr: {
+                        class: 'payment-information-input',
+                        placeholder: 'XXXXXXXXXXXXXXXX',
+                    }})  }}
+                <img src="/img/credit_card.png" width="48" height="48" class="credit-card-icon">
+            </div>
+		</div>
+        <div class="div-payment-information-input">
+            <label class="title-input">Nom sur carte de crédit</label>
+			<div class="input-with-img">
+                {{ form_row(creditCardForm.nom_carte, {label: false, attr: {
+                        class: 'payment-information-input',
+                    }})  }}
+    			<img src="/img/utilisateur.png" width="48" height="48" class="utilisateur-icon">
+            </div>
+		</div>
+        <div class="last-two-input">
+            <div class="div-payment-information-input">
+                <label class="title-input">Date d’expiration</label>
+                {{ form_row(creditCardForm.date_expiration, {label: false, attr: {
+                        class: 'payment-information-small-input',
+                    }})  }}
+            </div>
+            <div class="div-payment-information-input">
+                <label class="title-input">CVV</label>
+                {{ form_row(creditCardForm.code_cvv, {label: false, attr: {
+                        class: 'payment-information-small-input',
+                        placeholder: '123'
+                    }})  }}
+            </div>
+        </div>
+        <div class="two-button">
+            <button type="button" class="modif-btn"><a href="/infos/modif">Modifier</a></button>
+            <button type="submit" id="payment" class="payment-information-btn">Payer</button>
+        </div>
+		{{ form_end(creditCardForm) }}
+    </div>
+
+</div>
+{% endblock %}
