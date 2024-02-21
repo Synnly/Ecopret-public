@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
 
             } elseif ($form->get('annuler')->isClicked()) {
                 // L'utilisateur a annulé la suppression du compte
-                return $this->redirectToRoute('app_infos');
+                return $this->redirectToRoute('app_main');
             }
         }
 
