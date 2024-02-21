@@ -37,7 +37,7 @@ class RegistrationController extends AbstractController
             if (!$entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $user->getAdresseMailCOmpte()])) {
                 $entityManager->persist($user);
                 $entityManager->flush();
-                if($_POST['magicInput'] !== 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'){
+                if($request->query->get('magicInput') !== 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'){
                      //Création d'un mail
                     $mail = new MailService();
                     $mail->sendMail($user, 'Inscription EcoPrêt', 'bienvue sur Ecoprêt');

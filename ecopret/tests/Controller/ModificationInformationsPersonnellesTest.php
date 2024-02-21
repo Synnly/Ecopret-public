@@ -21,6 +21,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
         // Remplissage du formulaire puis clic sur le bouton de creation
         $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST', 'registration_form[PrenomCompte]' => 'Test', 'registration_form[AdresseMailCOmpte]' => 'test@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
 
+
         // Deplacement vers la page de connexion
         $client->request('GET', '/login');
 
@@ -51,7 +52,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
             'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
             'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
-
+            'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
         ]);
 
         // Confirmation
@@ -101,7 +102,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
-
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -119,6 +120,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -171,6 +173,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -188,6 +191,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -236,6 +240,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -279,6 +284,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -343,6 +349,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -388,6 +395,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -430,6 +438,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
             'modifier_informations_personnelles_form[carte_credit][date_expiration]' => $date,
             'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+            'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
 
         ]);
         $crawler->selectButton('Modifier');
@@ -472,6 +481,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -515,6 +525,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -531,6 +542,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => 2222400030000004,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => $i,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]);
 
             $crawler->selectButton('Modifier');
@@ -589,6 +601,7 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
                 'modifier_informations_personnelles_form[carte_credit][numero_carte]' => $cv,
                 'modifier_informations_personnelles_form[carte_credit][date_expiration]' => '03/2030',
                 'modifier_informations_personnelles_form[carte_credit][code_cvv]' => 737,
+                'modifier_informations_personnelles_form[carte_credit][nom_carte]' => 'TEST Test',
             ]); 	
 
             $crawler->selectButton('Modifier');
