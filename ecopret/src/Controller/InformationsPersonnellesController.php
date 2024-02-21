@@ -291,8 +291,11 @@ class InformationsPersonnellesController extends AbstractController
         }
 
         $user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
-        $user->setPaiement(false);
 
-        return $this->redirectToRoute('main');
+        if($user->isPaiement()) {
+            $user->setPaiement(false);
+        }
+
+        return $this->redirectToRoute('register');
     }
 }
