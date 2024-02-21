@@ -43,13 +43,14 @@ class CreditCardController extends AbstractController
         
         //Si c'est validé et conforme, j'envoie les données dans la table
         if ($form->isSubmitted() && $form->isValid()) {
-            if (confirm('Merci d\'avoir souscrit un abonnement sur ECOPRET !')) {
-                // Si l'utilisateur clique sur "OK", effectuer une action
-                //window.location.href = "{{ path('main') }}"; // Redirection vers une action Symfony
-            }
-        
-
-            $entityManager->persist($carte);
+            //if (confirm('Merrci d\'avoir souscrit un abonnement sur ECOPRET !!!'.$utilisateur->isPaiement())) {
+            //}
+            
+            $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
+            $utilisateur->setPaiement(true);
+            $utilisateur->setDateDePaiement(new DateTime());
+            
+            $entityManager->persist($utilisateur);
             $entityManager->flush();
 
             //Redirection vers la page main

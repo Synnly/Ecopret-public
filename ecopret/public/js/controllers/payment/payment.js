@@ -5,9 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ajouter un gestionnaire d'événements pour le clic sur le bouton de soumission
     paymentButton.addEventListener('click', function(event) {
         // Empêcher le comportement par défaut du bouton de soumission (envoi du formulaire)
-        event.preventDefault();
         alert('Merci d\'avoir souscrit un abonnement sur ECOPRET !');
-        window.location.href = "/main";
-
     });
 });
