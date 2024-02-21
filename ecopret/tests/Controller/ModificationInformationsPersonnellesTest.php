@@ -595,4 +595,35 @@ class ModificationInformationsPersonnellesTest extends WebTestCase
             $this->assertResponseRedirects('/infos', null, "La modification d'un compte valide a échoué");
         }
     }
+    public function testResiliationAboConnecte(): void
+    {
+        /* Création du compte + connexion */
+        $client = static::createClient();
+        // Creation d'un compte
+        $client->request('GET', '/register');
+        $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TEST', 'registration_form[PrenomCompte]' => 'Test', 'registration_form[AdresseMailCOmpte]' => 'test@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
+        $client->request('GET', '/login');
+        // Remplissage du formulaire
+        $crawler = $client->submitForm("Connexion >" , [
+            'AdresseMailCOmpte' => 'test@test.com',
+            'password' => 'Testtest123'
+        ]);
+        // Confirmation
+        $crawler->selectButton('Connexion >');
+
+        $client->request('GET', '/infos/modif/cancel');
+        $client->submitForm("Oui, résilier");
+
+        $this->assertResponseRedirects('/main', null, "La résiliation d'un compte connecté à échouée");
+    }
+
+    public function testResiliationAboPasConnecte(): void
+    {
+        /* Création du compte + connexion */
+        $client = static::createClient();
+
+        $client->request('GET', '/infos/modif/cancel');
+
+        $this->assertResponseRedirects('/login', null, "Possibilité d'accéder à la résiliation d'un compte pas connecté");
+    }
 }
