@@ -75,7 +75,7 @@ class InformationsPersonnellesController extends AbstractController
                         'Non' => 'non',
                     ],
                     'mapped' => false,
-                    'data' => ($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]) == null || ($prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['no_utilisateur_id' => $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte()])) == null ? 'non' : 'oui'),
+                    'data' => ($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]) == null || ($prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte()])) == null ? 'non' : 'oui'),
                     'expanded' => true,
             ])
             ->add('carte_identite', FileType::class, [
