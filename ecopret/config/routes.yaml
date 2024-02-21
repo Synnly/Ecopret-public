@@ -6,4 +6,6 @@ controllers:
 main:
     path: /main
     controller: App\Controller\MainController::index
-
+infos_modif:
+    path: /infos/modif
+    controller: App\Controller\InformationsPersonnellesController::afficherInformations

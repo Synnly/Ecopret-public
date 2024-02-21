@@ -23,6 +23,9 @@ class CarteCredit
     #[ORM\Column(length: 3)]
     private ?string $code_cvv = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom_carte = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class CarteCredit
     public function setCodeCvv(string $code_cvv): static
     {
         $this->code_cvv = $code_cvv;
+
+        return $this;
+    }
+
+    public function getNomCarte(): ?string
+    {
+        return $this->nom_carte;
+    }
+
+    public function setNomCarte(string $nom_carte): static
+    {
+        $this->nom_carte = $nom_carte;
 
         return $this;
     }

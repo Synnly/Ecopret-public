@@ -3,33 +3,47 @@
 namespace App\Controller;
 
 use App\Entity\CarteCredit;
+use App\Entity\Compte;
+use App\Entity\Utilisateur;
 use App\Form\CreditCardFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 class CreditCardController extends AbstractController
 {
     #[Route('/payment_information', name: 'app_credit_card')]
     public function payment_information(Request $request, EntityManagerInterface $entityManager): Response
     {
-        //Création d'un compte 
-        $carte = new CarteCredit();
-        $erreur = 'Test';
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+        $user = $this->getUser();
+        $erreur = '';
+
+        
+        // Récupération de la carte de credit
+        if ($user->getCarteCredit() !== null) {
+            $carte = $user->getCarteCredit();
+        } else {
+            return $this->redirectToRoute('infos_modif');
+        }
+        
+        $carte = $user->getCarteCredit();
+
         //Création du formulaire
         $form = $this->createForm(CreditCardFormType::class, $carte);
-        dump($request->request->all());
+
         //Submit du formulaire
         $form->handleRequest($request);
-        // Récupération de la valeur du champ date_expiration
-        $dateExpiration = $request->request->get('date_expiration');
-        // Définir la date d'expiration dans l'entité CarteCredit
-        $carte->setDateExpiration(new \DateTime($dateExpiration));
-            
-        //Si c'est validé et conforme, je hash le mdp, j'envoie les données dans la table
+
+        
+        //Si c'est validé et conforme, j'envoie les données dans la table
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($carte);
             $entityManager->flush();
 
