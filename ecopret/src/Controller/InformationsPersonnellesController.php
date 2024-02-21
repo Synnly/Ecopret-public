@@ -67,7 +67,7 @@ class InformationsPersonnellesController extends AbstractController
                 'required' => 'true',
                 'mapped' => false,
                 'choices' => $villes,
-                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()) == [] ? "Choisir une ville" : $lieuCompte[0]->getId()),
+                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()[0]) == null ? "Choisir une ville" : $lieuCompte[0]->getId()),
                 'constraints' => [new NotBlank(['message' => 'Le lieu est requis.'])]
             ])
             ->add('annonce', ChoiceType::class, [
@@ -76,7 +76,7 @@ class InformationsPersonnellesController extends AbstractController
                         'Non' => 'non',
                     ],
                     'mapped' => false,
-                    'data' => ($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]) == null || ($prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['no_utilisateur_id' => $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte()])) == null ? 'non' : 'oui'),
+                    'data' => ($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]) == null || ($prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte()])) == null ? 'non' : 'oui'),
                     'expanded' => true,
             ])
             ->add('carte_identite', FileType::class, [
