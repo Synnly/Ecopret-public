@@ -1,4 +1,4 @@
-.titre{
+    .titre{
     font-size: 1000%;
 }
 
@@ -24,14 +24,17 @@
 }
 
 
+.log {
+    margin-bottom: -10%;
+    width: 100%;
+    text-align: center;
+}
+
 .conn{
-    margin-left: 0%;
     margin-bottom: 10%;
     margin-top: -10%;
-}
-.log {
-    margin-left: 24%;
-    margin-bottom: -10%;
+    width: 100%;
+    text-align: center;
 }
 
 .log:hover,.conn:hover {
