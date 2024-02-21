@@ -6,10 +6,16 @@ h1 {
     position: absolute;
     left: 39%;
     top: 50%;
+    display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
 }
 
-a {
+.button_cancel button:first-child {
+    margin-right: 14px;
+}
+
+button {
     padding: 14px;
     text-decoration: none;
     background-color: #658864;
@@ -19,10 +25,7 @@ a {
     border-radius: 30px;
 }
 
-a:visited {
-    color: white;
+button:hover {
+    cursor: pointer;
 }
 
-a:first-child {
-    margin-right: 15px;
-}

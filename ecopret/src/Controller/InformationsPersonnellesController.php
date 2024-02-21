@@ -9,6 +9,7 @@ use App\Entity\Prestataire;
 use App\Entity\Utilisateur;
 use App\Form\CarteBancaireType;
 use App\Form\InformationsPersonnellesType;
+use App\Form\ResiliationFormType;
 use App\Form\ModifierInformationsPersonnellesFormType;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -280,22 +282,31 @@ class InformationsPersonnellesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('resiliation/cancel_subscription.html.twig');
-    }
+        $form = $this->createForm(ResiliationFormType::class);
+        $form->handleRequest($request);
 
-    #[Route('/unsubscribing', name:'unsub')]
-    public function unsub(Request $request, EntityManagerInterface $entityManager, UtilisateurRepository $utilisateurRepository): Response
-    {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('oui')->isClicked()) {
+                // L'utilisateur a confirmé la suppression du compte
+                //Récupération de l'utilisateur courant
+                //$user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
+                $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+
+
+                if($user->isPaiement()) {
+                    $user->setPaiement(false);
+                }
+
+                return $this->redirectToRoute('app_main');
+            } elseif ($form->get('non')->isClicked()) {
+                // L'utilisateur a annulé la résiliation de son abonnement
+                return $this->redirectToRoute('app_infos');
+            }
         }
 
-        $user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
-
-        if($user->isPaiement()) {
-            $user->setPaiement(false);
-        }
-
-        return $this->redirectToRoute('register');
+        return $this->render('resiliation/cancel_subscription.html.twig', [
+            'controller_name' => 'SupprimerCompteController',
+            'ResiliationFormType' => $form->createView()
+        ]);
     }
 }

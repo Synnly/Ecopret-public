@@ -10,10 +10,14 @@
 {% block body %}
 <section class="container my-3">
     <h1>Etes vous certain de vouloir résilier votre abonnement ?</h1>
+
+    {{ form_start(ResiliationFormType) }}
     <div class="button_cancel">
-        <a href="/unsubscribing">Oui, résilier</button>
-        <a href="{{ path("main") }}">Non, garder</a>
+        {{ form_row(ResiliationFormType.oui) }}
+        {{ form_row(ResiliationFormType.non) }}
     </div>
+    {{ form_end(ResiliationFormType) }}
+    
 </section>
 
 {% endblock %}
