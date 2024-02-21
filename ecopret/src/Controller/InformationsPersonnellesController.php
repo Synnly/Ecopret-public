@@ -276,12 +276,20 @@ class InformationsPersonnellesController extends AbstractController
     #[Route('/infos/modif/cancel', name:'cancel_sub')]
     public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
         return $this->render('resiliation/cancel_subscription.html.twig');
     }
 
     #[Route('/unsubscribing', name:'unsub')]
     public function unsub(Request $request, EntityManagerInterface $entityManager, UtilisateurRepository $utilisateurRepository): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
         $user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
         $user->setPaiement(false);
 

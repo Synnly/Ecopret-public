@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\ResetPasswordRequestFormType;
 use App\Form\ResetPasswordFormType;
 use App\Repository\CompteRepository;
+use App\Entity\Compte;
 use App\Mail\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,7 +54,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $user = $compteRepository->findOneByEmail($form->get('email')->getData());
+            $user = $entityManager->getRepository(Compte::class)->findOneBy(['AdresseMailCOmpte' => $form->get('email')->getData()]);
 
             if($user) {
                 //Génération d'un token pour créer l'URL
@@ -73,6 +74,8 @@ class SecurityController extends AbstractController
                 $mail->sendMail($user, 'Réinitialisation du mot de passe.', "Bonjour,<br> Pour votre demande, veuillez suivre ce lien afin de réinitialiser votre mot de passe : .$url.");
 
                 return $this->redirectToRoute('main');
+            } else { 
+                $this->redirectToRoute('main');
             }
 
             //Si on trouve pas d'utilisateur avec le mail rentré dans le champs

@@ -27,14 +27,19 @@ class CompteRepository extends ServiceEntityRepository
 
     public function findOneByEmail($email): Compte
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.AdresseMailCOmpte = :val')
-            ->setParameter('val', $email)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getSingleResult()
-        ;
+        $query = $this->createQueryBuilder('c')
+                ->andWhere('c.AdresseMailCOmpte = :val')
+                ->setParameter('val', $email)
+                ->orderBy('c.id', 'ASC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+        
+        if($query != NULL) {
+            return $query;
+        } else {
+            return NULL;
+        }
     }
 
 //    /**
