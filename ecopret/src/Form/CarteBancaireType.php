@@ -34,7 +34,7 @@ class CarteBancaireType extends AbstractType
                 ]
             ])
             ->add('nom_carte', TextType::class, [
-                'attr' => ['placeholder' => 'Nom carte'],
+                'attr' => ['placeholder' => 'NOM Prenom'],
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
