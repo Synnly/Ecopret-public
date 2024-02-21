@@ -14,9 +14,8 @@ class CarteCredit
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: "string", length: 16)]
+    #[ORM\Column(length: 16)]
     private ?string $numero_carte = null;
-
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_expiration = null;

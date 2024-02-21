@@ -6,6 +6,10 @@
 
 {% block title %}Paiement annuel{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/payment/payment.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 <div class="payment_information_center">
     <div>
@@ -35,7 +39,9 @@
         <div class="last-two-input">
             <div class="div-payment-information-input">
                 <label class="title-input">Date d’expiration</label>
-                <input type="month" id="date_expiration" name="date_expiration" class="payment-information-small-input" placeholder="MM/YYYY" min="2024-02">
+                {{ form_row(creditCardForm.date_expiration, {label: false, attr: {
+                        class: 'payment-information-small-input',
+                    }})  }}
             </div>
             <div class="div-payment-information-input">
                 <label class="title-input">CVV</label>
@@ -45,7 +51,10 @@
                     }})  }}
             </div>
         </div>
-        <button type="submit" class="payment-information-btn">Paiement</button>
+        <div class="two-button">
+            <button type="button" class="modif-btn"><a href="/infos/modif">Modifier</a></button>
+            <button type="submit" id="payment" class="payment-information-btn">Payer</button>
+        </div>
 		{{ form_end(creditCardForm) }}
     </div>
 

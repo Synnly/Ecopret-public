@@ -112,12 +112,12 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdresseMailCompte(): ?string
+    public function getAdresseMailCOmpte(): ?string
     {
         return $this->AdresseMailCOmpte;
     }
 
-    public function setAdresseMailCompte(string $AdresseMailCOmpte): static
+    public function setAdresseMailCOmpte(string $AdresseMailCOmpte): static
     {
         $this->AdresseMailCOmpte = $AdresseMailCOmpte;
 
