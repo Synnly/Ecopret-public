@@ -6,6 +6,10 @@
 
 {% block title %}Paiement annuel{% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/payment/payment.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 <div class="payment_information_center">
     <div>
@@ -48,8 +52,8 @@
             </div>
         </div>
         <div class="two-button">
-            <button type="button" class="modif-btn"><a href="/infos/modif"><b>Modifier</b></a></button>
-            <button type="submit" class="payment-information-btn">Payer</button>
+            <button type="button" class="modif-btn"><a href="/infos/modif">Modifier</a></button>
+            <button type="submit" id="payment" class="payment-information-btn">Payer</button>
         </div>
 		{{ form_end(creditCardForm) }}
     </div>
