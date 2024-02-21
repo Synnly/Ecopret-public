@@ -67,7 +67,7 @@ class InformationsPersonnellesController extends AbstractController
                 'required' => 'true',
                 'mapped' => false,
                 'choices' => $villes,
-                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu()) == [] ? "Choisir une ville" : $lieuCompte[0]->getId()),
+                'data' => (($lieuCompte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getLieu())[0] == null ? "Choisir une ville" : $lieuCompte[0]->getId()),
                 'constraints' => [new NotBlank(['message' => 'Le lieu est requis.'])]
             ])
             ->add('annonce', ChoiceType::class, [

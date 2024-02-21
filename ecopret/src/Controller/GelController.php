@@ -28,30 +28,44 @@ class GelController extends AbstractController
         $form = $this->createForm(GelCompteFormType::class);
         $form->handleRequest($request);
 
+        global $erreur;
+
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
+
+        //Si l'utilisateur est d
+        if($utilisateur->isEstGele()){
+            return $this->redirectToRoute('app_degel');
+        }
+
         //L'utilisateur à remplit les dates de gel du commpte
         if($form->isSubmitted() && $form->isValid()){
-            $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
 
             $dateDebut = $form->get('deb')->getData();
             $dateFin = $form->get('fin')->getData();
 
-            //Si la date de début est aujourd'hui on le met directement en gel
-            if($dateDebut < new DateTime('tomorrow') && $dateDebut > new DateTime('yesterday')){
-                $utilisateur->setEstGele(true);
+            if($dateFin <= $dateDebut){
+                $erreur = "La date de fin ne peux pas être inférieure à la date de début !";
+            }else{
+                //Si la date de début est aujourd'hui on le met directement en gel
+                if($dateDebut < new DateTime('tomorrow') && $dateDebut > new DateTime('yesterday')){
+                    $utilisateur->setEstGele(true);
+                }
+
+                //Mise à jour des dates de gel
+                $utilisateur->setDateDebGel($dateDebut);
+                $utilisateur->setDateFinGel($dateFin);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+                return $this->redirectToRoute('app_main');
             }
 
-            //Mise à jour des dates de gel
-            $utilisateur->setDateDebGel($dateDebut);
-            $utilisateur->setDateFinGel($dateFin);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-            return $this->redirectToRoute('app_main');
         }
 
         return $this->render('gel/gel_compte.html.twig', [
             'controller_name' => 'GelController',
             'GelCompteFormType' => $form->createView(),
+            'erreur' => $erreur,
         ]);
     }
 
@@ -65,8 +79,9 @@ class GelController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
 
+        //Si l'utilisateur n'est pas gelé on le redirige vers le gel
         if(!$utilisateur->isEstGele()){
-            return $this->redirectToRoute('app_infos');
+            return $this->redirectToRoute('app_gel');
         }
 
         $form = $this->createForm(DegelCompteFormType::class);
