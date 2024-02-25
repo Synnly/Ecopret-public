@@ -46,7 +46,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root');
+            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -141,7 +141,7 @@ class InformationsPersonnellesController extends AbstractController
                     unlink($nomFichier[0]);
                 }
 
-                $form['carte_identite']->getData()->move("../carteIdUtilisateurs/", $compte->getId() . "." . $form['carte_identite']->getData()->getClientOriginalExtension());
+                $form['carte_identite']->getData()->move("../carteIdUtilisateurs", $compte->getId() . "." . $form['carte_identite']->getData()->getClientOriginalExtension());
             }
 
             $entityManager->flush();
