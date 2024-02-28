@@ -22,9 +22,13 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $annonce = null;
 
+    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: Litige::class, orphanRemoval: true)]
+    private Collection $litiges;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class Transaction
     public function setAnnonce(?Annonce $annonce): static
     {
         $this->annonce = $annonce;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): static
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setTransaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): static
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getTransaction() === $this) {
+                $litige->setTransaction(null);
+            }
+        }
 
         return $this;
     }

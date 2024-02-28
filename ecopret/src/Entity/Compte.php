@@ -48,12 +48,16 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $resetToken = null;
 
+    #[ORM\OneToMany(mappedBy: 'plaignant', targetEntity: Litige::class, orphanRemoval: true)]
+    private Collection $litiges;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
         $this->lieu = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->litiges = new ArrayCollection();
     }
 
     public function getRoles(): array
@@ -248,6 +252,36 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Litige>
+     */
+    public function getLitiges(): Collection
+    {
+        return $this->litiges;
+    }
+
+    public function addLitige(Litige $litige): static
+    {
+        if (!$this->litiges->contains($litige)) {
+            $this->litiges->add($litige);
+            $litige->setPlaignant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLitige(Litige $litige): static
+    {
+        if ($this->litiges->removeElement($litige)) {
+            // set the owning side to null (unless already changed)
+            if ($litige->getPlaignant() === $this) {
+                $litige->setPlaignant(null);
+            }
+        }
 
         return $this;
     }
