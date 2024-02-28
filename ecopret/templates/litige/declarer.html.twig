@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Declarer litige{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {# <link rel="stylesheet" href="{{ asset('css/decl_lit.css') }}"> #}
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+    <div class="decl-litige">
+        <div class="decl-titre">
+            <h1>Déclaration de litige</h1>
+        </div>
+
+        {{ form_start(DeclarerLitigeType) }}
+        <div class="decl-form">
+            <div class="decl-util">
+                {{ form_row(DeclarerLitigeType.typeUtil) }}
+            </div>
+            <div class="decl-reste">
+                {{ form_row(DeclarerLitigeType.prenom) }}
+                {{ form_row(DeclarerLitigeType.mail) }}
+                {{ form_row(DeclarerLitigeType.numTransaction) }}
+                {{ form_row(DeclarerLitigeType.description) }}
+                {{ form_row(DeclarerLitigeType.valider) }}
+                <button class="decl_btn"><a href="/main">Annuler</a></button>
+            </div>
+        </div>
+        {{ form_end(DeclarerLitigeType) }}
+
+    </div>
+
+{% endblock %}
