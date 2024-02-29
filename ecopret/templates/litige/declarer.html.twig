@@ -3,7 +3,7 @@
 {% block title %}Declarer litige{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    {# <link rel="stylesheet" href="{{ asset('css/decl_lit.css') }}"> #}
+    <link rel="stylesheet" href="{{ asset('css/declarer_litige.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -12,27 +12,32 @@
             afficherAlerte("{{ erreur }}");
         </script>
     {% endif %}
-    <div class="decl-litige">
+    <div id="decl-litige">
         <div class="decl-titre">
             <h1>Déclaration de litige</h1>
         </div>
 
         {{ form_start(DeclarerLitigeType) }}
-        <div class="decl-form">
-            <div class="decl-util">
-                {{ form_row(DeclarerLitigeType.typeUtil) }}
+        <div id="decl-form">
+
+            <div class="div-flex-row" id="typeUtil">
+                {{ form_label(DeclarerLitigeType.typeUtil) }}
+                {{ form_errors(DeclarerLitigeType.typeUtil) }}
+                {{ form_widget(DeclarerLitigeType.typeUtil) }}
             </div>
+
             <div class="decl-reste">
                 {{ form_row(DeclarerLitigeType.prenom) }}
                 {{ form_row(DeclarerLitigeType.mail) }}
                 {{ form_row(DeclarerLitigeType.numTransaction) }}
                 {{ form_row(DeclarerLitigeType.description) }}
-                {{ form_row(DeclarerLitigeType.valider) }}
-                <button class="decl_btn"><a href="/main">Annuler</a></button>
+                <div class="div-flex-row">
+                    {{ form_row(DeclarerLitigeType.valider) }}
+                    <button class="decl_btn"><a href="/main">Annuler</a></button>
+                </div>
             </div>
         </div>
         {{ form_end(DeclarerLitigeType) }}
-
     </div>
 
 {% endblock %}

@@ -1,0 +1,76 @@
+.div-flex-row{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#decl-form{
+    --width: 60vw;
+    margin: 0 calc((100vw - var(--width))/2);
+    font-size: 180%;
+}
+#typeUtil{
+    justify-content: left;
+}
+
+#declarer_litige_typeUtil{
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+
+#declarer_litige_typeUtil > input {
+    margin-left: 32px;
+    margin-right: 8px;
+}
+
+#declarer_litige_prenom, #declarer_litige_mail, #declarer_litige_numTransaction, textarea {
+    width: 100%;
+}
+
+input, textarea{
+    font-size: 80%;
+    height: 38px;
+    background-color: transparent;
+    border-radius: 12px;
+    border: solid #949393 2px;
+    margin: 8px 0;
+}
+
+textarea {
+    resize: vertical;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-height: 88px;
+}
+
+input[type=radio] {
+    box-sizing: border-box;
+    appearance: none;
+    background: white;
+    outline: 2px solid #333;
+    border: 3px solid white;
+    border-radius: 3px;
+    height: calc(32px - 4px);
+    width: calc(32px - 4px);
+}
+
+input[type=radio]:checked{
+    background: #333;
+}
+
+button {
+    font-size: 100%;
+    font-weight: 900;
+    padding: 10px 20px;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}

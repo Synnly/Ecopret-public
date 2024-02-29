@@ -23,7 +23,7 @@ class DeclarerLitigeType extends AbstractType
                     'Client' => 'client',
                     'Prestataire' => 'prest',
                 ],
-                'label' => "Je suis:",
+                'label' => "Je suis",
                 'expanded' => true,
                 'multiple' => false,
                 'required' => true,
