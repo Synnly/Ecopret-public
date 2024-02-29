@@ -59,18 +59,6 @@
     margin-left: -12%;
 }
 
-img#background{
-    position: fixed;
-    z-index: -999;
-    bottom: 0;
-    right: 0;
-    width: 60%;
-    background-repeat: no-repeat;
-    filter: blur(15px);
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-}
-
 .div_champ_mdp{
     display: flex;
     padding: 0;
@@ -112,7 +100,6 @@ a {
 input[type=radio]{
     height: 19px;
     width: 19px;
-
 }
 
 #informations_personnelles_annonce_0{

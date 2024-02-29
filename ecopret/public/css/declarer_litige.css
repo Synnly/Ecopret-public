@@ -32,7 +32,7 @@
 input, textarea{
     font-size: 80%;
     height: 38px;
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 12px;
     border: solid #949393 2px;
     margin: 8px 0;
@@ -73,4 +73,8 @@ button {
 a {
     color: white;
     text-decoration: none;
+}
+
+h1 {
+    padding-top: 5vh;
 }
