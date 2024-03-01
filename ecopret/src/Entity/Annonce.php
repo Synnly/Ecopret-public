@@ -44,6 +44,12 @@ class Annonce
     #[ORM\JoinColumn(nullable: false)]
     private ?Prestataire $prestataire = null;
 
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $prix = null;
+
     public function __construct()
     {
         $this->dates_annonce = new ArrayCollection();
@@ -214,6 +220,30 @@ class Annonce
     public function setPrestataire(?Prestataire $prestataire): static
     {
         $this->prestataire = $prestataire;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(string $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }
