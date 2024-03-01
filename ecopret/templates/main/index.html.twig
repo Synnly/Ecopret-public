@@ -3,6 +3,9 @@
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/main.css') }}">
 {% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/main/main.js') }}"></script>
+{% endblock %}
 {% block title %}
 	{{title}}
 {% endblock %}
@@ -62,12 +65,55 @@
 			</li>
 		</ul>
 	</nav>
-	<main></main>
+	<main>
+		<div>
+			<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
+				<h3>Ajouter une annonce</h3>
+			</button>
+		</div>
+		<div class="card" id="card" style="display : none;">
+			{{ form_start(form) }}
+			<h3 class="card__title">
+				Ajouter une annonce
+			</h3>
+			<div class="card__content_img">
+				<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
+				<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
+				<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
+			</div>
+			<div class="card__content">
+				{{form_row(form.titre)}}
+			</div>
+			<div class="card__content">
+				{{form_row(form.description)}}
+			</div>
+			<div class="card__content">
+				{{form_row(form.ajouterPhoto)}}
+				{{form_row(form.ajouterPhoto2)}}
+				{{form_row(form.ajouterPhoto3)}}
+			</div>
+			<div class="switch">
+				<div class="ES">Emprunt</div>
+				<div class="toggle-switch">
+					<input class="toggle-input" id="toggle" type="checkbox">
+					<label class="toggle-label" for="toggle"></label>
+				</div>
+				<div class="ES">Service</div>
+			</div>
+			<div class="card__btn">
+				<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
+					<b>Annuler</b>
+				</button>
+				<input type="submit" class="annonce-btn" value="Création de l'annonce">
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</main>
 	<footer>
 		<ul>
 			<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
 			<li><a href=""><h5></h5></a></li>
-			<li><a href=""><h5>© Copyright 2024 ECOPRET <br> Tous droits réservés.</h5></a></li>
+			<li><a href=""><h5>© Copyright 2024 ECOPRET<br>Tous droits réservés.</h5></a></li>
 		</ul>
 	</footer>
 
