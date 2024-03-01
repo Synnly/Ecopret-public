@@ -37,12 +37,13 @@ class MainController extends AbstractController
             }
             $annonce = new Annonce();
             $annonce->setNomAnnonce($form->get("titre")->getData());
+            $annonce->setDescription($form->get("description")->getData());
+            $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
             $annonce->setEstEnLitige(false);
             $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
             $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $user]);
-            dump($prestataire);
             if($prestataire !== null){
                 $prestataire->setNoUtisateur($user); 
             }else {

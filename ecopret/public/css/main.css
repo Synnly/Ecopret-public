@@ -211,6 +211,8 @@ h5 {
   padding: 2% 2% 2% 2%;
   border-radius: 12px;
   margin-top: 2%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 900;
 }
 
 .annonce-btn:hover {
@@ -229,7 +231,6 @@ h5 {
   display: none;
 }
 
-
 #ajouter_annonce_ajouterPhoto3, label[for="ajouter_annonce_ajouterPhoto3"]{
   display: none;
 }
@@ -245,13 +246,13 @@ h5 {
   border-radius: 12px;
 }
 
-#ajouter_annonce_description, #ajouter_annonce_titre {
+#ajouter_annonce_description, #ajouter_annonce_titre, #ajouter_annonce_prix {
   border: 1px #3c3852 solid;
   border-radius: 12px;
   font-size: x-large;
 }
 
-label[for="ajouter_annonce_description"], label[for="ajouter_annonce_titre"] {
+label[for="ajouter_annonce_description"], label[for="ajouter_annonce_titre"], label[for="ajouter_annonce_prix"] {
   font-size: x-large;
 }
 .card__btn{
@@ -284,7 +285,7 @@ label[for="ajouter_annonce_description"], label[for="ajouter_annonce_titre"] {
 .toggle-label {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 155%;
   width: 60px;
   height: 34px;
   border-radius: 17px;
@@ -319,7 +320,25 @@ label[for="ajouter_annonce_description"], label[for="ajouter_annonce_titre"] {
   vertical-align: middle;
 }
 
-.ES{
+.ES1, .ES2{
+  position: absolute;
+  top: 83.5%;
+  font-size: 1.4rem;
+}
+
+.ES1 {
+  left: 3%;
+}
+.ES2 {
+  left: 33%;
+}
+.alignstp{
   display: inline;
-  font-size: large;
+  vertical-align: middle;
+}
+
+#florain {
+  position: absolute;
+  top: 70%;
+  left: 60%;
 }
