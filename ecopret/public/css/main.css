@@ -172,7 +172,7 @@ h5 {
 .card {
   margin-right: 34vw;
   margin-left: 34vw;
-  margin-top: 5vh;
+  margin-top: -3vh;
   --border-radius: 1rem;
   --primary-color: #4d624c;
   --secondary-color: #3c3852;
