@@ -55,4 +55,11 @@ function afficherAddAnnonce(){
 function annulerAddAnnonce(){
     annonce = document.getElementById('card');
     annonce.style.display = 'none';
+    document.getElementById('img1').src = '';
+    document.getElementById('img2').src = '';
+    document.getElementById('img3').src = '';
+    document.getElementById('ajouter_annonce_titre').value = '';
+    document.getElementById('ajouter_annonce_description').value = '';
+    document.getElementById('ajouter_annonce_prix').value = '';
+    document.getElementById('toggle').checked = false;
 }

@@ -55,7 +55,6 @@ class MainController extends AbstractController
             }
             $annonce->setPrestataire($prestataire);
             $annonce->setDisponibilite("jamais");
-            dump($request->request->get('toggle'));
             $es = $request->request->get('toggle');
             if($es === "on"){
                 $service = new Service();
@@ -68,7 +67,8 @@ class MainController extends AbstractController
             }
             $entityManager->persist($prestataire);
             $entityManager->persist($annonce);
-            $entityManager->flush();               
+            $entityManager->flush(); 
+            $form = $this->createForm(AjouterAnnonceType::class);              
         }
         //Page Main (il me fallait une redirection)
         //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
