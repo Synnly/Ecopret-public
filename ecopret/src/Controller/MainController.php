@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Annonce;
 use App\Entity\Compte;
+use App\Entity\Emprunt;
 use App\Entity\Prestataire;
+use App\Entity\Service;
 use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AjouterAnnonceType;
@@ -41,6 +43,7 @@ class MainController extends AbstractController
             $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
+        
             $annonce->setEstEnLitige(false);
             $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
             $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $user]);
@@ -52,6 +55,17 @@ class MainController extends AbstractController
             }
             $annonce->setPrestataire($prestataire);
             $annonce->setDisponibilite("jamais");
+            dump($request->request->get('toggle'));
+            $es = $request->request->get('toggle');
+            if($es === "on"){
+                $service = new Service();
+                $service->setIdAnnonce($annonce);
+                $entityManager->persist($service);
+            }elseif ($es === null){
+                $emprunt = new Emprunt();
+                $emprunt->setIdAnnonce($annonce);
+                $entityManager->persist($emprunt);
+            }
             $entityManager->persist($prestataire);
             $entityManager->persist($annonce);
             $entityManager->flush();               
