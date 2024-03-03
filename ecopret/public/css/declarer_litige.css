@@ -25,7 +25,7 @@
     margin-right: 8px;
 }
 
-#declarer_litige_prenom, #declarer_litige_mail, #declarer_litige_numTransaction, textarea {
+#declarer_litige_prenom, #declarer_litige_transaction, #declarer_litige_mail, #declarer_litige_numTransaction, textarea {
     width: 100%;
 }
 
@@ -77,4 +77,40 @@ a {
 
 h1 {
     padding-top: 5vh;
+}
+
+.litige{
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+    padding: 2vh 0;
+    width: 80vw;
+    margin: 0 10vw;
+    border-bottom: #658864 2px solid;
+}
+
+.id_litige, .nom_annonce, .nom_accuse, .description, .statut{
+    display: flex;
+    flex-flow: column;
+    border: 1px solid #658864;
+    text-align: center;
+    color: black;
+    min-height: fit-content;
+}
+
+.description {
+    resize: none;
+    text-align: left;
+    height: max-content;
+    padding: 2%;
+}
+
+#boutons{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+button {
+    margin: 0 2vw 5vh;
 }

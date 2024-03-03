@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos litiges{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/declarer_litige.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+
+    <div id="litiges">
+        <div class="litiges-titre">
+            <h1>Vos litiges</h1>
+        </div>
+
+        <div id="boutons">
+            <button><a href="/litige/declarer">Déclarer un litige</a></button>
+            <button><a href="/">Accueil</a></button>
+        </div>
+
+        {{ form_start(LitigeType) }}
+        <div id="litiges">
+
+        </div>
+        {{ form_end(LitigeType) }}
+
+    </div>
+
+{% endblock %}

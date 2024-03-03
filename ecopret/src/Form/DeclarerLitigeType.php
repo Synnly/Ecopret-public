@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Litige;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -27,6 +29,7 @@ class DeclarerLitigeType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'required' => true,
+                'mapped' => false,
             ])
             ->add('prenom', TextType::class, [
                 'attr' => ['placeholder' => 'Prénom'],
@@ -43,6 +46,7 @@ class DeclarerLitigeType extends AbstractType
             ->add('mail', TextType::class, [
                 'attr' => ['placeholder' => 'Email'],
                 'label' => false,
+                'mapped' => false,
                 'constraints' => [
                     //Le champs ne doit pas être vide sinon envoie du message
                     new NotBlank(['message' => 'L\'adresse mail est requise.']),
@@ -54,7 +58,7 @@ class DeclarerLitigeType extends AbstractType
                     ])
                 ],
             ])
-            ->add('numTransaction',NumberType::class,[
+            ->add('transaction',IntegerType::class,[
                 'attr' => ['placeholder' => 'Numéro de transaction'],
                 'label' => false,
                 'required' => true,
@@ -64,7 +68,6 @@ class DeclarerLitigeType extends AbstractType
                 'attr' => ['placeholder' => 'Description du problème'],
                 'label' => false,
                 'required' => true,
-                'mapped' => false,
             ])
             ->add('valider', SubmitType::class, [
                 'label' => 'Valider',
@@ -76,7 +79,7 @@ class DeclarerLitigeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => Litige::class
         ]);
     }
 }

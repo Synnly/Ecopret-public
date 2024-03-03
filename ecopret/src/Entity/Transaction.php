@@ -6,6 +6,7 @@ use App\Repository\TransactionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Monolog\Handler\Curl\Util;
 
 #[ORM\Entity(repositoryClass: TransactionRepository::class)]
 class Transaction
@@ -24,6 +25,14 @@ class Transaction
 
     #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: Litige::class, orphanRemoval: true)]
     private Collection $litiges;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Prestataire $Prestataire = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $Client = null;
 
     public function __construct()
     {
@@ -101,6 +110,30 @@ class Transaction
                 $litige->setTransaction(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrestataire(): ?Prestataire
+    {
+        return $this->Prestataire;
+    }
+
+    public function setPrestataire(?Prestataire $Prestataire): static
+    {
+        $this->Prestataire = $Prestataire;
+
+        return $this;
+    }
+
+    public function getClient(): ?Utilisateur
+    {
+        return $this->Client;
+    }
+
+    public function setClient(?Utilisateur $Client): static
+    {
+        $this->Client = $Client;
 
         return $this;
     }

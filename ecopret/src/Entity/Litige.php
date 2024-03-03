@@ -33,6 +33,9 @@ class Litige
     #[ORM\JoinColumn(nullable: false)]
     private ?Transaction $transaction = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -82,6 +85,18 @@ class Litige
     public function setTransaction(?Transaction $transaction): static
     {
         $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
