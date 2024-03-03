@@ -36,6 +36,12 @@ class Litige
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(inversedBy: 'litiges')]
+    private ?Admin $admin = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $est_valide = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,6 +103,30 @@ class Litige
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAdmin(): ?Admin
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?Admin $admin): static
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    public function isEstValide(): ?bool
+    {
+        return $this->est_valide;
+    }
+
+    public function setEstValide(?bool $est_valide): static
+    {
+        $this->est_valide = $est_valide;
 
         return $this;
     }

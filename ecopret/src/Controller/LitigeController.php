@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Admin;
 use App\Entity\Compte;
 use App\Entity\Litige;
 use App\Entity\Transaction;
 use App\Form\DeclarerLitigeType;
 use App\Form\ListeLitigesType;
+use App\Form\VerifierLitigeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class LitigeController extends AbstractController
@@ -88,6 +91,59 @@ class LitigeController extends AbstractController
         return $this->render('litige/declarer.html.twig', [
             'controller_name' => 'LitigeController',
             'DeclarerLitigeType' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/litige/verifier', name: 'app_litige_verifier')]
+    public function verifierLitiges(Request $request,EntityManagerInterface $entityManager): Response
+    {
+        // User pas connecté
+        if(!($user = $this->getUser())){
+            $this->redirectToRoute("app_page_accueil");
+        }
+
+        // User pas admin
+        if(!($admin = $entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]))){
+            $this->redirectToRoute("app_page_accueil");
+        }
+
+        // Recherche du litige qu'on traitait, sinon d'un litige pas traité
+        if(!($litige = $entityManager->getRepository(Litige::class)->findOneBy(['statut' => 1, 'admin' => $admin]))){
+
+            if(!($litige = $entityManager->getRepository(Litige::class)->findOneBy(['statut' => 0]))) {
+                // TODO : Message plus de litiges
+            }
+            else{
+                $litige->setAdmin($admin);
+                $litige->setStatut(1);
+
+                $entityManager->persist($litige);
+                $entityManager->flush();
+            }
+        }
+
+        $form = $this->createForm(VerifierLitigeType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $litige->setStatut(2);
+            $litige->setEstValide($form['accepter']->isClicked());
+
+            $entityManager->persist($litige);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_litige_verifier');
+        }
+
+        return $this->render('litige/verifier.html.twig', [
+            'controller_name' => 'LitigeController',
+            'VerifierLitigeType' => $form->createView(),
+            'typeUtil' => 'Client',
+            'plaignant' => $litige->getPlaignant(),
+            'transaction' => $litige->getTransaction(),
+            'litige' => $litige,
+            'lienContactAccuse' => '/',
+            'lienContactPlaignant' => '/',
         ]);
     }
 }

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Verification de litige{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/declarer_litige.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/litige/litige.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+    <div class="litiges-titre">
+        <h1>Verification de litige</h1>
+    </div>
+    <div>
+        <div>
+            <p>Emit par : {{ typeUtil }}</p>
+        </div>
+
+        <div>
+            <p>{{ plaignant.getNomCompte() }} {{ plaignant.getPrenomCompte() }}</p>
+        </div>
+
+        <div>
+            <p>{{ plaignant.getAdresseMailCOmpte() }}</p>
+        </div>
+
+        <div>
+            <p>N° de transaction : {{ transaction.getId() }}</p>
+        </div>
+
+        <div>
+            <p>Description : {{ litige.getDescription() }}</p>
+        </div>
+
+        <div id="contact">
+            <button><a href="{{ lienContactAccuse }}">Contacter accusé</a></button>
+            <button><a href="{{ lienContactPlaignant }}">Contacter plaignant</a></button>
+        </div>
+
+        {{ form_start(VerifierLitigeType) }}
+        <div id="verdict">
+
+            {{ form_widget(VerifierLitigeType.refuser) }}
+            {{ form_widget(VerifierLitigeType.accepter) }}
+
+        </div>
+        {{ form_end(VerifierLitigeType) }}
+    </div>
+
+{% endblock %}
