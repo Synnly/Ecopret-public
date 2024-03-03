@@ -34,7 +34,6 @@ class LitigeController extends AbstractController
         }
 
         $form = $this->createForm(ListeLitigesType::class, ['data' => $options]);
-
         $form->handleRequest($request);
 
         return $this->render('litige/index.html.twig', [
@@ -54,9 +53,21 @@ class LitigeController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $litige = new Litige();
-            $litige->setPlaignant($entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]));
+
             $transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $form['transaction']->getData()]);
+            $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+            // Limite de litiges /annonce /compte atteinte (ici 3)
+            if(count($entityManager->getRepository(Litige::class)->findBy(['plaignant' => $compte, 'transaction' => $transaction])) >= 3){
+                return $this->render('litige/declarer.html.twig', [
+                    'controller_name' => 'LitigeController',
+                    'DeclarerLitigeType' => $form->createView(),
+                    'erreur' => "Limite de litiges pour cette annonce atteinte. Vous ne pouvez plus déposer de litiges pour cette annonce."
+                ]);
+            }
+
+            $litige = new Litige();
+            $litige->setPlaignant($compte);
 
             // Si le client est celui qui se plaint, l'accusé est le prestataire et vice-versa
             $litige->setAccuse(($transaction->getClient()->getNoCompte() === $litige->getPlaignant()) ?
@@ -69,9 +80,7 @@ class LitigeController extends AbstractController
 
             $entityManager->persist($litige);
             $entityManager->flush();
-
-            print "redirecting";
-            $this->redirectToRoute("app_litige");
+            return $this->redirectToRoute("app_litige");
         }
 
         return $this->render('litige/declarer.html.twig', [

@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="{{ asset('css/declarer_litige.css') }}">
 {% endblock %}
 
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/litige/litige.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% if erreur is defined and erreur is not empty %}
         <script>
