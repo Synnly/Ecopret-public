@@ -55,6 +55,10 @@ class LitigeController extends AbstractController
         }
 
         $form = $this->createForm(DeclarerLitigeType::class);
+        if(isset($_POST['transaction'])){
+            $form->get('transaction')->setData($_POST['transaction']);
+
+        }
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
