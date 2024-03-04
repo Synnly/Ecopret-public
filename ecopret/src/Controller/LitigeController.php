@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class LitigeController extends AbstractController
@@ -48,6 +47,12 @@ class LitigeController extends AbstractController
     #[Route('/litige/declarer', name: 'app_decl_litige')]
     public function declarerLitige(Request $request,EntityManagerInterface $entityManager): Response
     {
+        return $this->declarerLitigeTransaction($request, $entityManager);
+    }
+
+    #[Route('/litige/declarer/{transaction_id}', name: 'app_decl_litige_transaction')]
+    public function declarerLitigeTransaction(Request $request,EntityManagerInterface $entityManager, int $transaction_id = null): Response
+    {
 
         // TODO : Liste déroulante des transactions
         if(!$this->getUser()){
@@ -55,16 +60,35 @@ class LitigeController extends AbstractController
         }
 
         $form = $this->createForm(DeclarerLitigeType::class);
-        if(isset($_POST['transaction'])){
-            $form->get('transaction')->setData($_POST['transaction']);
 
+        if($transaction_id != null){
+            $form->get('transaction')->setData($transaction_id);
         }
+
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $erreur = null;
 
-            $transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $form['transaction']->getData()]);
+            // Transaction inexistante
+            if(!($transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $form['transaction']->getData()]))){
+                $erreur = "La transaction n'existe pas.";
+            }
+
             $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+            // Le compte n'est pas en lien avec la transaction
+            if($erreur == null && $transaction->getClient() != $compte && $transaction->getPrestataire() != $compte){
+                $erreur = "Vous n'avez pas de lien avec la transaction.";
+            }
+
+            if($erreur != null){
+                return $this->render('litige/declarer.html.twig', [
+                    'controller_name' => 'LitigeController',
+                    'DeclarerLitigeType' => $form->createView(),
+                    'erreur' => $erreur,
+                ]);
+            }
 
             // Limite de litiges /annonce /compte atteinte (ici 3)
             if(count($entityManager->getRepository(Litige::class)->findBy(['plaignant' => $compte, 'transaction' => $transaction])) >= 3){

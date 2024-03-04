@@ -1,0 +1,39 @@
+#retour-emprunt{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+}
+
+h1 {
+    padding-top: 5vh;
+    margin-bottom: 3vh;
+}
+
+h3{
+    color: black;
+    font-weight: normal;
+    margin-bottom: 20vh;
+}
+
+button {
+    font-size: 100%;
+    font-weight: 900;
+    padding: 10px 20px;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+    margin: 0 2vw 5vh;
+}
+
+p{
+    text-align: center;
+    margin-bottom: 5vh;
+}
+
+#boutons{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}

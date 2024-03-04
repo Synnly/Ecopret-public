@@ -34,6 +34,9 @@ class Transaction
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $Client = null;
 
+    #[ORM\Column]
+    private ?bool $est_cloture = null;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
@@ -134,6 +137,18 @@ class Transaction
     public function setClient(?Utilisateur $Client): static
     {
         $this->Client = $Client;
+
+        return $this;
+    }
+
+    public function isEstCloture(): ?bool
+    {
+        return $this->est_cloture;
+    }
+
+    public function setEstCloture(bool $est_cloture): static
+    {
+        $this->est_cloture = $est_cloture;
 
         return $this;
     }

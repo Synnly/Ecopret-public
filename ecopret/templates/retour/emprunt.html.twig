@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Retour d'emprunt{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/retour.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/retour/retour.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+    <div class="litiges-titre">
+        <h1>Retour d'emprunt</h1>
+        <h3>Nous vous remercions d'avoir prêté votre matériel</h3>
+    </div>
+    <p>L'heure de retour a t-elle été respectée ? Votre matériel est-il en bon état ? Si non, souhaitez vous déclarer un litige ?</p>
+    <div id="retour-emprunt">
+
+        {{ form_start(RetourEmpruntForm) }}
+        <div id="boutons">
+            {{ form_widget(RetourEmpruntForm.cloturer) }}
+            {{ form_widget(RetourEmpruntForm.litige) }}
+        </div>
+        {{ form_end(RetourEmpruntForm) }}
+    </div>
+
+{% endblock %}
