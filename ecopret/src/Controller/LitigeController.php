@@ -111,7 +111,9 @@ class LitigeController extends AbstractController
         if(!($litige = $entityManager->getRepository(Litige::class)->findOneBy(['statut' => 1, 'admin' => $admin]))){
 
             if(!($litige = $entityManager->getRepository(Litige::class)->findOneBy(['statut' => 0]))) {
-                // TODO : Message plus de litiges
+                return $this->render('litige/aucunLitige.html.twig', [
+                    'controller_name' => 'LitigeController',
+                ]);
             }
             else{
                 $litige->setAdmin($admin);

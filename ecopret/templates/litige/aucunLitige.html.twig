@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aucun litige{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/verifier_litige.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/litige/litige.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+    <div style="display: flex; align-content: center; width: 100vw; height: 100vh; justify-content: center;flex-flow: column">
+        <h1 style="text-align: center">Aucun litige disponible</h1>
+        <button style="width: fit-content;align-self: center"> <a href="/main">Accueil</a></button>
+
+    </div>
+
+{% endblock %}
