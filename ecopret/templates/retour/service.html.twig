@@ -21,15 +21,15 @@
         <h1>Retour d'emprunt</h1>
         <h3>Nous vous remercions d'avoir prêté votre matériel</h3>
     </div>
-    <p>L'heure de retour a-t-elle été respectée ? Votre matériel est-il en bon état ? Si non, souhaitez vous déclarer un litige ?</p>
+    <p>L'heure de travail a-t-elle été respectée ? Est-ce que le service rendu est conforme à vos attentes ? Si non, souhaitez vous déclarer un litige ?</p>
     <div id="retour-emprunt">
 
-        {{ form_start(RetourEmpruntForm) }}
+        {{ form_start(FinServiceForm) }}
         <div id="boutons">
-            {{ form_widget(RetourEmpruntForm.cloturer) }}
-            {{ form_widget(RetourEmpruntForm.litige) }}
+            {{ form_widget(FinServiceForm.cloturer) }}
+            {{ form_widget(FinServiceForm.litige) }}
         </div>
-        {{ form_end(RetourEmpruntForm) }}
+        {{ form_end(FinServiceForm) }}
     </div>
 
 {% endblock %}
