@@ -3,7 +3,7 @@
 {% block title %}Verification de litige{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/declarer_litige.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/verifier_litige.css') }}">
 {% endblock %}
 
 {% block javascripts %}
@@ -20,7 +20,7 @@
     <div class="litiges-titre">
         <h1>Verification de litige</h1>
     </div>
-    <div>
+    <div id="verifier-litige">
         <div>
             <p>Emit par : {{ typeUtil }}</p>
         </div>
@@ -38,7 +38,7 @@
         </div>
 
         <div>
-            <p>Description : {{ litige.getDescription() }}</p>
+            <p>Description <br> {{ litige.getDescription() }}</p>
         </div>
 
         <div id="contact">

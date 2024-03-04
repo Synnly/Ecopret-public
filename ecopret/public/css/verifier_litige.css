@@ -1,0 +1,47 @@
+input, textarea{
+    font-size: 80%;
+    height: 38px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    border: solid #949393 2px;
+    margin: 8px 0;
+}
+
+button {
+    font-size: 100%;
+    font-weight: 900;
+    padding: 10px 20px;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border-color: #658864;
+    border: none;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+h1 {
+    padding-top: 5vh;
+}
+
+#verifier-litige{
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    width: 60vw;
+    margin: 0 20vw;
+}
+
+
+#contact, #verdict{
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+
+button {
+    margin: 0 2vw 5vh;
+}

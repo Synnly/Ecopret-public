@@ -99,12 +99,12 @@ class LitigeController extends AbstractController
     {
         // User pas connecté
         if(!($user = $this->getUser())){
-            $this->redirectToRoute("app_page_accueil");
+            return $this->redirectToRoute("app_page_accueil");
         }
 
         // User pas admin
         if(!($admin = $entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]))){
-            $this->redirectToRoute("app_page_accueil");
+            return $this->redirectToRoute("app_page_accueil");
         }
 
         // Recherche du litige qu'on traitait, sinon d'un litige pas traité
