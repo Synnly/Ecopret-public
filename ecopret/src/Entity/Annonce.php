@@ -22,12 +22,6 @@ class Annonce
     #[ORM\Column(length: 50)]
     private ?string $disponibilite = null;
 
-    #[ORM\Column]
-    private ?bool $est_rendu = null;
-
-    #[ORM\Column]
-    private ?bool $est_en_litige = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image_annonce = null;
 
@@ -76,30 +70,6 @@ class Annonce
     public function setDisponibilite(string $disponibilite): static
     {
         $this->disponibilite = $disponibilite;
-
-        return $this;
-    }
-
-    public function isEstRendu(): ?bool
-    {
-        return $this->est_rendu;
-    }
-
-    public function setEstRendu(bool $est_rendu): static
-    {
-        $this->est_rendu = $est_rendu;
-
-        return $this;
-    }
-
-    public function isEstEnLitige(): ?bool
-    {
-        return $this->est_en_litige;
-    }
-
-    public function setEstEnLitige(bool $est_en_litige): static
-    {
-        $this->est_en_litige = $est_en_litige;
 
         return $this;
     }

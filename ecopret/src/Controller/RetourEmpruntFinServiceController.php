@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Annonce;
+use App\Entity\Compte;
 use App\Entity\Transaction;
 use App\Form\RetourEmpruntType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,12 +17,33 @@ class RetourEmpruntFinServiceController extends AbstractController
     #[Route('/retour/{transaction_id}', name: 'app_retour_emprunt_fin_service')]
     public function index(int $transaction_id, Request $request, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->getUser()){
+            $this->redirectToRoute("app_page_accueil");
+        }
+
+        // Transaction inexistante
+        if(!($transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $transaction_id]))){
+            return $this->redirectToRoute("app_page_accueil");
+        }
+
+        $prestataire = $transaction->getAnnonce()->getPrestataire();
+        $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+        // User pas le prestataire de l'annonce
+        if($prestataire->getNoUtisateur()->getNoCompte() != $compte){
+            return $this->redirectToRoute("app_page_accueil");
+        }
+
+        // Transaction déja cloturée
+        if($transaction->isEstCloture()){
+            return $this->redirectToRoute("app_page_accueil");
+        }
+
         $form = $this->createForm(RetourEmpruntType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted()){
             if($form['cloturer']->isClicked()){
-                $transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $transaction_id]);
                 $transaction->setEstCloture(true);
                 $entityManager->persist($transaction);
                 $entityManager->flush();
