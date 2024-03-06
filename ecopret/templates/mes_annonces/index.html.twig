@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes annonces
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/mes_annonces.css') }}">
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/mes_annonces/mes_annonces.js') }}"></script>
+{% endblock %}
+{% block body %}
+	<h1>Mes annonces</h1>
+	<div class="allCard" id="allCard">
+		{% for annonce in annonces %}
+			{% set index = loop.index0 %}
+    		{% set typeAnnonce = typesAnnonces[index] %}
+			<div class="card" id="card">
+				<div class="card__title">
+					<h4 class="center">{{ annonce.getNomAnnonce()|replace({"\\'": "'"}) }} </h4>
+				</div>
+				<div class="card__content_img">
+					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" width="150" height="150" id="imge1">
+					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}" width="150" height="150" id="imge2">
+					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}" width="150" height="150" id="imge3">
+				</div>
+				<div class="card__content">
+					<p class="center">{{ annonce.description|replace({"\\'": "'"}) }}</p>
+				</div>
+				<div class="card__content">
+					<p class="center">{{annonce.prix}}</p>
+					<img src="/img/florain.png" width="48" height="48" id="florain">
+				</div>
+				<div class="card__btn">
+					<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}')">
+            			<b>Modifier</b>
+        			</button>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<div id="card_modif" style="display : none">
+			<div class="card_m" id="card_m">
+				{{ form_start(form) }}
+				<h3 class="card__title_m">
+					Modifier une annonce
+				</h3>
+				<div class="card__content_img_m">
+					<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
+					<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
+					<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
+				</div>
+				<div class="card__content_m">
+					{{form_row(form.titre)}}
+				</div>
+				<div class="card__content_m">
+					{{form_row(form.description)}}
+				</div>
+				<div class="card__content_m">
+					{{form_row(form.prix)}}
+					<img src="/img/florain.png" width="48" height="48" id="florain_m">
+				</div>
+				<div class="card__content_m">
+					{{form_row(form.ajouterPhoto)}}
+					{{form_row(form.ajouterPhoto2)}}
+					{{form_row(form.ajouterPhoto3)}}
+				</div>
+				<div class="switch_m">
+					<div class="ES1_m">Emprunt</div>
+					<div class="toggle-switch_m">
+						<input name="toggle" class="toggle-input_m" id="toggle_m" type="checkbox">
+						<label class="toggle-label_m" for="toggle"></label>
+					</div>
+					<div class="ES2_m">Service</div>
+				</div>
+				<div class="card__btn_m">
+					<button type="button" class="annonce-btn_m" onclick="annulerModifierAnnonce()">
+						<b>Annuler</b>
+					</button>
+					<input type="submit" class="annonce-btn_m" value="Modification de l'annonce">
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+{% endblock %}
