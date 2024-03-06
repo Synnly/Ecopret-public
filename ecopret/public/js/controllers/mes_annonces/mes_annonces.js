@@ -1,6 +1,6 @@
 let positionWindow = 0;
 
-function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type){
+function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type, id){
     document.getElementById("allCard").style.filter = 'blur(13px)';
     document.getElementById("allCard").style.pointerEvents = 'none';
     annonce = document.getElementById('card_modif');
@@ -12,9 +12,10 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type)
     document.getElementById('img1').src = (photo1.split('/picturesAnnouncement/')[1] === "") ? "" : photo1;
     document.getElementById('img2').src = (photo2.split('/picturesAnnouncement/')[1] === "") ? "" : photo2;
     document.getElementById('img3').src = (photo3.split('/picturesAnnouncement/')[1] === "") ? "" : photo3;
-    document.getElementById('ajouter_annonce_titre').value = name;
-    document.getElementById('ajouter_annonce_description').value = desc;
-    document.getElementById('ajouter_annonce_prix').value = prix;
+    document.getElementById('modifier_annonce_titre').value = name;
+    document.getElementById('modifier_annonce_description').value = desc;
+    document.getElementById('id').value = id;
+    document.getElementById('modifier_annonce_prix').value = prix;
     document.getElementById('toggle_m').checked = (type == 0) ? false : true;
     positionWindow = window.scrollY || document.documentElement.scrollTop
     console.log(positionWindow);
@@ -52,9 +53,9 @@ function annulerModifierAnnonce(){
     document.getElementById('img1').src = '';
     document.getElementById('img2').src = '';
     document.getElementById('img3').src = '';
-    document.getElementById('ajouter_annonce_titre').value = '';
-    document.getElementById('ajouter_annonce_description').value = '';
-    document.getElementById('ajouter_annonce_prix').value = '';
+    document.getElementById('modifier_annonce_titre').value = '';
+    document.getElementById('modifier_annonce_description').value = '';
+    document.getElementById('modifier_annonce_prix').value = '';
     document.getElementById('toggle_m').checked = false;
     scrollToSlowly(positionWindow, positionWindow);
 }

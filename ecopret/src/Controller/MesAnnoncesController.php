@@ -7,7 +7,7 @@ use App\Entity\Emprunt;
 use App\Entity\Prestataire;
 use App\Entity\Service;
 use App\Entity\Utilisateur;
-use App\Form\AjouterAnnonceType;
+use App\Form\ModifierAnnonceType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ class MesAnnoncesController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $user = $this->getUser();
-        $form = $this->createForm(AjouterAnnonceType::class);
+        $form = $this->createForm(ModifierAnnonceType::class);
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         $prestaire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
         $annonces = $entityManager->getRepository(Annonce::class)->findBy(['prestataire' => $prestaire]);
@@ -32,6 +32,9 @@ class MesAnnoncesController extends AbstractController
             $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce->getId()]);
         
             $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
+        }
+        if ($form->isSubmitted() && $form->isValid()) {
+
         }
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',

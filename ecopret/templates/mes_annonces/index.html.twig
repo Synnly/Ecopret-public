@@ -32,7 +32,7 @@
 					<img src="/img/florain.png" width="48" height="48" id="florain">
 				</div>
 				<div class="card__btn">
-					<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}')">
+					<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.getId()}}')">
             			<b>Modifier</b>
         			</button>
 				</div>
@@ -50,6 +50,7 @@
 					<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
 					<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
 				</div>
+				<div id="id" style="display : none">{{form_row(form.id)}}</div>
 				<div class="card__content_m">
 					{{form_row(form.titre)}}
 				</div>
