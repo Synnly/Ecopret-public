@@ -14,12 +14,10 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
     document.getElementById('img3').src = (photo3.split('/picturesAnnouncement/')[1] === "") ? "" : photo3;
     document.getElementById('modifier_annonce_titre').value = name;
     document.getElementById('modifier_annonce_description').value = desc;
-    console.log(id);
     document.getElementById('modifier_annonce_id').value = id;
     document.getElementById('modifier_annonce_prix').value = prix;
     document.getElementById('toggle_m').checked = (type == 0) ? false : true;
     positionWindow = window.scrollY || document.documentElement.scrollTop
-    console.log(positionWindow);
     scrollToSlowly(0, positionWindow);
 }
 function scrollToSlowly(targetPosition, duration) {
@@ -60,3 +58,79 @@ function annulerModifierAnnonce(){
     document.getElementById('toggle_m').checked = false;
     scrollToSlowly(positionWindow, positionWindow);
 }
+
+var inputUtiliser;
+var img_a_changer = "";
+
+function clickphoto(id) {
+    input = document.getElementById(id); 
+    if(input.src.split("/mes_annonces")[1] === ""){
+        getTheFirstInputFree().click();
+    }else {
+        switch (id.split('img')[1]) {
+            case '1':
+                inputUtiliser = document.getElementById("modifier_annonce_ajouterPhoto");
+                break;
+            case '2':
+                inputUtiliser = document.getElementById("modifier_annonce_ajouterPhoto2");
+                break
+            default:
+                inputUtiliser = document.getElementById("modifier_annonce_ajouterPhoto3");
+                break;
+        }
+        img_a_changer = input;
+        inputUtiliser.click();
+    }
+ }
+
+ function getTheFirstInputFree(){
+     var allInput = [document.getElementById("modifier_annonce_ajouterPhoto"), document.getElementById("modifier_annonce_ajouterPhoto2"), document.getElementById("modifier_annonce_ajouterPhoto3")];
+     var inputLibre = allInput.find(function(inp){
+         if(inp.files[0] === undefined){
+             inputUtiliser = inp;
+             return inp;
+         }
+     });
+         return inputLibre;
+ }
+ 
+ function ajoutPhoto() {
+     var input = inputUtiliser;
+     console.log(input);
+     var images = [document.getElementById("img1"), document.getElementById("img2"), document.getElementById("img3")];
+
+     if(img_a_changer === ""){
+        var image2 = "";
+        var imageLibre = images.find(function(img) {
+            var img2 = img.src;
+            console.log(img2);
+            img2 = img2.split("/mes_annonces")[1];
+            if (img2 === ""){
+                image2 = img;
+                return true;
+            } else {
+                return false;
+            }
+        });
+     
+        if (imageLibre) {
+            var reader = new FileReader();
+        
+            reader.onload = function (e) {
+                image2.src = e.target.result;
+            };
+         
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            alert("Toutes les images sont déjà utilisées.");
+        }
+    }else {
+        var reader = new FileReader();
+        
+            reader.onload = function (e) {
+                img_a_changer.src = e.target.result;
+            };
+         
+            reader.readAsDataURL(input.files[0]);
+    }
+ }
