@@ -40,6 +40,25 @@ class MesAnnoncesController extends AbstractController
             $annonce->setNomAnnonce($form->get("titre")->getData());
             $annonce->setDescription($form->get("description")->getData());
             $annonce->setPrix($form->get("prix")->getData());
+            $linkpic = explode("|",$annonce->getImageAnnonce());
+            dump($linkpic);
+            $linkImagesForAnnouncement = "";
+            $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
+            dump($files);
+            $i = 0;
+            foreach($files as $file){
+                if($file !== null){
+                    $filename = md5(uniqid()).".png";
+                    $linkImagesForAnnouncement = $linkImagesForAnnouncement.$filename.'|';
+                    $file->move($this->getParameter('imgs_annonces'), $filename);
+                }else {
+                    if($i <= count($linkpic)){
+                        $linkImagesForAnnouncement = $linkImagesForAnnouncement.$linkpic[$i].'|';
+                    }
+                }
+                $i++;
+            }
+            $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $es = $request->request->get('toggle');
             if ($es === "on") {
                 if ($entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]) === null) {

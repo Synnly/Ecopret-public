@@ -1,4 +1,8 @@
 let positionWindow = 0;
+var tabUtil = [];
+tabUtil[0] = false;
+tabUtil[1] = false;
+tabUtil[2] = false;
 
 function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type, id){
     document.getElementById("allCard").style.filter = 'blur(13px)';
@@ -12,6 +16,17 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
     document.getElementById('img1').src = (photo1.split('/picturesAnnouncement/')[1] === "") ? "" : photo1;
     document.getElementById('img2').src = (photo2.split('/picturesAnnouncement/')[1] === "") ? "" : photo2;
     document.getElementById('img3').src = (photo3.split('/picturesAnnouncement/')[1] === "") ? "" : photo3;
+    console.log(document.getElementById('img1').src + "aa");
+    if(document.getElementById('img1').src.split('/mes_annonces')[1] !== ""){
+        tabUtil[0] = true;
+    }
+    if(document.getElementById('img2').src.split('/mes_annonces')[1] !== ""){
+        tabUtil[1] = true;
+    }
+    if(document.getElementById('img3').src.split('/mes_annonces')[1] !== ""){
+        console.log("non")
+        tabUtil[2] = true;
+    }
     document.getElementById('modifier_annonce_titre').value = name;
     document.getElementById('modifier_annonce_description').value = desc;
     document.getElementById('modifier_annonce_id').value = id;
@@ -64,9 +79,13 @@ var img_a_changer = "";
 
 function clickphoto(id) {
     input = document.getElementById(id); 
+    //console.log(id.split('img')[1]);
+    //console.log(input);
     if(input.src.split("/mes_annonces")[1] === ""){
+        //console.log("bah non");
         getTheFirstInputFree().click();
     }else {
+        //console.log(id.split('img')[1]);
         switch (id.split('img')[1]) {
             case '1':
                 inputUtiliser = document.getElementById("modifier_annonce_ajouterPhoto");
@@ -79,17 +98,22 @@ function clickphoto(id) {
                 break;
         }
         img_a_changer = input;
+        //console.log(img_a_changer + "bb");
         inputUtiliser.click();
     }
  }
 
  function getTheFirstInputFree(){
      var allInput = [document.getElementById("modifier_annonce_ajouterPhoto"), document.getElementById("modifier_annonce_ajouterPhoto2"), document.getElementById("modifier_annonce_ajouterPhoto3")];
+     i = 0;
      var inputLibre = allInput.find(function(inp){
-         if(inp.files[0] === undefined){
+        console.log(tabUtil[i]);
+        console.log(inp.files[0]);
+         if(inp.files[0] === undefined && tabUtil[i] == false){
              inputUtiliser = inp;
              return inp;
          }
+         i++;
      });
          return inputLibre;
  }
