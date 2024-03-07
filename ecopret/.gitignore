@@ -74,7 +74,6 @@ Temporary Items
 ## Logs
 /var/log/*
 /var/cache/*
-/public/picturesAnnouncement
 # Parameters
 /app/config/parameters.yml
 /app/config/parameters.ini
