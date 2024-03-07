@@ -31,7 +31,7 @@ class MesAnnoncesController extends AbstractController
         foreach ($annonces as $annonce) {
             $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce->getId()]);
             $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce->getId()]);
-        
+
             $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
         }
         $form->handleRequest($request);
@@ -40,8 +40,40 @@ class MesAnnoncesController extends AbstractController
             $annonce->setNomAnnonce($form->get("titre")->getData());
             $annonce->setDescription($form->get("description")->getData());
             $annonce->setPrix($form->get("prix")->getData());
+            $es = $request->request->get('toggle');
+            if ($es === "on") {
+                if ($entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]) === null) {
+                    $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce]);
+                    $entityManager->remove($emprunt);
+                    $service = new Service();
+                    $service->setIdAnnonce($annonce);
+                    $entityManager->persist($service);
+                }
+            } elseif ($es === null) {
+                if ($entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce]) === null) {
+                    $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]);
+                    $entityManager->remove($service);
+                    $emprunt = new Emprunt();
+                    $emprunt->setIdAnnonce($annonce);
+                    $entityManager->persist($emprunt);
+                }
+            }
             $entityManager->persist($annonce);
-            $entityManager->flush(); 
+            $entityManager->flush();
+            $annonces = $entityManager->getRepository(Annonce::class)->findBy(['prestataire' => $prestaire]);
+            $typesAnnonces = [];
+            foreach ($annonces as $annonce) {
+                $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce->getId()]);
+                $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce->getId()]);
+
+                $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
+            }
+            return $this->render('mes_annonces/index.html.twig', [
+                'controller_name' => 'MesAnnoncesController',
+                'annonces' => $annonces,
+                'form' => $form,
+                'typesAnnonces' => $typesAnnonces,
+            ]);
         }
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',
