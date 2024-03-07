@@ -7,6 +7,7 @@ use App\Entity\Emprunt;
 use App\Entity\Prestataire;
 use App\Entity\Service;
 use App\Entity\Utilisateur;
+use Symfony\Component\HttpFoundation\Request;
 use App\Form\ModifierAnnonceType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MesAnnoncesController extends AbstractController
 {
     #[Route('/mes_annonces', name: 'app_mes_annonces')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -33,8 +34,14 @@ class MesAnnoncesController extends AbstractController
         
             $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
         }
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $annonce = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $form->get("id")->getData()]);
+            $annonce->setNomAnnonce($form->get("titre")->getData());
+            $annonce->setDescription($form->get("description")->getData());
+            $annonce->setPrix($form->get("prix")->getData());
+            $entityManager->persist($annonce);
+            $entityManager->flush(); 
         }
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',

@@ -14,7 +14,8 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
     document.getElementById('img3').src = (photo3.split('/picturesAnnouncement/')[1] === "") ? "" : photo3;
     document.getElementById('modifier_annonce_titre').value = name;
     document.getElementById('modifier_annonce_description').value = desc;
-    document.getElementById('id').value = id;
+    console.log(id);
+    document.getElementById('modifier_annonce_id').value = id;
     document.getElementById('modifier_annonce_prix').value = prix;
     document.getElementById('toggle_m').checked = (type == 0) ? false : true;
     positionWindow = window.scrollY || document.documentElement.scrollTop
