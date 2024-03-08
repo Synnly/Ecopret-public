@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos litiges{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/transaction.css') }}">
+{% endblock %}
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+
+
+    <div id="transactions">
+        <div class="transaction-titre">
+            <h1>Vos Transactions</h1>
+        </div>
+
+        <div id="boutons">
+            <button><a href="/">Accueil</a></button>
+        </div>
+
+        {{ form_start(TransactionType) }}
+        {{ form_end(TransactionType) }}
+
+    </div>
+
+{% endblock %}
