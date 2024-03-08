@@ -39,7 +39,7 @@ class DeclarerLitigeType extends AbstractType
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^[A-Z][A-Za-z-]{0,18}[a-zA-Z]$/',
-                        'message' => 'Le prénom doit contenir entre 1 et 19 lettres'
+                        'message' => 'Le prénom doit contenir entre 2 et 20 lettres'
                     ])
                 ]
             ])

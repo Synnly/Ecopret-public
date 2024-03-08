@@ -47,13 +47,16 @@ class LitigeController extends AbstractController
     #[Route('/litige/declarer', name: 'app_decl_litige')]
     public function declarerLitige(Request $request,EntityManagerInterface $entityManager): Response
     {
+        if(!$this->getUser()){
+            $this->redirectToRoute("app_page_accueil");
+        }
+
         return $this->declarerLitigeTransaction($request, $entityManager);
     }
 
     #[Route('/litige/declarer/{transaction_id}', name: 'app_decl_litige_transaction')]
     public function declarerLitigeTransaction(Request $request,EntityManagerInterface $entityManager, int $transaction_id = null): Response
     {
-
         // TODO : Liste déroulante des transactions
         if(!$this->getUser()){
             $this->redirectToRoute("app_page_accueil");
