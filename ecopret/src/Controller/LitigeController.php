@@ -81,7 +81,7 @@ class LitigeController extends AbstractController
             $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
             // Le compte n'est pas en lien avec la transaction
-            if($erreur == null && $transaction->getClient() != $compte && $transaction->getPrestataire() != $compte){
+            if($erreur == null && $transaction->getClient()->getNoCompte() != $compte && $transaction->getPrestataire()->getNoUtisateur()->getNoCompte() != $compte){
                 $erreur = "Vous n'avez pas de lien avec la transaction.";
             }
 
