@@ -16,7 +16,6 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
     document.getElementById('img1').src = (photo1.split('/picturesAnnouncement/')[1] === "") ? "" : photo1;
     document.getElementById('img2').src = (photo2.split('/picturesAnnouncement/')[1] === "") ? "" : photo2;
     document.getElementById('img3').src = (photo3.split('/picturesAnnouncement/')[1] === "") ? "" : photo3;
-    console.log(document.getElementById('img1').src + "aa");
     if(document.getElementById('img1').src.split('/mes_annonces')[1] !== ""){
         tabUtil[0] = true;
     }
@@ -24,7 +23,6 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
         tabUtil[1] = true;
     }
     if(document.getElementById('img3').src.split('/mes_annonces')[1] !== ""){
-        console.log("non")
         tabUtil[2] = true;
     }
     document.getElementById('modifier_annonce_titre').value = name;
@@ -71,6 +69,12 @@ function annulerModifierAnnonce(){
     document.getElementById('modifier_annonce_description').value = '';
     document.getElementById('modifier_annonce_prix').value = '';
     document.getElementById('toggle_m').checked = false;
+    document.getElementById("modifier_annonce_ajouterPhoto").value = '';
+    document.getElementById("modifier_annonce_ajouterPhoto2").value = '';
+    document.getElementById("modifier_annonce_ajouterPhoto3").value = '';
+    tabUtil[0] = false;
+    tabUtil[1] = false;
+    tabUtil[2] = false;
     scrollToSlowly(positionWindow, positionWindow);
 }
 
@@ -79,13 +83,9 @@ var img_a_changer = "";
 
 function clickphoto(id) {
     input = document.getElementById(id); 
-    //console.log(id.split('img')[1]);
-    //console.log(input);
     if(input.src.split("/mes_annonces")[1] === ""){
-        //console.log("bah non");
         getTheFirstInputFree().click();
     }else {
-        //console.log(id.split('img')[1]);
         switch (id.split('img')[1]) {
             case '1':
                 inputUtiliser = document.getElementById("modifier_annonce_ajouterPhoto");
@@ -98,7 +98,6 @@ function clickphoto(id) {
                 break;
         }
         img_a_changer = input;
-        //console.log(img_a_changer + "bb");
         inputUtiliser.click();
     }
  }
@@ -107,8 +106,6 @@ function clickphoto(id) {
      var allInput = [document.getElementById("modifier_annonce_ajouterPhoto"), document.getElementById("modifier_annonce_ajouterPhoto2"), document.getElementById("modifier_annonce_ajouterPhoto3")];
      i = 0;
      var inputLibre = allInput.find(function(inp){
-        console.log(tabUtil[i]);
-        console.log(inp.files[0]);
          if(inp.files[0] === undefined && tabUtil[i] == false){
              inputUtiliser = inp;
              return inp;
@@ -127,7 +124,6 @@ function clickphoto(id) {
         var image2 = "";
         var imageLibre = images.find(function(img) {
             var img2 = img.src;
-            console.log(img2);
             img2 = img2.split("/mes_annonces")[1];
             if (img2 === ""){
                 image2 = img;
