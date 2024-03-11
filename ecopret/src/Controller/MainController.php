@@ -56,7 +56,7 @@ class MainController extends AbstractController
                 $prestataire->setNoUtisateur($user); 
             }
             $annonce->setPrestataire($prestataire);
-            $annonce->setDisponibilite("jamais");
+            $annonce->setDisponibilite("");
             $es = $request->request->get('toggle');
             if($es === "on"){
                 $service = new Service();
