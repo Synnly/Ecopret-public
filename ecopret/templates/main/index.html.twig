@@ -76,8 +76,12 @@
 				<h3>Ajouter une annonce</h3>
 			</button>
 		</div>
-		<div class="card" id="card" style="display : none;">
-			{{ form_start(form) }}
+		{{ form_start(form) }}
+		{% if error is defined and error == "pasValide" %}
+			<div class="card" id="card" >
+		{% else %}
+			<div class="card" id="card" style="display : none;">
+		{% endif %}
 			<h3 class="card__title">
 				Ajouter une annonce
 			</h3>
@@ -113,7 +117,7 @@
 				<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
 					<b>Annuler</b>
 				</button>
-				<input type="submit" class="annonce-btn" value="Création de l'annonce">
+				<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
 				{{ form_end(form) }}
 			</div>
 		</div>

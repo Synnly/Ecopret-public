@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class AjouterAnnonceType extends AbstractType
 {
@@ -19,7 +20,7 @@ class AjouterAnnonceType extends AbstractType
             ->add('description', TextareaType::class,[ 'attr' => [
                 'rows' => 3,
                 'cols' => 45, 
-            ],
+            ],    
         ])
             ->add('ajouterPhoto', FileType::class, [
                 'attr' => ['onchange' => "ajoutPhoto()",],
@@ -33,7 +34,11 @@ class AjouterAnnonceType extends AbstractType
                 'attr' => ['onchange' => "ajoutPhoto()",],
                 'required' => false,
             ])
-            ->add('prix', TextType::class)
+            ->add('prix', TextType::class, ['constraints' => [
+                new Regex([
+                    'pattern' => '/^[0-9]+$/',
+                    'message' => 'Doit,contenir au moins un chiffre'
+                ])]])
         ;
     }
 

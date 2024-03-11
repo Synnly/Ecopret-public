@@ -19,6 +19,7 @@ class MesAnnoncesController extends AbstractController
     #[Route('/mes_annonces', name: 'app_mes_annonces')]
     public function index(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $erreur = "";
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
@@ -94,12 +95,15 @@ class MesAnnoncesController extends AbstractController
                 'form' => $form,
                 'typesAnnonces' => $typesAnnonces,
             ]);
+        }else if ($form->isSubmitted() && !$form->isValid()){
+            $erreur = "pasValide";
         }
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',
             'annonces' => $annonces,
             'form' => $form,
             'typesAnnonces' => $typesAnnonces,
+            'error' => $erreur,
         ]);
     }
 }

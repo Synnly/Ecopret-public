@@ -27,7 +27,7 @@ class MailService{
      */
     public function sendMail(Compte $user, String $obj, String $description, String $cc = '', String $bcc = ''){
         $email = (new Email());
-        $email->from('sender@sender.sender');
+        $email->from('sender@sender.sender'); //Peut inporte le mail affiché, ça sera celui du compte mail lié  
         $email->to($user->getAdresseMailCOmpte());
         $email->subject($obj);
         $email->html($description);
@@ -40,3 +40,6 @@ class MailService{
         $this->mailer->send($email);
     }
 }
+
+
+
