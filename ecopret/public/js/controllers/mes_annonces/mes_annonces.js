@@ -25,8 +25,8 @@ function afficherModifierAnnonce(name, photo1, photo2, photo3, desc, prix, type,
     if(document.getElementById('img3').src.split('/mes_annonces')[1] !== ""){
         tabUtil[2] = true;
     }
-    document.getElementById('modifier_annonce_titre').value = name;
-    document.getElementById('modifier_annonce_description').value = desc;
+    document.getElementById('modifier_annonce_titre').value = name.replace(/&amp;#039;/g, "'").replace(/&quot;/g, "\"");
+    document.getElementById('modifier_annonce_description').value = desc.replace(/&amp;#039;/g, "'").replace(/&quot;/g, "\"");
     document.getElementById('modifier_annonce_id').value = id;
     document.getElementById('modifier_annonce_prix').value = prix;
     document.getElementById('toggle_m').checked = (type == 0) ? false : true;

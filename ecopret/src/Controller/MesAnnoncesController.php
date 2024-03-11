@@ -38,7 +38,8 @@ class MesAnnoncesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $annonce = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $form->get("id")->getData()]);
             $annonce->setNomAnnonce($form->get("titre")->getData());
-            $annonce->setDescription($form->get("description")->getData());
+            $des = htmlspecialchars($form->get("description")->getData(), ENT_QUOTES, 'UTF-8');
+            $annonce->setDescription($des);
             $annonce->setPrix($form->get("prix")->getData());
             $linkpic = explode("|",$annonce->getImageAnnonce());
             dump($linkpic);
@@ -52,7 +53,7 @@ class MesAnnoncesController extends AbstractController
                     $linkImagesForAnnouncement = $linkImagesForAnnouncement.$filename.'|';
                     $file->move($this->getParameter('imgs_annonces'), $filename);
                 }else {
-                    if($i <= count($linkpic)){
+                    if($i < count($linkpic)){
                         $linkImagesForAnnouncement = $linkImagesForAnnouncement.$linkpic[$i].'|';
                     }
                 }

@@ -18,10 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
+
     #[Route('/main', name: 'app_main')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
@@ -39,7 +39,8 @@ class MainController extends AbstractController
             }
             $annonce = new Annonce();
             $annonce->setNomAnnonce($form->get("titre")->getData());
-            $annonce->setDescription($form->get("description")->getData());
+            $des = nl2br(htmlspecialchars($form->get("description")->getData(), ENT_QUOTES, 'UTF-8'));
+            $annonce->setDescription($des);
             $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
