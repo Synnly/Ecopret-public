@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supprimer annonce{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/annonce/supprimer_annonce.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/supprimer_annonce.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% if erreur is defined and erreur is not empty %}
+        <script>
+            afficherAlerte("{{ erreur }}");
+        </script>
+    {% endif %}
+<div class="suppr-annonce-compte">
+    <div class="suppr-annonce-titre">
+        <h1>Suppression d'une annonce</h1>
+    </div>
+    <div class="suppr-annonce-text">
+        <p>Êtes-vous sûr ?<br>Cela va entrainer le retrait de votre annonce des moteurs de recherche.</p>
+    </div>
+    {{ form_start(SupprimerAnnonceFormType) }}
+    <div class="suppr-annonce-form">
+            {{ form_row(SupprimerAnnonceFormType.oui) }}
+            {{ form_row(SupprimerAnnonceFormType.non) }}
+    </div>
+    {{ form_end(SupprimerAnnonceFormType) }}
+</div>
+{% endblock body %}
