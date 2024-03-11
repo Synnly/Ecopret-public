@@ -48,7 +48,7 @@ class LitigeController extends AbstractController
     public function declarerLitige(Request $request,EntityManagerInterface $entityManager): Response
     {
         if(!$this->getUser()){
-            $this->redirectToRoute("app_page_accueil");
+            return $this->redirectToRoute("app_page_accueil");
         }
 
         return $this->declarerLitigeTransaction($request, $entityManager);
@@ -59,7 +59,7 @@ class LitigeController extends AbstractController
     {
         // TODO : Liste déroulante des transactions
         if(!$this->getUser()){
-            $this->redirectToRoute("app_page_accueil");
+            return $this->redirectToRoute("app_page_accueil");
         }
 
         $form = $this->createForm(DeclarerLitigeType::class);
