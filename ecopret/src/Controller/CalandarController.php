@@ -43,12 +43,6 @@ class CalandarController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('app_main');
-
-            if($timeTo <= $timeFrom){
-                $erreur = "La date de fin ne peux pas être inférieure à la date de début !";
-            }else{    
-                return $this->redirectToRoute('app_main');
-            }
         }
 
         return $this->render('calandar/index.html.twig', [

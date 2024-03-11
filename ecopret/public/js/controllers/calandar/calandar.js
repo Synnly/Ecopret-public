@@ -331,76 +331,95 @@ addEventSubmit.addEventListener("click", () => {
     return;
   }
 
-  const timeFrom = convertTime(eventTimeFrom);
-  const timeTo = convertTime(eventTimeTo);
-
-  //check if event is already added
-  let eventExist = false;
-  eventsArr.forEach((event) => {
-    if (
-      event.day === activeDay &&
-      event.month === month + 1 &&
-      event.year === year
-    ) {
-      event.events.forEach((event) => {
-        if (event.title === eventTitle) {
-          eventExist = true;
+  if(!dateInvalide(eventTimeFrom, eventTimeTo)){
+    alert("L'heure de départ doit être plus grande que l'heure de fin");
+  }else {
+    const timeFrom = convertTime(eventTimeFrom);
+    const timeTo = convertTime(eventTimeTo);
+  
+    //check if event is already added
+    let eventExist = false;
+    eventsArr.forEach((event) => {
+      if (
+        event.day === activeDay &&
+        event.month === month + 1 &&
+        event.year === year
+      ) {
+        event.events.forEach((event) => {
+          if (event.title === eventTitle) {
+            eventExist = true;
+          }
+        });
+      }
+  
+    });
+    
+    const newEvent = {
+      title: "Disponible",
+      time: timeFrom + " - " + timeTo,
+    };
+    let eventAdded = false;
+    if (eventsArr.length > 0) {
+      eventsArr.forEach((item) => {
+        if (item.day === activeDay && item.month === month + 1 && item.year === year) {
+          item.events.push(newEvent);
+          eventAdded = true;
         }
       });
     }
-  });
   
-  const newEvent = {
-    title: "Disponible",
-    time: timeFrom + " - " + timeTo,
-  };
-  let eventAdded = false;
-  if (eventsArr.length > 0) {
-    eventsArr.forEach((item) => {
-      if (item.day === activeDay && item.month === month + 1 && item.year === year) {
-        item.events.push(newEvent);
-        eventAdded = true;
-      }
-    });
+    if (!eventAdded) {
+      eventsArr.push({
+        day: activeDay,
+        month: month + 1,
+        year: year,
+        events: [newEvent],
+      });
+    }
+    const stringInfos = activeDay +"/"+ (month+1) +"/"+ year +";"+ newEvent.time + "|";
+    stockInfos.value += stringInfos
+  
+    addEventWrapper.classList.remove("active");
+    addEventFrom.value = "";
+    addEventTo.value = "";
+    updateEvents(activeDay);
+    //select active day and add event class if not added
+    const activeDayEl = document.querySelector(".day.active");
+    if (!activeDayEl.classList.contains("event")) {
+      activeDayEl.classList.add("event");
+    }
+  
+    // Envoyer les données au contrôleur via AJAX
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/CalandarController", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Traitez la réponse du contrôleur si nécessaire
+            console.log(xhr.responseText);
+        }
+    };
+    var data = JSON.stringify({ "timeFrom": timeFrom, "timeTo": timeTo, "infos": infos });
+    xhr.send(data);
+  
+    initCalendar();
   }
-
-  if (!eventAdded) {
-    eventsArr.push({
-      day: activeDay,
-      month: month + 1,
-      year: year,
-      events: [newEvent],
-    });
-  }
-  const stringInfos = activeDay +"/"+ (month+1) +"/"+ year +";"+ newEvent.time + "|";
-  stockInfos.value += stringInfos
-
-  addEventWrapper.classList.remove("active");
-  addEventFrom.value = "";
-  addEventTo.value = "";
-  updateEvents(activeDay);
-  //select active day and add event class if not added
-  const activeDayEl = document.querySelector(".day.active");
-  if (!activeDayEl.classList.contains("event")) {
-    activeDayEl.classList.add("event");
-  }
-
-  // Envoyer les données au contrôleur via AJAX
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/CalandarController", true);
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-          // Traitez la réponse du contrôleur si nécessaire
-          console.log(xhr.responseText);
-      }
-  };
-  var data = JSON.stringify({ "timeFrom": timeFrom, "timeTo": timeTo, "infos": infos });
-  xhr.send(data);
-
-  initCalendar();
 
 });
+
+
+function dateInvalide(hour1, hour2){
+  const [hour1Hour, hour1Minute] = hour1.split(":").map(Number);
+  const [hour2Hour, hour2Minute] = hour2.split(":").map(Number);
+
+  if (hour1Hour < hour2Hour) {
+      return true;
+  } else if (hour1Hour === hour2Hour) {
+      return hour1Minute < hour2Minute;
+  } else {
+      return false;
+  }
+}
 
 addEventAllDay.addEventListener("click", () => {
   addEventFrom.value = "00:00";
@@ -508,7 +527,6 @@ function setDisponibility(disponibilite) {
   stockInfos.value = disponibilite;
   const parseDispo = parseDisponibilite(disponibilite);
   initCalendar();
-  saveEvents();
 }
 
 function convertTime(time) {
@@ -521,7 +539,7 @@ function convertTime(time) {
 }
 
 function redirectToMain() {
-  window.location.href = "/main";
+  window.history.back();
 }
 
 function actualiserPage() {
@@ -530,5 +548,4 @@ function actualiserPage() {
 
 function submitForm() {
   document.getElementById("myForm").submit();
-  //redirectToMain();
 }
