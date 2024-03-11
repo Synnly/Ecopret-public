@@ -9,6 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class ModifierAnnonceType extends AbstractType
 {
@@ -25,16 +28,56 @@ class ModifierAnnonceType extends AbstractType
             ->add('ajouterPhoto', FileType::class, [
                 'attr' => ['onchange' => "ajoutPhoto()",],
                 'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg',
+
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger un fichier image valide (JPEG, PNG, JPG)',
+                    ]),
+                ],
             ])
             ->add('ajouterPhoto2', FileType::class, [
                 'attr' => ['onchange' => "ajoutPhoto()",],
                 'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg',
+
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger un fichier image valide (JPEG, PNG, JPG)',
+                    ]),
+                ],
             ])
             ->add('ajouterPhoto3', FileType::class, [
                 'attr' => ['onchange' => "ajoutPhoto()",],
                 'required' => false,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/jpg',
+
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger un fichier image valide (JPEG, PNG, JPG)',
+                    ]),
+                ],
             ])
-            ->add('prix', TextType::class)
+            ->add('prix', TextType::class, ['constraints' => [
+                new Regex([
+                    'pattern' => '/^[0-9]+$/',
+                    'message' => 'Doit,contenir au moins un chiffre'
+                ])]])
         ;
     }
 

@@ -22,6 +22,7 @@ class MainController extends AbstractController
     #[Route('/main', name: 'app_main')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $erreur = "";
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
@@ -70,13 +71,14 @@ class MainController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush(); 
             $form = $this->createForm(AjouterAnnonceType::class);              
+        }else if ($form->isSubmitted() && !$form->isValid()){
+            $erreur = "pasValide";
         }
-        //Page Main (il me fallait une redirection)
-        //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
             'form' => $form,
+            'error' => $erreur,
         ]);
     }
 }

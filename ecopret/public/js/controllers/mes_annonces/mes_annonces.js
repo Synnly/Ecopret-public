@@ -154,3 +154,15 @@ function clickphoto(id) {
             reader.readAsDataURL(input.files[0]);
     }
  }
+
+ function ValidImage(){
+    extensions_admises = ['png', 'jpg', 'jpeg', ''];
+    if((!extensions_admises.includes(document.getElementById("modifier_annonce_ajouterPhoto").files[0].name.split('.').pop())) || (!extensions_admises.includes(document.getElementById("modifier_annonce_ajouterPhoto2").files[0].name.split('.').pop())) || !extensions_admises.includes(document.getElementById("modifier_annonce_ajouterPhoto3").files[0].name.split('.').pop()) ){
+        alert("Les photos doivent avoir comme format : png, jpg, jpeg ou pdf.");
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
