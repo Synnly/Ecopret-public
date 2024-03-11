@@ -165,4 +165,9 @@ function clickphoto(id) {
     }
 }
 
+function modifierDisponibilite(id) {
+    var url = "/calandar/"+id;
+    window.location.href = url;
+}
+
 
