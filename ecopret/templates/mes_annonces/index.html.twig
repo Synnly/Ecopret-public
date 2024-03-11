@@ -14,73 +14,111 @@
 	<div class="allCard" id="allCard">
 		{% for annonce in annonces %}
 			{% set index = loop.index0 %}
-    		{% set typeAnnonce = typesAnnonces[index] %}
+			{% set typeAnnonce = typesAnnonces[index] %}
 			<div class="card" id="card">
 				<div class="card__title">
-					<h4 class="center">{{ annonce.getNomAnnonce()|replace({"\\'": "'"}) }} </h4>
+					<h4 class="center">{{ annonce.getNomAnnonce()|replace({"&amp;#039;": "'", "&quot;":"\""}) }}
+					</h4>
 				</div>
 				<div class="card__content_img">
-					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" width="150" height="150" id="imge1">
-					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}" width="150" height="150" id="imge2">
-					<img src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}" width="150" height="150" id="imge3">
+					{% if annonce.getImageAnnonce is defined and annonce.getImageAnnonce|split('|') is iterable %}
+						{% set images = annonce.getImageAnnonce|split('|') %}
+						{% if images|length > 0 %}
+							<img src="{{ '/picturesAnnouncement/' ~ images[0] }}" width="150" height="150" id="imge1">
+						{% else %}
+							<img src="/picturesAnnouncement/" width="150" height="150" id="imge1">
+						{% endif %}
+						{% if images|length > 1 %}
+							<img src="{{ '/picturesAnnouncement/' ~ images[1] }}" width="150" height="150" id="imge2">
+						{% else %}
+							<img src="/picturesAnnouncement/" width="150" height="150" id="imge2">
+						{% endif %}
+						{% if images|length > 2 %}
+							<img src="{{ '/picturesAnnouncement/' ~ images[2] }}" width="150" height="150" id="imge3">
+						{% else %}
+							<img src="/picturesAnnouncement/" width="150" height="150" id="imge3">
+						{% endif %}
+					{% endif %}
 				</div>
 				<div class="card__content">
-					<p class="center">{{ annonce.description|replace({"\\'": "'"}) }}</p>
+					<p class="center">{{ annonce.description|replace({"&amp;#039;": "'"})|replace({"&amp;#039;": "'", "&quot;":"\""}) }}</p>
 				</div>
 				<div class="card__content">
 					<p class="center">{{annonce.prix}}</p>
 					<img src="/img/florain.png" width="48" height="48" id="florain">
 				</div>
 				<div class="card__btn">
-					<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
-            			<b>Modifier</b>
-        			</button>
+					{% if annonce.getImageAnnonce is defined and annonce.getImageAnnonce|split('|') is iterable %}
+						{% set images = annonce.getImageAnnonce|split('|') %}
+						{% if images|length > 0 %}
+							{% if images|length > 1 %}
+								{% if images|length > 2 %}
+									<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
+										<b>Modifier</b>
+									</button>
+								{% else %}
+									<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
+										<b>Modifier</b>
+									</button>
+								{% endif %}
+							{% else %}
+								<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
+									<b>Modifier</b>
+								</button>
+							{% endif %}
+						{% else %}
+							<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
+								<b>Modifier</b>
+							</button>
+						{% endif %}
+					{% endif %}
+
 				</div>
 			</div>
 		{% endfor %}
 	</div>
 	<div id="card_modif" style="display : none">
-			<div class="card_m" id="card_m">
-				{{ form_start(form) }}
-				<h3 class="card__title_m">
-					Modifier une annonce
-				</h3>
-				<div class="card__content_img_m">
-					<img src="" width="150" height="150" id="img1" onclick="clickphoto('img1')">
-					<img src="" width="150" height="150" id="img2" onclick="clickphoto('img2')">
-					<img src="" width="150" height="150" id="img3" onclick="clickphoto('img3')">
+		<div class="card_m" id="card_m">
+			{{ form_start(form) }}
+			<h3 class="card__title_m">
+				Modifier une annonce
+			</h3>
+			<div class="card__content_img_m">
+				<img src="" width="150" height="150" id="img1" onclick="clickphoto('img1')">
+				<img src="" width="150" height="150" id="img2" onclick="clickphoto('img2')">
+				<img src="" width="150" height="150" id="img3" onclick="clickphoto('img3')">
+			</div>
+			<div id="id" style="display : none">{{form_row(form.id)}}</div>
+			<div class="card__content_m">
+				{{form_row(form.titre)}}
+			</div>
+			<div class="card__content_m">
+				{{form_row(form.description)}}
+			</div>
+			<div class="card__content_m">
+				{{form_row(form.prix)}}
+				<img src="/img/florain.png" width="48" height="48" id="florain_m">
+			</div>
+			<div class="card__content_m">
+				{{form_row(form.ajouterPhoto)}}
+				{{form_row(form.ajouterPhoto2)}}
+				{{form_row(form.ajouterPhoto3)}}
+			</div>
+			<div class="switch_m">
+				<div class="ES1_m">Emprunt</div>
+				<div class="toggle-switch_m">
+					<input name="toggle" class="toggle-input_m" id="toggle_m" type="checkbox">
+					<label class="toggle-label_m" for="toggle_m"></label>
 				</div>
-				<div id="id" style="display : none">{{form_row(form.id)}}</div>
-				<div class="card__content_m">
-					{{form_row(form.titre)}}
-				</div>
-				<div class="card__content_m">
-					{{form_row(form.description)}}
-				</div>
-				<div class="card__content_m">
-					{{form_row(form.prix)}}
-					<img src="/img/florain.png" width="48" height="48" id="florain_m">
-				</div>
-				<div class="card__content_m">
-					{{form_row(form.ajouterPhoto)}}
-					{{form_row(form.ajouterPhoto2)}}
-					{{form_row(form.ajouterPhoto3)}}
-				</div>
-				<div class="switch_m">
-					<div class="ES1_m">Emprunt</div>
-					<div class="toggle-switch_m">
-						<input name="toggle" class="toggle-input_m" id="toggle_m" type="checkbox">
-						<label class="toggle-label_m" for="toggle_m"></label>
-					</div>
-					<div class="ES2_m">Service</div>
-				</div>
-				<div class="card__btn_m">
-					<button type="button" class="annonce-btn_m" onclick="annulerModifierAnnonce()">
-						<b>Annuler</b>
-					</button>
-					<input type="submit" class="annonce-btn_m" value="Modification de l'annonce">
-					{{ form_end(form) }}
-				</div>
+				<div class="ES2_m">Service</div>
+			</div>
+			<div class="card__btn_m">
+				<button type="button" class="annonce-btn_m" onclick="annulerModifierAnnonce()">
+					<b>Annuler</b>
+				</button>
+				<input type="submit" class="annonce-btn_m" value="Modification de l'annonce">
+				{{ form_end(form) }}
 			</div>
 		</div>
+	</div>
 {% endblock %}
