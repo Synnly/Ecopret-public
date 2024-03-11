@@ -9,3 +9,11 @@ main:
 infos_modif:
     path: /infos/modif
     controller: App\Controller\InformationsPersonnellesController::afficherInformations
+eventt_add:
+    path: '/calandar'
+    controller: 'App\Controller\CalandarController::index'
+    methods: ['POST']
+event_add:
+    path: '/calandar/{idAnnonce}'
+    controller: 'App\Controller\CalandarController::index'
+
