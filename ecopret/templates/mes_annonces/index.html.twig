@@ -56,19 +56,23 @@
 									<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[2] }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
 										<b>Modifier</b>
 									</button>
+									<button class="planning-btn" onclick="modifierDisponibilite('{{annonce.getId()}}')">Disponibilité</button>
 								{% else %}
 									<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[1] }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
 										<b>Modifier</b>
 									</button>
+									<button class="planning-btn" onclick="modifierDisponibilite('{{annonce.getId()}}')">Disponibilité</button>
 								{% endif %}
 							{% else %}
 								<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
 									<b>Modifier</b>
 								</button>
+								<button class="planning-btn" onclick="modifierDisponibilite('{{annonce.getId()}}')">Disponibilité</button>
 							{% endif %}
 						{% else %}
 							<button type="button" class="annonce-btn" onclick="afficherModifierAnnonce('{{annonce.getNomAnnonce()}}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{ '/picturesAnnouncement/' }}', '{{annonce.description}}', '{{annonce.prix}}', '{{typeAnnonce}}', '{{annonce.id}}')">
 								<b>Modifier</b>
+								<button class="planning-btn" onclick="modifierDisponibilite('{{annonce.id}}')">DDisponibilité</button>
 							</button>
 						{% endif %}
 					{% endif %}
