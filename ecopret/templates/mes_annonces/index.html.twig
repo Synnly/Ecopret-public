@@ -11,6 +11,9 @@
 {% endblock %}
 {% block body %}
 	<h1>Mes annonces</h1>
+	<div class="btn-to-main-div">
+		<a class="btn-to-main" href="/main">Accueil</a>
+	</div>
 	<div class="allCard" id="allCard">
 		{% for annonce in annonces %}
 			{% set index = loop.index0 %}
