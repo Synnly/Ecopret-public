@@ -17,10 +17,10 @@ class Emprunt
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $id_annonce = null;
 
-    #[ORM\Column(length: 16380)]
+    #[ORM\Column(length: 16380, nullable: true)]
     private ?string $dates_emprunt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?int $id_emprunteur;
 
     public function getId(): ?int

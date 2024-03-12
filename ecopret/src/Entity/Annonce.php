@@ -19,7 +19,7 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $nom_annonce = null;
 
-    #[ORM\Column(length: 65535)]
+    #[ORM\Column(length: 50)]
     private ?string $disponibilite = null;
 
     #[ORM\Column]
@@ -73,6 +73,13 @@ class Annonce
     public function getEstUnEmprunt(): ?bool
     {
         return $this->est_un_emprunt;
+    }
+
+    public function setEstUnEmprunt(bool $isEmprunt): static
+    {
+        $this->est_un_emprunt = $isEmprunt;
+
+        return $this;
     }
 
     public function setNomAnnonce(string $nom_annonce): static
