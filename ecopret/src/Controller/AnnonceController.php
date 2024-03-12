@@ -34,6 +34,11 @@ class AnnonceController extends AbstractController
 
         if($form->isSubmitted()){
             if($form['oui']->isClicked()){
+                if(!($temp = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]))){
+                       $temp = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce]);
+                }
+
+                $entityManager->remove($temp);
                 $entityManager->remove($annonce);
                 $entityManager->flush();
             }
