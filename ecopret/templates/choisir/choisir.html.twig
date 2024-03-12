@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/choisir.css') }}">
+{% endblock %}
+
+{% block title %}Confirmation{% endblock %}
+
+{% block body %}
+<h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
+
+{{ form_start(choisirAnnonce) }}
+<div class="button_cancel">
+    {{ form_row(choisirAnnonce.oui) }}
+    {{ form_row(choisirAnnonce.non) }}
+</div>
+{{ form_end(choisirAnnonce) }}
+
+{% endblock %}

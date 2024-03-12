@@ -17,11 +17,11 @@ class Service
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $id_annonce = null;
 
-    #[ORM\Column(length: 16380)]
+    #[ORM\Column(length: 16380, nullable:true)]
     private ?string $dates_sevice = null;
 
-    #[ORM\Column]
-    private ?int $id_client;
+    #[ORM\Column(nullable:true)]
+    private ?int $id_client = null;
 
     public function getId(): ?int
     {

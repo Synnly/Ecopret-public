@@ -59,10 +59,12 @@ class MainController extends AbstractController
             $annonce->setDisponibilite("");
             $es = $request->request->get('toggle');
             if($es === "on"){
+                $annonce->setEstUnEmprunt(true);
                 $service = new Service();
                 $service->setIdAnnonce($annonce);
                 $entityManager->persist($service);
             }elseif ($es === null){
+                $annonce->setEstUnEmprunt(false);
                 $emprunt = new Emprunt();
                 $emprunt->setIdAnnonce($annonce);
                 $entityManager->persist($emprunt);
@@ -78,6 +80,9 @@ class MainController extends AbstractController
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
+
+        $annonces = $entityManager->getRepository(Annonce::class)->findAll();
+
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
@@ -108,12 +113,12 @@ class MainController extends AbstractController
                 $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
 
                 if($annonceCliquee->getEstUnEmprunt()) {
-                    $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $idAnnonce]);
-                    $emprunt->setEmprunteur($user->getId());
+                    $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
+                    $emprunt->setIdEmprunteur($user->getId());
                     $emprunt->setDatesEmprunt("test");
                 } else {
-                    $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $idAnnonce]);
-                    $service->setClient($user->getId());
+                    $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
+                    $service->setIdClient($user->getId());
                     $service->setDatesService("test");
                 }
 
