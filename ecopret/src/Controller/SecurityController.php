@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
                 
                 //Envoi du mail
                 $mail = new MailService();
-                $mail->sendMail($user, 'Réinitialisation du mot de passe.', "Bonjour,<br> Pour votre demande, veuillez suivre ce lien afin de réinitialiser votre mot de passe : .$url.");
+                $mail->sendMail($user, 'Réinitialisation du mot de passe.', "Bonjour,<br> Pour votre demande, veuillez suivre ce lien afin de réinitialiser votre mot de passe : $url");
 
                 return $this->redirectToRoute('main');
             }
