@@ -10,6 +10,7 @@ use App\Entity\Service;
 use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AjouterAnnonceType;
+use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,6 @@ class MainController extends AbstractController
     #[Route('/main', name: 'app_main')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $erreur = "";
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
@@ -82,7 +82,57 @@ class MainController extends AbstractController
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
             'form' => $form,
-            'error' => $erreur,
+            'annonces' => $annonces,
+        ]);
+    }
+
+    #[Route('/main/choisir/{annonceId}', name: 'app_choisir')]
+    public function choisirAnnonce(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
+        #Je récupère et stock l'id de l'annonce sur laquelle on clique
+        $uri = $request->getUri();
+        $paths = explode('/', $uri);
+        $idAnnonce = $paths[sizeof($paths) - 1];
+        $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
+
+        $form = $this->createForm(ChoisirAnnonceFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('oui')->isClicked()) {
+                // L'utilisateur a confirmé le choix de l'annonce
+                $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+
+                if($annonceCliquee->getEstUnEmprunt()) {
+                    $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $idAnnonce]);
+                    $emprunt->setEmprunteur($user->getId());
+                    $emprunt->setDatesEmprunt("test");
+                } else {
+                    $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $idAnnonce]);
+                    $service->setClient($user->getId());
+                    $service->setDatesService("test");
+                }
+
+                return $this->redirectToRoute('app_main');
+            } elseif ($form->get('non')->isClicked()) {
+                // L'utilisateur a annulé le choix
+                return $this->redirectToRoute('app_main');
+            }
+        }
+
+        $annonces = $entityManager->getRepository(Annonce::class)->findAll();
+
+
+        return $this->render('choisir/choisir.html.twig', [
+            'title' => 'EcoPrêt',
+            'user' => $this->getUser(),
+            'choisirAnnonce' => $form->createView(),
+            'annonces' => $annonces,
+            'annonceCliquee' => $annonceCliquee
         ]);
     }
 }

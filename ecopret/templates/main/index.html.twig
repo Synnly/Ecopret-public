@@ -120,7 +120,23 @@
 				<button class="plannin-btn" name="plannin-btn">Planning</button>
 				<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
 				{{ form_end(form) }}
+			{% endif %}
 			</div>
+		</div>
+
+		<div class="annonces_liste">
+			{% for annonce in annonces %}
+				<div class="annonce_content">
+					<div class="annonce">
+						<h3>{{ annonce.getNomAnnonce }}</h3>
+						<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#">
+					</div>
+					<div class="annonce_description">
+						<p>{{ annonce.getDescription }}</p>
+						<button type="button" class="modif_btn"><a href="./main/choisir/{{ annonce.getId }}">Choisir</a></button>						
+					</div>
+				</div>
+			{% endfor %}
 		</div>
 	</main>
 	<footer>
