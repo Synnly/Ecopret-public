@@ -23,16 +23,7 @@
 
         {{ form_start(DeclarerLitigeType) }}
         <div id="decl-form">
-
-            <div class="div-flex-row" id="typeUtil">
-                {{ form_label(DeclarerLitigeType.typeUtil) }}
-                {{ form_errors(DeclarerLitigeType.typeUtil) }}
-                {{ form_widget(DeclarerLitigeType.typeUtil) }}
-            </div>
-
             <div class="decl-reste">
-                {{ form_row(DeclarerLitigeType.prenom) }}
-                {{ form_row(DeclarerLitigeType.mail) }}
                 {{ form_row(DeclarerLitigeType.transaction) }}
                 {{ form_row(DeclarerLitigeType.description) }}
                 <div class="div-flex-row">

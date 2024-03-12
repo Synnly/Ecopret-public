@@ -20,44 +20,6 @@ class DeclarerLitigeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('typeUtil', ChoiceType::class, [
-                'choices' => [
-                    'Client' => 'client',
-                    'Prestataire' => 'prest',
-                ],
-                'label' => "Je suis",
-                'expanded' => true,
-                'multiple' => false,
-                'required' => true,
-                'mapped' => false,
-            ])
-            ->add('prenom', TextType::class, [
-                'attr' => ['placeholder' => 'Prénom'],
-                'required' => false,
-                'mapped' => false,
-                'label' => false,
-                'constraints' => [
-                    new Regex([
-                        'pattern' => '/^[A-Z][A-Za-z-]{0,18}[a-zA-Z]$/',
-                        'message' => 'Le prénom doit contenir entre 2 et 20 lettres'
-                    ])
-                ]
-            ])
-            ->add('mail', TextType::class, [
-                'attr' => ['placeholder' => 'Email'],
-                'label' => false,
-                'mapped' => false,
-                'constraints' => [
-                    //Le champs ne doit pas être vide sinon envoie du message
-                    new NotBlank(['message' => 'L\'adresse mail est requise.']),
-
-                    //Regex pour tester l'adresse mail
-                    new Regex([
-                        'pattern' => '/^[a-zA-Z]([a-zA-Z0-9-]*\.)?[a-zA-Z0-9-]+@[a-zA-Z-]+\.[a-zA-Z]{2,}$/',
-                        'message' => 'Votre adresse mail n\' est pas valide.'
-                    ])
-                ],
-            ])
             ->add('transaction',IntegerType::class,[
                 'attr' => ['placeholder' => 'Numéro de transaction'],
                 'label' => false,

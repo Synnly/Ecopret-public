@@ -25,6 +25,10 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('app_mes_annonces');
         }
 
+        if($annonce->getPrestataire()->getNoUtisateur()->getNoCompte() != $this->getUser()){
+            return $this->redirectToRoute('app_mes_annonces');
+        }
+
         $form = $this->createForm(SupprimerAnnonceFormType::class);
         $form->handleRequest($request);
 
