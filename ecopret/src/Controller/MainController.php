@@ -57,6 +57,7 @@ class MainController extends AbstractController
             }
             $annonce->setPrestataire($prestataire);
             $annonce->setDisponibilite("");
+
             $es = $request->request->get('toggle');
             if($es === "on"){
                 $annonce->setEstUnEmprunt(true);
@@ -82,12 +83,14 @@ class MainController extends AbstractController
         }
 
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
+        $bool_prix = null;
 
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
             'form' => $form,
             'annonces' => $annonces,
+            'bool_prix' => $bool_prix
         ]);
     }
 
@@ -98,11 +101,26 @@ class MainController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        #$utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+
         #Je récupère et stock l'id de l'annonce sur laquelle on clique
         $uri = $request->getUri();
         $paths = explode('/', $uri);
         $idAnnonce = $paths[sizeof($paths) - 1];
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
+        
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $bool_prix = true;
+        if($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
+            $bool_prix = false;
+        } else {
+            $bool_prix = true;
+        }
+
+        $no_dispo = false;
+        if($annonceCliquee->getDisponibilite() == "") {
+            $no_dispo = true;
+        }
 
         $form = $this->createForm(ChoisirAnnonceFormType::class);
         $form->handleRequest($request);
@@ -116,13 +134,17 @@ class MainController extends AbstractController
                     $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $emprunt->setIdEmprunteur($user->getId());
                     $emprunt->setDatesEmprunt("test");
+                    $entityManager->flush(); 
                 } else {
+
                     $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $service->setIdClient($user->getId());
                     $service->setDatesService("test");
+                    $entityManager->flush(); 
                 }
 
                 return $this->redirectToRoute('app_main');
+
             } elseif ($form->get('non')->isClicked()) {
                 // L'utilisateur a annulé le choix
                 return $this->redirectToRoute('app_main');
@@ -136,7 +158,9 @@ class MainController extends AbstractController
             'user' => $this->getUser(),
             'choisirAnnonce' => $form->createView(),
             'annonces' => $annonces,
-            'annonceCliquee' => $annonceCliquee
+            'annonceCliquee' => $annonceCliquee,
+            'bool_prix' => $bool_prix,
+            'no_dispo' => $no_dispo
         ]);
     }
 }

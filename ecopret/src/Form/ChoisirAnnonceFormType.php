@@ -13,11 +13,11 @@ class ChoisirAnnonceFormType extends AbstractType
     {
         $builder
             ->add('oui', SubmitType::class, [
-                'label' => 'Oui',
+                'label' => 'Choisir',
                 'attr' => ['class' => 'choisir_annonce_btn']
             ])
             ->add('non', SubmitType::class, [
-                'label' => 'Non',
+                'label' => 'Annuler',
                 'attr' => ['class' => 'choisir_annonce_btn']
             ]);
     }
