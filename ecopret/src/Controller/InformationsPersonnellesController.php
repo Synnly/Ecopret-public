@@ -46,7 +46,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root');
+            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -101,7 +101,6 @@ class InformationsPersonnellesController extends AbstractController
         // Traitement du formulaire
         if($form->isSubmitted() && $form->isValid()){
 
-            print $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])->getId();
             // Si pas d'utilisateur associé au compte, on en crée un
             if(($utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])) == null){
                 $utilisateur = new Utilisateur();
@@ -114,16 +113,17 @@ class InformationsPersonnellesController extends AbstractController
                 $utilisateur->setNbFlorains(0);
                 $entityManager->persist($utilisateur);
 
-
             // Si l'utilisateur veut passer prestataire
-            if($form->get('annonce')->getData() == "Oui" && $prestataire == null) {
+	    $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
+            if($form->get('annonce')->getData() == "oui" && $prestataire == null) {
                 $prestataire = new Prestataire();
-                $prestataire->setNoUtisateur($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user])->getNoCompte());
-                $entityManager->persist($prestataire);
+                $prestataire->setNoUtisateur($entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user]));
+		$entityManager->persist($prestataire);
+            	$entityManager->flush();
             }
 
             // Si l'utilisateur ne veut plus etre prestataire
-            if($form->get('annonce')->getData() == "Non" && $prestataire != null) {
+            if($form->get('annonce')->getData() == "non" && $prestataire != null) {
                 $entityManager->remove($prestataire);
             }
             // Remplacage de l'ancien lieu par le nouveau
