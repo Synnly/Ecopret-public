@@ -39,7 +39,12 @@
 {% if not bool_prix %}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
-<h3 class="choisir_disponibites">Voici les disponibilités : {{ annonceCliquee.getDisponibiliteLisible }}</h3>
+<h3 class="choisir_disponibites">Voici les disponibilités :</h3>
+<ol>
+    {% for dispo in listeDisponibilite %}
+        <li class="choisir_disponibites">{{ dispo }}</li>
+    {% endfor %}
+</ol>
 <h3>Vous n'avez pas assez de florains !</h3>
 
 {{ form_start(choisirAnnonce) }}

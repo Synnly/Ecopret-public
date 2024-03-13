@@ -73,10 +73,9 @@ class Annonce
         return $this->disponibilite;
     }
 
-    public function getDisponibiliteLisible(): array
+    public function getDisponibiliteLisible(): ?array
     {
         if($this->disponibilite != "") {
-            dd($this->disponibilite);
             $this->disponibilite = substr($this->disponibilite,0,-1);
 
             $dispoTab = explode('|', $this->disponibilite);
@@ -95,19 +94,21 @@ class Annonce
 
             return $finalDispoTab;
         } else {
-            return "";
+            return null;
         }
     }
 
-    public function removeChoice($indexChoice): static 
+    public function removeChoice($indexChoice): static
     {
         $dispoTab = explode('|', $this->disponibilite);
         unset($dispoTab[$indexChoice]);
 
         $this->disponibilite = "";
-        for($i = 0; $i < sizeof($dispoTab); $i++) {
-            $this->disponibilite = $this->disponibilite . "" . $dispoTab[$i] . "|";
+        foreach($dispoTab as $dispo) {
+            $this->disponibilite = $this->disponibilite . "" . $dispo . "|";
         }
+
+        return $this;
     }
 
     public function setDisponibilite(string $disponibilite): static
