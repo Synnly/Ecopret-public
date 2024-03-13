@@ -287,23 +287,58 @@ document.addEventListener("click", (e) => {
 
 //allow only time in eventtime from and to
 addEventFrom.addEventListener("input", (e) => {
-  addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-  if (addEventFrom.value.length === 2) {
-    addEventFrom.value += ":";
+  const currentValue = addEventFrom.value;
+  const newValue = currentValue.replace(/[^0-9:]/g, "");
+
+  // Vérifier si le caractère supprimé est un :
+  if (currentValue.length > newValue.length && currentValue.charAt(currentValue.length - 1) !== ':') {
+    // Mettre à jour la valeur en supprimant le dernier caractère
+    addEventFrom.value = newValue;
+    return;
   }
-  if (addEventFrom.value.length > 5) {
-    addEventFrom.value = addEventFrom.value.slice(0, 5);
+
+  // Ajouter ':' automatiquement après le 2ème caractère
+  if (newValue.length === 2 && currentValue.length <= 2 && e.inputType !== 'deleteContentBackward') {
+    addEventFrom.value = newValue + ":";
+    return;
   }
+
+  // Limiter la longueur à 5 caractères
+  if (newValue.length > 5) {
+    addEventFrom.value = newValue.slice(0, 5);
+    return;
+  }
+
+  // Mettre à jour la valeur
+  addEventFrom.value = newValue;
 });
 
+
 addEventTo.addEventListener("input", (e) => {
-  addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-  if (addEventTo.value.length === 2) {
-    addEventTo.value += ":";
+  const currentValue = addEventTo.value;
+  const newValue = currentValue.replace(/[^0-9:]/g, "");
+
+  // Vérifier si le caractère supprimé est un :
+  if (currentValue.length > newValue.length && currentValue.charAt(currentValue.length - 1) !== ':') {
+    // Mettre à jour la valeur en supprimant le dernier caractère
+    addEventTo.value = newValue;
+    return;
   }
-  if (addEventTo.value.length > 5) {
-    addEventTo.value = addEventTo.value.slice(0, 5);
+
+  // Ajouter ':' automatiquement après le 2ème caractère
+  if (newValue.length === 2 && currentValue.length <= 2 && e.inputType !== 'deleteContentBackward') {
+    addEventTo.value = newValue + ":";
+    return;
   }
+
+  // Limiter la longueur à 5 caractères
+  if (newValue.length > 5) {
+    addEventTo.value = newValue.slice(0, 5);
+    return;
+  }
+
+  // Mettre à jour la valeur
+  addEventTo.value = newValue;
 });
 
 //function to add event to eventsArr
@@ -334,24 +369,29 @@ addEventSubmit.addEventListener("click", () => {
   if(!dateInvalide(eventTimeFrom, eventTimeTo)){
     alert("L'heure de départ doit être plus grande que l'heure de fin");
   }else {
-    const timeFrom = convertTime(eventTimeFrom);
-    const timeTo = convertTime(eventTimeTo);
+    var timeFrom = convertTime(eventTimeFrom);
+    var timeTo = convertTime(eventTimeTo);
   
     //check if event is already added
     let eventExist = false;
-    eventsArr.forEach((event) => {
-      if (
-        event.day === activeDay &&
-        event.month === month + 1 &&
-        event.year === year
-      ) {
+    eventsArr.forEach((event, index) => {
+      if (event.day === activeDay && event.month === month + 1 && event.year === year ) {
         event.events.forEach((event) => {
-          if (event.title === eventTitle) {
-            eventExist = true;
+          newEventTime = timeFrom + " - " + timeTo;
+          if (seChevauchent(event.time, newEventTime)){
+            const [start1, end1] = event.time.split(' - ').map(time => time.split(':').map(Number));
+            const [start2, end2] = newEventTime.split(' - ').map(time => time.split(':').map(Number));
+
+            // Récupérer la plus petite heure de départ
+            timeFrom = getPlusPetiteHeure(start1, start2);
+
+            // Récupérer la plus grande heure de fin
+            timeTo = getPlusGrandeHeure(end1, end2);
+
+            eventsArr.splice(index, 1);
           }
         });
       }
-  
     });
     
     const newEvent = {
@@ -407,6 +447,44 @@ addEventSubmit.addEventListener("click", () => {
 
 });
 
+function seChevauchent(time1, time2){
+  const [start1, end1] = time1.split(' - ').map(time => time.split(':').map(Number));
+  const [start2, end2] = time2.split(' - ').map(time => time.split(':').map(Number));
+
+  if ((start1[0] < end2[0] && start2[0] < end1[0]) || (start1[0] === start2[0] && end1[0] === end2[0])) {
+    return true;
+  }else {
+    return false;
+  }
+}
+
+function getPlusPetiteHeure(heure1, heure2){
+  if(heure1[0] == heure2[0]){ // Même heure
+    if(heure1[1] <= heure2[1]) {
+      return getDateValide(heure1[0], heure1[1]);
+    }else {
+      return getDateValide(heure2[0], heure2[1]);
+    }
+  }else if (heure1[0] < heure2[0]) {
+    return getDateValide(heure1[0], heure1[1]);
+  }else {
+    return getDateValide(heure2[0], heure2[1]);
+  }
+}
+
+function getPlusGrandeHeure(heure1, heure2){
+  if(heure1[0] == heure2[0]){ // Même heure
+    if(heure1[1] <= heure2[1]) {
+      return getDateValide(heure2[0], heure2[1]);
+    }else {
+      return getDateValide(heure1[0], heure1[1]);
+    }
+  }else if (heure1[0] < heure2[0]) {
+    return getDateValide(heure2[0], heure2[1]);
+  }else {
+    return getDateValide(heure1[0], heure1[1]);
+  }
+}
 
 function dateInvalide(hour1, hour2){
   const [hour1Hour, hour1Minute] = hour1.split(":").map(Number);
@@ -419,6 +497,22 @@ function dateInvalide(hour1, hour2){
   } else {
       return false;
   }
+}
+
+function getDateValide(heure, minute){
+  var heureValide = "";
+  if(heure < 10){
+    heureValide = "0" + heure;
+  }else {
+    heureValide = heure;
+  }
+
+  if(minute < 10) {
+    heureValide += ":0" + minute;
+  }else {
+    heureValide += ":" + minute;
+  }
+  return heureValide;
 }
 
 addEventAllDay.addEventListener("click", () => {
@@ -447,18 +541,9 @@ eventsContainer.addEventListener("click", (e) => {
             const activeDayEl = document.querySelector(".day.active");
             if (activeDayEl.classList.contains("event")) {
               var stringInfos = event.day +"/"+ event.month +"/"+ event.year +";"+ eventTimeText.textContent + "|";
-              /*stringInfos = stringInfos.replace(" ","");
-              console.log(eventTimeText.textContent);
-              console.log(stringInfos);
-              stockInfos.value = stockInfos.value.replace(stringInfos, "");
-              console.log(stockInfos.value);*/
-
+              
               stringInfos = stringInfos.trim().replace(/\n\s*/g, "");
               stockInfos.value = stockInfos.value.replace(stringInfos, "");
-
-              //actualiserPage();
-
-              //stockInfos.value -= stringInfos;
 
               activeDayEl.classList.remove("event");
             }
