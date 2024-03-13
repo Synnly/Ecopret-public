@@ -28,6 +28,7 @@ class MainController extends AbstractController
         }
         $form = $this->createForm(AjouterAnnonceType::class);
         $form->handleRequest($request);
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         if ($form->isSubmitted() && $form->isValid()) {
             $linkImagesForAnnouncement = "";
             $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
@@ -47,7 +48,7 @@ class MainController extends AbstractController
             $annonce->setEstRendu(false);
         
             $annonce->setEstEnLitige(false);
-            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
             $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $user]);
             if($prestataire !== null){
                 $prestataire->setNoUtisateur($user); 
@@ -87,6 +88,7 @@ class MainController extends AbstractController
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
             'form' => $form,
+            'florins' => $user->getNbFlorains(),
             'annonces' => $annonces,
         ]);
     }
@@ -116,11 +118,13 @@ class MainController extends AbstractController
                     $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $emprunt->setIdEmprunteur($user->getId());
                     $emprunt->setDatesEmprunt("test");
+
                 } else {
                     $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $service->setIdClient($user->getId());
                     $service->setDatesService("test");
                 }
+                $entityManager->flush();
 
                 return $this->redirectToRoute('app_main');
             } elseif ($form->get('non')->isClicked()) {
