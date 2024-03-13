@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,7 +23,10 @@ class ChoisirAnnonceFormType extends AbstractType
                 'label' => 'Annuler',
                 'attr' => ['class' => 'choisir_annonce_btn']
             ])
-            ->add('numero_choix', TextType::class);
+            ->add('numero_choix', TextType::class, [
+                'attr' => [
+                    'placeholder' => 'Choisissez un numéro']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,12 +1,18 @@
 .button_cancel {
     position: absolute;
-    top: 50%;
     left: 45%;
+    top: 50%;
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
 }
 
-.button_cancel div:first-child {
+#choisir_annonce_form_oui {
+    display: none;
+    cursor: none;
+}
+
+.button_cancel > div:first-child {
     display: none;
     cursor: none;
 }
@@ -24,3 +30,28 @@ button {
 button:hover {
     cursor: pointer;
 }
+
+.liste_dispo {
+    position: relative;
+    left: 37%;
+    text-align: center;
+}
+
+li {
+    width: 25%;
+    font-size: 200%;
+    margin-top: 0%;
+    color: #658864;
+}
+
+label {
+    color: #658864;
+    font-weight: 900;
+    margin-right: 3%;
+}
+
+input {
+    height: 32px;
+    margin-right: 8px;
+}
+
