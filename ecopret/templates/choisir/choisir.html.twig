@@ -15,15 +15,17 @@
 {% block title %}Confirmation{% endblock %}
 
 {% block body %}
-{% if bool_prix and not no_dispo%}
+{% if bool_prix and not no_dispo %}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
 <h3 class="choisir_disponibites">Voici les disponibilités : </h3>
-<ol>
-{% for dispo in listeDisponibilite %}
-    <li class="choisir_disponibites">{{ dispo }}</li>
-{% endfor %}
-</ol>
+<div class="liste_dispo">
+    <ol>
+    {% for dispo in listeDisponibilite %}
+        <li class="choisir_disponibites">{{ dispo }}</li>
+    {% endfor %}
+    </ol>
+</div>
 
 {{ form_start(choisirAnnonce) }}
 <div class="button_cancel">
@@ -49,6 +51,7 @@
 
 {{ form_start(choisirAnnonce) }}
 <div class="button_cancel">
+    {{ form_row(choisirAnnonce.numero_choix )}}
     {{ form_row(choisirAnnonce.oui) }}
     {{ form_row(choisirAnnonce.non) }}
 </div>
@@ -64,6 +67,7 @@
 
 {{ form_start(choisirAnnonce) }}
 <div class="button_cancel">
+    {{ form_row(choisirAnnonce.numero_choix )}}
     {{ form_row(choisirAnnonce.oui) }}
     {{ form_row(choisirAnnonce.non) }}
 </div>
