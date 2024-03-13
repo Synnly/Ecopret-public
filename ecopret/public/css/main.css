@@ -134,7 +134,7 @@ nav > ul > li > a > .login-logo-mdp {
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 22px;
   width: 100%;
   height: 50px;

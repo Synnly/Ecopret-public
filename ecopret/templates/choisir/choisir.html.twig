@@ -2,12 +2,20 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/choisir.css') }}">
+
+    {% if bool_prix %}
+        <link rel="stylesheet" href="{{ asset('css/choisir.css') }}">
+    {% endif %}
+
+    {% if not bool_prix or no_dispo %}
+        <link rel="stylesheet" href="{{ asset('css/choisir2.css') }}">
+    {% endif %}
 {% endblock %}
 
 {% block title %}Confirmation{% endblock %}
 
 {% block body %}
+{% if bool_prix and not no_dispo%}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
 <h3 class="choisir_disponibites">Voici les disponibilités : {{ annonceCliquee.getDisponibiliteLisible }}</h3>
@@ -19,4 +27,41 @@
 </div>
 {{ form_end(choisirAnnonce) }}
 
+{% endif %}
+
+
+{% if not bool_prix %}
+<h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
+
+<h3 class="choisir_disponibites">Voici les disponibilités : {{ annonceCliquee.getDisponibiliteLisible }}</h3>
+<h3>Vous n'avez pas assez de florains !</h3>
+
+{{ form_start(choisirAnnonce) }}
+<div class="button_cancel">
+    {{ form_row(choisirAnnonce.oui) }}
+    {{ form_row(choisirAnnonce.non) }}
+</div>
+{{ form_end(choisirAnnonce) }}
+
+{% endif %}
+
+
+{% if bool_prix and no_dispo %}
+<h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
+
+<h3 class="choisir_disponibites">Aucune disponibilité !</h3>
+
+{{ form_start(choisirAnnonce) }}
+<div class="button_cancel">
+    {{ form_row(choisirAnnonce.oui) }}
+    {{ form_row(choisirAnnonce.non) }}
+</div>
+{{ form_end(choisirAnnonce) }}
+
+{% endif %}
 {% endblock %}
+
+
+
+
+
