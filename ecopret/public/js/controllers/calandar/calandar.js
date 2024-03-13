@@ -376,20 +376,9 @@ addEventSubmit.addEventListener("click", () => {
     let eventExist = false;
     eventsArr.forEach((event, index) => {
       if (event.day === activeDay && event.month === month + 1 && event.year === year ) {
-        event.events.forEach((event) => {
+        event.events.forEach((e) => {
           newEventTime = timeFrom + " - " + timeTo;
-          if (seChevauchent(event.time, newEventTime)){
-            const [start1, end1] = event.time.split(' - ').map(time => time.split(':').map(Number));
-            const [start2, end2] = newEventTime.split(' - ').map(time => time.split(':').map(Number));
-
-            // Récupérer la plus petite heure de départ
-            timeFrom = getPlusPetiteHeure(start1, start2);
-
-            // Récupérer la plus grande heure de fin
-            timeTo = getPlusGrandeHeure(end1, end2);
-
-            eventsArr.splice(index, 1);
-          }
+          
         });
       }
     });
