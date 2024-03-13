@@ -52,6 +52,9 @@ class RetourEmpruntFinServiceController extends AbstractController
         if($form->isSubmitted()){
             if($form['cloturer']->isClicked()){
                 $transaction->setEstCloture(true);
+		// On donne l'argent au prestataire
+		$compte->setNbFlorains($compte->getNbFlorains() +  $transaction->getAnnonce()->getPrix());
+		$entityManager->persist($compte);
                 $entityManager->persist($transaction);
                 $entityManager->flush();
                 return $this->redirectToRoute("app_main");
@@ -87,7 +90,7 @@ class RetourEmpruntFinServiceController extends AbstractController
         $prestataire = $transaction->getAnnonce()->getPrestataire();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
-        // User pas le prestataire de l'annonce
+        // User pas le client de l'annonce
         if($transaction->getClient()->getNoCompte() != $compte){
             return $this->redirectToRoute("app_page_accueil");
         }
@@ -103,6 +106,9 @@ class RetourEmpruntFinServiceController extends AbstractController
         if($form->isSubmitted()){
             if($form['cloturer']->isClicked()){
                 $transaction->setEstCloture(true);
+		// On donne l'argent au prestataire
+		$prestataire->getUtilisateur()->getNoCompte()->setNbFlorains($prestataire->getUtilisateur()->getNoCompte()->getNbFlorains() + $transaction->getAnnonce()->getPrix());
+		$entityManager->persist($prestataire);
                 $entityManager->persist($transaction);
                 $entityManager->flush();
                 return $this->redirectToRoute("app_main");
