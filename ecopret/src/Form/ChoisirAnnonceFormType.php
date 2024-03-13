@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 
 class ChoisirAnnonceFormType extends AbstractType
 {
@@ -19,7 +21,8 @@ class ChoisirAnnonceFormType extends AbstractType
             ->add('non', SubmitType::class, [
                 'label' => 'Annuler',
                 'attr' => ['class' => 'choisir_annonce_btn']
-            ]);
+            ])
+            ->add('numero_choix', TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

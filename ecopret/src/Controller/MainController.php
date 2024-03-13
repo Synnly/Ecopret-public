@@ -130,16 +130,22 @@ class MainController extends AbstractController
                 // L'utilisateur a confirmé le choix de l'annonce
                 $user = $this->getUser();
 
+                $disponibilites = $annonceCliquee->getDisponibiliteLisible();
+                $indexChoice = $form->get('numero_choix')->getData() - 1;
+
                 if(!$annonceCliquee->getEstUnEmprunt()) {
                     $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $emprunt->setIdEmprunteur($user->getId());
-                    $emprunt->setDatesEmprunt("test");
+                    $emprunt->setDatesEmprunt($disponibilites[$indexChoice]);
+                    $annonceCliquee->removeChoice($indexChoice);
+                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
                     $entityManager->flush(); 
                 } else {
-
                     $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $service->setIdClient($user->getId());
-                    $service->setDatesService("test");
+                    $service->setDatesService($disponibilites[$indexChoice]);
+                    $annonceCliquee->removeChoice($indexChoice);
+                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
                     $entityManager->flush(); 
                 }
 
@@ -153,6 +159,8 @@ class MainController extends AbstractController
 
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
 
+        #dd($annonceCliquee->getDatesAnnonce());
+
         return $this->render('choisir/choisir.html.twig', [
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
@@ -160,7 +168,8 @@ class MainController extends AbstractController
             'annonces' => $annonces,
             'annonceCliquee' => $annonceCliquee,
             'bool_prix' => $bool_prix,
-            'no_dispo' => $no_dispo
+            'no_dispo' => $no_dispo,
+            'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible()
         ]);
     }
 }

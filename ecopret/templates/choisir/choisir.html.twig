@@ -18,10 +18,16 @@
 {% if bool_prix and not no_dispo%}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
-<h3 class="choisir_disponibites">Voici les disponibilités : {{ annonceCliquee.getDisponibiliteLisible }}</h3>
+<h3 class="choisir_disponibites">Voici les disponibilités : </h3>
+<ol>
+{% for dispo in listeDisponibilite %}
+    <li class="choisir_disponibites">{{ dispo }}</li>
+{% endfor %}
+</ol>
 
 {{ form_start(choisirAnnonce) }}
 <div class="button_cancel">
+    {{ form_row(choisirAnnonce.numero_choix )}}
     {{ form_row(choisirAnnonce.oui) }}
     {{ form_row(choisirAnnonce.non) }}
 </div>
