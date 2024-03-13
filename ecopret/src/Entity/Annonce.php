@@ -94,15 +94,40 @@ class Annonce
         return $this->disponibilite;
     }
 
-    public function getDisponibiliteLisible(): ?string
+    public function getDisponibiliteLisible(): array
     {
         if($this->disponibilite != "") {
-            $lisibles = explode(';', $this->disponibilite);
-            $sous_lisible = explode('-', $lisibles[1]);
-            $lisible = "Le {$lisibles[0]} de {$sous_lisible[0]} à {$sous_lisible[1]}";
-            return $lisible;
+            dd($this->disponibilite);
+            $this->disponibilite = substr($this->disponibilite,0,-1);
+
+            $dispoTab = explode('|', $this->disponibilite);
+            $finalDispoTab = [];
+
+            for($i = 0; $i < sizeof($dispoTab); $i++) {
+                $dispoSeparee = explode('-', $dispoTab[$i]);
+                $popSeparee = array_pop($dispoSeparee);
+                $popSepareeLast = array_pop($dispoSeparee);
+                $jourDebut = explode(';', $popSepareeLast);
+                $last = array_pop($jourDebut);
+                $first = array_pop($jourDebut);
+                $dispoFormeFinale = "Le " . $first . " de " . $last . " à " . $popSeparee;
+                $finalDispoTab[$i] = $dispoFormeFinale;
+            }
+
+            return $finalDispoTab;
         } else {
             return "";
+        }
+    }
+
+    public function removeChoice($indexChoice): static 
+    {
+        $dispoTab = explode('|', $this->disponibilite);
+        unset($dispoTab[$indexChoice]);
+
+        $this->disponibilite = "";
+        for($i = 0; $i < sizeof($dispoTab); $i++) {
+            $this->disponibilite = $this->disponibilite . "" . $dispoTab[$i] . "|";
         }
     }
 
@@ -155,6 +180,11 @@ class Annonce
     public function getDatesAnnonce(): Collection
     {
         return $this->dates_annonce;
+    }
+    
+    public function getSizeDatesAnnonce() : int 
+    {
+        return sizeof($this->dates_annonce);
     }
 
     public function addDatesAnnonce(ListeDatesAnnonce $datesAnnonce): static
