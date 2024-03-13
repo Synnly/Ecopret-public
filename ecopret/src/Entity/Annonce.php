@@ -94,6 +94,14 @@ class Annonce
         return $this->disponibilite;
     }
 
+    public function getDisponibiliteLisible(): ?string
+    {
+        $lisibles = explode(';', $this->disponibilite);
+        $sous_lisible = explode('-', $lisibles[1]);
+        $lisible = "Le {$lisibles[0]} de {$sous_lisible[0]} à {$sous_lisible[1]}";
+        return $lisible;
+    }
+
     public function setDisponibilite(string $disponibilite): static
     {
         $this->disponibilite = $disponibilite;

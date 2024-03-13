@@ -110,9 +110,9 @@ class MainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('oui')->isClicked()) {
                 // L'utilisateur a confirmé le choix de l'annonce
-                $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
+                $user = $this->getUser();
 
-                if($annonceCliquee->getEstUnEmprunt()) {
+                if(!$annonceCliquee->getEstUnEmprunt()) {
                     $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                     $emprunt->setIdEmprunteur($user->getId());
                     $emprunt->setDatesEmprunt("test");
@@ -130,7 +130,6 @@ class MainController extends AbstractController
         }
 
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
-
 
         return $this->render('choisir/choisir.html.twig', [
             'title' => 'EcoPrêt',
