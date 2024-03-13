@@ -19,7 +19,7 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $nom_annonce = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 14500)]
     private ?string $disponibilite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
