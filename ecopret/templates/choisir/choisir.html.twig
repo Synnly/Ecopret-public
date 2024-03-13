@@ -10,6 +10,8 @@
 {% block body %}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
+<h3 class="choisir_disponibites">Voici les disponibilités : {{ annonceCliquee.getDisponibiliteLisible }}</h3>
+
 {{ form_start(choisirAnnonce) }}
 <div class="button_cancel">
     {{ form_row(choisirAnnonce.oui) }}
