@@ -19,8 +19,17 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $nom_annonce = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 14500)]
     private ?string $disponibilite = null;
+
+    #[ORM\Column]
+    private ?bool $est_rendu = null;
+
+    #[ORM\Column]
+    private ?bool $est_en_litige = null;
+
+    #[ORM\Column]
+    private ?bool $est_un_emprunt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image_annonce = null;
@@ -37,6 +46,12 @@ class Annonce
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Prestataire $prestataire = null;
+
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $prix = null;
 
     public function __construct()
     {
@@ -55,6 +70,18 @@ class Annonce
         return $this->nom_annonce;
     }
 
+    public function getEstUnEmprunt(): ?bool
+    {
+        return $this->est_un_emprunt;
+    }
+
+    public function setEstUnEmprunt(bool $isEmprunt): static
+    {
+        $this->est_un_emprunt = $isEmprunt;
+
+        return $this;
+    }
+
     public function setNomAnnonce(string $nom_annonce): static
     {
         $this->nom_annonce = $nom_annonce;
@@ -65,6 +92,44 @@ class Annonce
     public function getDisponibilite(): ?string
     {
         return $this->disponibilite;
+    }
+
+    public function getDisponibiliteLisible(): ?array
+    {
+        if($this->disponibilite != "") {
+            $this->disponibilite = substr($this->disponibilite,0,-1);
+
+            $dispoTab = explode('|', $this->disponibilite);
+            $finalDispoTab = [];
+
+            for($i = 0; $i < sizeof($dispoTab); $i++) {
+                $dispoSeparee = explode('-', $dispoTab[$i]);
+                $popSeparee = array_pop($dispoSeparee);
+                $popSepareeLast = array_pop($dispoSeparee);
+                $jourDebut = explode(';', $popSepareeLast);
+                $last = array_pop($jourDebut);
+                $first = array_pop($jourDebut);
+                $dispoFormeFinale = "Le " . $first . " de " . $last . " à " . $popSeparee;
+                $finalDispoTab[$i] = $dispoFormeFinale;
+            }
+
+            return $finalDispoTab;
+        } else {
+            return null;
+        }
+    }
+
+    public function removeChoice($indexChoice): static
+    {
+        $dispoTab = explode('|', $this->disponibilite);
+        unset($dispoTab[$indexChoice]);
+
+        $this->disponibilite = "";
+        foreach($dispoTab as $dispo) {
+            $this->disponibilite = $this->disponibilite . "" . $dispo . "|";
+        }
+
+        return $this;
     }
 
     public function setDisponibilite(string $disponibilite): static
@@ -92,6 +157,11 @@ class Annonce
     public function getDatesAnnonce(): Collection
     {
         return $this->dates_annonce;
+    }
+
+    public function getSizeDatesAnnonce() : int
+    {
+        return sizeof($this->dates_annonce);
     }
 
     public function addDatesAnnonce(ListeDatesAnnonce $datesAnnonce): static
@@ -184,6 +254,30 @@ class Annonce
     public function setPrestataire(?Prestataire $prestataire): static
     {
         $this->prestataire = $prestataire;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPrix(): ?string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(string $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }
