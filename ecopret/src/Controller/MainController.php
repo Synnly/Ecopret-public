@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Entity\Compte;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Annonce;
-use App\Entity\Compte;
 use App\Entity\Emprunt;
 use App\Entity\Prestataire;
 use App\Entity\Service;
