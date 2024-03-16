@@ -1,7 +1,6 @@
 .button_cancel {
     position: absolute;
     left: 45%;
-    top: 50%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

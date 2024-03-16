@@ -24,6 +24,7 @@ class ChoisirAnnonceFormType extends AbstractType
                 'attr' => ['class' => 'choisir_annonce_btn']
             ])
             ->add('numero_choix', TextType::class, [
+		'required' => false,
                 'attr' => [
                     'placeholder' => 'Choisissez un numéro']
             ]);

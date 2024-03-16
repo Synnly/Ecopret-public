@@ -62,6 +62,10 @@ function annulerAddAnnonce(){
     document.getElementById('ajouter_annonce_description').value = '';
     document.getElementById('ajouter_annonce_prix').value = '';
     document.getElementById('toggle').checked = false;
+	var allInput = [document.getElementById("ajouter_annonce_ajouterPhoto"), document.getElementById("ajouter_annonce_ajouterPhoto2"), document.getElementById("ajouter_annonce_ajouterPhoto3")];
+    	allInput.forEach(function(input) {
+        	input.value = '';
+    	});
 }
 function ValidImage(){
     extensions_admises = ['png', 'jpg', 'jpeg', ''];

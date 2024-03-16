@@ -43,10 +43,8 @@ class MesAnnoncesController extends AbstractController
             $annonce->setDescription($des);
             $annonce->setPrix($form->get("prix")->getData());
             $linkpic = explode("|",$annonce->getImageAnnonce());
-            dump($linkpic);
             $linkImagesForAnnouncement = "";
             $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
-            dump($files);
             $i = 0;
             foreach($files as $file){
                 if($file !== null){
