@@ -281,4 +281,23 @@ class Annonce
 
         return $this;
     }
+    public function getEstRendu(): ?bool
+    {
+        return $this->est_rendu;
+    }
+
+    public function setEstRendu(?bool $est_rendu): void
+    {
+        $this->est_rendu = $est_rendu;
+    }
+
+    public function getEstEnLitige(): ?bool
+    {
+        return $this->est_en_litige;
+    }
+
+    public function setEstEnLitige(?bool $est_en_litige): void
+    {
+        $this->est_en_litige = $est_en_litige;
+    }
 }

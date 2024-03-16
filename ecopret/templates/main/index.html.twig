@@ -130,11 +130,11 @@
 			{% for annonce in annonces %}
 				<div class="annonce_content">
 					<div class="annonce">
-						<h3>{{ annonce.getNomAnnonce }}</h3>
-						<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#">
+						<h3>{{ annonce.getNomAnnonce|replace({"&amp;#039;": "'", "&quot;":"\""})  }}</h3>
+						<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}">
 					</div>
 					<div class="annonce_description">
-						<p>{{ annonce.getDescription }}</p>
+						<p>{{ annonce.getDescription|replace({"&amp;#039;": "'", "&quot;":"\""}) }}</p>
 						<button type="button" class="annonce_button"><a href="./main/choisir/{{ annonce.getId }}">Choisir</a></button>						
 					</div>
 				</div>
