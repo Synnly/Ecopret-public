@@ -9,6 +9,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\PlanningFormType;
 use App\Entity\Annonce;
+use App\Entity\Utilisateur;
+use App\Entity\Compte;
+
 
 
 class CalandarController extends AbstractController
@@ -20,8 +23,14 @@ class CalandarController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $user = $this->getUser();
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
         $annonce = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
         $disponibilite = $annonce->getDisponibilite();
+        $prestataire = $annonce->getPrestataire();
+
+        if ($utilisateur->getId() != $prestataire->getNoUtisateur()->getId()){
+            return $this->redirectToRoute('app_main');
+        }
         
         global $erreur;
 
