@@ -377,25 +377,19 @@ addEventSubmit.addEventListener("click", () => {
     const selectedOption = select.options[select.selectedIndex].value;
     switch (selectedOption) {
       case "daily":
-        if (nbRecursion.value == ""){
-          alert("Choisissez un nombre de récursion");
-          break;
+        if (checkRecursiveValue()){
+          addEventNextXDays(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         }
-        addEventNextXDays(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         break;
       case "weekly":
-        if (nbRecursion.value == ""){
-          alert("Choisissez un nombre de récursion");
-          break;
+        if (checkRecursiveValue()){
+          addEventNextXWeeks(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         }
-        addEventNextXWeeks(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         break;
       case "monthly":
-        if (nbRecursion.value == ""){
-          alert("Choisissez un nombre de récursion");
-          break;
+        if (checkRecursiveValue()){
+          addEventNextXMonths(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         }
-        addEventNextXMonths(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
         break;
       default:
         const newEvent = {
@@ -455,6 +449,18 @@ addEventSubmit.addEventListener("click", () => {
   }
 
 });
+
+function checkRecursiveValue(){
+  if (nbRecursion.value == ""){
+    alert("Choisissez un nombre de récursion");
+    return false;
+  }
+  if (nbRecursion.value < 2 || nbRecursion.value > 50){
+    alert("Le nombre de récursion doit être entre 2 et 50");
+    return false;
+  }
+  return true;
+}
 
 function addEventNextXDays(activeDay, month, year, timeFrom, timeTo, recursion) {
   const newEvent = {
