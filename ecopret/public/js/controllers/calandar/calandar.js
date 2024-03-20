@@ -14,9 +14,11 @@ const calendar = document.querySelector(".calendar"),
   addEventCloseBtn = document.querySelector(".close "),
   addEventFrom = document.querySelector(".event-time-from "),
   addEventTo = document.querySelector(".event-time-to "),
-  addEventSubmit = document.querySelector(".add-event-btn ");
-  addEventAllDay = document.querySelector(".event-time-all ");
+  addEventSubmit = document.querySelector(".add-event-btn "),
+  addEventAllDay = document.querySelector(".event-time-all "),
+  select = document.querySelector("select");
   stockInfos = document.querySelector(".infos ");
+  
 
 let today = new Date();
 let activeDay;
@@ -211,7 +213,6 @@ dateInput.addEventListener("input", (e) => {
 gotoBtn.addEventListener("click", gotoDate);
 
 function gotoDate() {
-  console.log("here");
   const dateArr = dateInput.value.split("/");
   if (dateArr.length === 2) {
     if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
@@ -372,52 +373,54 @@ addEventSubmit.addEventListener("click", () => {
     var timeFrom = convertTime(eventTimeFrom);
     var timeTo = convertTime(eventTimeTo);
   
-    //check if event is already added
-    let eventExist = false;
-    eventsArr.forEach((event, index) => {
-      if (event.day === activeDay && event.month === month + 1 && event.year === year ) {
-        event.events.forEach((e) => {
-          newEventTime = timeFrom + " - " + timeTo;
-          
-        });
-      }
-    });
-    
-    const newEvent = {
-      title: "Disponible",
-      time: timeFrom + " - " + timeTo,
-    };
-    let eventAdded = false;
-    if (eventsArr.length > 0) {
-      eventsArr.forEach((item) => {
-        if (item.day === activeDay && item.month === month + 1 && item.year === year) {
-          item.events.push(newEvent);
-          eventAdded = true;
+    const selectedOption = select.options[select.selectedIndex].value;
+    switch (selectedOption) {
+      case "daily":
+          addEventNext30Days(activeDay, month, year, timeFrom, timeTo);
+          break;
+      case "weekly":
+          addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo);
+          break;
+      case "monthly":
+          addEventNext12Months(activeDay, month, year, timeFrom, timeTo);
+          break;
+      default:
+        const newEvent = {
+          title: "Disponible",
+          time: timeFrom + " - " + timeTo,
+        };
+        let eventAdded = false;
+        if (eventsArr.length > 0) {
+          eventsArr.forEach((item) => {
+            if (item.day === activeDay && item.month === month + 1 && item.year === year) {
+              item.events.push(newEvent);
+              eventAdded = true;
+            }
+          });
         }
-      });
+      
+        if (!eventAdded) {
+          eventsArr.push({
+            day: activeDay,
+            month: month + 1,
+            year: year,
+            events: [newEvent],
+          });
+        }
+        const stringInfos = activeDay +"/"+ (month+1) +"/"+ year +";"+ newEvent.time + "|";
+        stockInfos.value += stringInfos
+        addEventWrapper.classList.remove("active");
+        addEventFrom.value = "";
+        addEventTo.value = "";
+        updateEvents(activeDay);
+        //select active day and add event class if not added
+        const activeDayEl = document.querySelector(".day.active");
+        if (!activeDayEl.classList.contains("event")) {
+          activeDayEl.classList.add("event");
+        }
+        break;
     }
-  
-    if (!eventAdded) {
-      eventsArr.push({
-        day: activeDay,
-        month: month + 1,
-        year: year,
-        events: [newEvent],
-      });
-    }
-    const stringInfos = activeDay +"/"+ (month+1) +"/"+ year +";"+ newEvent.time + "|";
-    stockInfos.value += stringInfos
-  
-    addEventWrapper.classList.remove("active");
-    addEventFrom.value = "";
-    addEventTo.value = "";
-    updateEvents(activeDay);
-    //select active day and add event class if not added
-    const activeDayEl = document.querySelector(".day.active");
-    if (!activeDayEl.classList.contains("event")) {
-      activeDayEl.classList.add("event");
-    }
-  
+
     // Envoyer les données au contrôleur via AJAX
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/CalandarController", true);
@@ -430,11 +433,98 @@ addEventSubmit.addEventListener("click", () => {
     };
     var data = JSON.stringify({ "timeFrom": timeFrom, "timeTo": timeTo, "infos": infos });
     xhr.send(data);
-  
+
     initCalendar();
   }
 
 });
+
+function addEventNext30Days(activeDay, month, year, timeFrom, timeTo) {
+  const newEvent = {
+    title: "Disponible",
+    time: timeFrom + " - " + timeTo,
+  };
+  // Construction de la chaîne d'informations pour le stockage
+  let stringInfos = "";
+  let currentDate;
+  var newDisponibilite = "";
+  for (let i = 0; i < 31; i++) {
+    const eventDate = new Date(year, month, activeDay + i);
+    const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
+    stringInfos = formattedDate + ";" + newEvent.time + "|";
+    newDisponibilite += stringInfos;
+    addEventWrapper.classList.remove("active");
+
+    currentDate = new Date(today); 
+    currentDate.setDate(currentDate.getDate() + i);
+    const dayElement = daysContainer[currentDate.getDate() - 1];
+    if (dayElement) {
+      if (!dayElement.classList.contains("event")) {
+        dayElement.classList.add('event');
+      }
+    }
+  }
+  stockInfos.value += newDisponibilite;
+  setDisponibility(stockInfos.value);
+}
+
+function addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo) {
+  const newEvent = {
+    title: "Disponible",
+    time: timeFrom + " - " + timeTo,
+  };
+  // Construction de la chaîne d'informations pour le stockage
+  let stringInfos = "";
+  let currentDate;
+  var newDisponibilite = "";
+  for (let i = 0; i < 91; i += 7) {
+    const eventDate = new Date(year, month, activeDay + i);
+    const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
+    stringInfos = formattedDate + ";" + newEvent.time + "|";
+    newDisponibilite += stringInfos;
+    addEventWrapper.classList.remove("active");
+
+    currentDate = new Date(today); 
+    currentDate.setDate(currentDate.getDate() + i);
+    const dayElement = daysContainer[currentDate.getDate() - 1];
+    if (dayElement) {
+      if (!dayElement.classList.contains("event")) {
+        dayElement.classList.add('event');
+      }
+    }
+  }
+  stockInfos.value += newDisponibilite;
+  setDisponibility(stockInfos.value);
+}
+
+function addEventNext12Months(activeDay, month, year, timeFrom, timeTo) {
+  const newEvent = {
+    title: "Disponible",
+    time: timeFrom + " - " + timeTo,
+  };
+  // Construction de la chaîne d'informations pour le stockage
+  let stringInfos = "";
+  let currentDate;
+  var newDisponibilite = "";
+  for (let i = 0; i < 12; i++) {
+    const eventDate = new Date(year, month + i, activeDay);
+    const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
+    stringInfos = formattedDate + ";" + newEvent.time + "|";
+    newDisponibilite += stringInfos;
+    addEventWrapper.classList.remove("active");
+
+    currentDate = new Date(today); 
+    currentDate.setMonth(currentDate.getMonth() + i);
+    const dayElement = daysContainer[currentDate.getDate() - 1];
+    if (dayElement) {
+      if (!dayElement.classList.contains("event")) {
+        dayElement.classList.add('event');
+      }
+    }
+  }
+  stockInfos.value += newDisponibilite;
+  setDisponibility(stockInfos.value);
+}
 
 function seChevauchent(time1, time2){
   const [start1, end1] = time1.split(' - ').map(time => time.split(':').map(Number));
@@ -564,12 +654,11 @@ function getEvents() {
     return;
   }
   eventsArr.push(...JSON.parse(localStorage.getItem("events")));
-  console.log(eventsArr);
 }
 
 function parseDisponibilite(dispo) {
   
-  const events = [];
+  eventsArr.splice(0, eventsArr.length);
   const parts = dispo.split("|").filter(Boolean);
   
   for (let part of parts) {
@@ -589,17 +678,14 @@ function parseDisponibilite(dispo) {
          year: parseInt(annee),
          events: [newEvent],
        });
-      console.log(eventsArr);
-
     }
   }
-  
-  return events;
+  console.log(eventsArr);
 }
 
 function setDisponibility(disponibilite) {
   stockInfos.value = disponibilite;
-  const parseDispo = parseDisponibilite(disponibilite);
+  parseDisponibilite(disponibilite);
   initCalendar();
 }
 
@@ -622,4 +708,8 @@ function actualiserPage() {
 
 function submitForm() {
   document.getElementById("myForm").submit();
+}
+
+function removeAllEvent(){
+  setDisponibility("");
 }

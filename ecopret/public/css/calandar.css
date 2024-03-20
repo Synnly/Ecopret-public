@@ -394,6 +394,30 @@ body {
   pointer-events: none;
 }
 
+.delete {
+  position: absolute;
+  bottom: 30px;
+  right: 180px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #878895;
+  border: 2px solid #878895;
+  opacity: 0.5;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+}
+.delete:hover {
+  opacity: 1;
+}
+.delete i {
+  pointer-events: none;
+}
+
 .valid {
   position: absolute;
   bottom: 30px;
@@ -441,7 +465,8 @@ body {
   transition: max-height 0.5s ease;
 }
 .add-event-wrapper.active {
-  max-height: 350px;
+  max-height: 390px;
+  min-height: 390px;
 }
 .add-event-header {
   width: 100%;
@@ -623,4 +648,58 @@ body {
 }
 .credits a:hover {
   text-decoration: underline;
+}
+
+.label-recursive {
+  color: #000;
+}
+
+.radio-label {
+  color: #000;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px; 
+}
+
+.dropdown select {
+  background-color: #658864;
+  color: #fff;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button; 
+}
+
+.dropdown::before,
+.dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.dropdown::after { 
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.dropdown::before {
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
 }
