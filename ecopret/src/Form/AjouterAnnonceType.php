@@ -19,7 +19,7 @@ class AjouterAnnonceType extends AbstractType
             ->add('titre', TextType::class)
             ->add('description', TextareaType::class,[ 'attr' => [
                 'rows' => 3,
-                'cols' => 45, 
+                'cols' => 32, 
             ],    
         ])
             ->add('ajouterPhoto', FileType::class, [

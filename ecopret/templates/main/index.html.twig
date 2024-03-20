@@ -21,9 +21,26 @@
 				</a>
 			</li>
 			<li>
-				<h3 class="nbFlorins">Florains : {{ florins }}</h3>
+				<div class="container">
+					<span class="hover-me">Florains :
+					{{ florins }}</span>
+					<div class="tooltip">
+						<p>Money Money Money 💸</p>
+					</div>
+				</div>
 			</li>
-			<li><input type="text" placeholder="Rechercher" class="inputSearch"></li>
+			<li>
+				<div class="InputContainer">
+					<input type="text" name="text" class="inputSearch" id="recherche" placeholder="Search">
+
+					<label for="input" class="labelforsearch">
+						<svg viewbox="0 0 512 512" class="searchIcon" onclick="filtrageAnnonces()">
+							<path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"></path>
+						</svg>
+					</label>
+					<div class="border"></div>
+				</li>
+			</li>
 			<li class="menu-deroulant">
 				<a href="" class="nomUser">{{user.getNomCompte()}}
 				</a>
@@ -73,7 +90,46 @@
 			</li>
 		</ul>
 	</nav>
+	<div id="rechercheOptions" style="display : none">
+		<div>
+			<label for="emprunt">Emprunt</label>
+			<input type="radio" id="emprunt" name="ES">
+			<label for="service">Service</label>
+			<input type="radio" id="service" name="ES">
+		</div>
+		<div>
+			<select name="categorie">
+				<option value="toute">Toutes catégories</option>
+				<option value="bricolage">Bricolage</option>
+				<option value="vehicule">Véhicule</option>
+				<option value="immobilier">Immobilier</option>
+				<option value="test">Test</option>
+			</select>
+
+		</div>
+		<div>
+			<label for="prix">Prix</label>
+			<input type="text" id="prix" name="prix">
+		</div>
+		<div>
+			<label for="triPC">Prix croissant</label>
+			<input type="radio" id="triPC" name="tri">
+			<label for="triPD">Prix décroissant</label>
+			<input type="radio" id="triPD" name="tri">
+			<label for="triDC">Plus récentes</label>
+			<input type="radio" id="triDC" name="tri">
+			<label for="triDD">Plus ancienne</label>
+			<input type="radio" id="triDD" name="tri">
+		</div>
+		<div>
+			<label for="dateD">Date de début</label>
+			<input type="date" id="DateD" name="date">
+			<label for="DateF">Date de fin</label>
+			<input type="date" id="DateF" name="date">
+		</div>
+	</div>
 	<main>
+		<div class="loader" id="loader" style="display : none"></div>
 		<div>
 			<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
 				<h3>Ajouter une annonce</h3>
@@ -81,72 +137,81 @@
 		</div>
 		{{ form_start(form) }}
 		{% if error is defined and error == "pasValide" %}
-			<div class="card" id="card" >
-		{% else %}
-			<div class="card" id="card" style="display : none;">
-		{% endif %}
-			<h3 class="card__title">
-				Ajouter une annonce
-			</h3>
-			<div class="card__content_img">
-				<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
-				<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
-				<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
-			</div>
-			<div class="card__content">
-				{{form_row(form.titre)}}
-			</div>
-			<div class="card__content">
-				{{form_row(form.description)}}
-			</div>
-			<div class="card__content">
-				{{form_row(form.prix)}}
-				<img src="/img/florain.png" width="48" height="48" id="florain">
-			</div>
-			<div class="card__content">
-				{{form_row(form.ajouterPhoto)}}
-				{{form_row(form.ajouterPhoto2)}}
-				{{form_row(form.ajouterPhoto3)}}
-			</div>
-			<div class="switch">
-				<div class="ES1">Emprunt</div>
-				<div class="toggle-switch">
-					<input name="toggle" class="toggle-input" id="toggle" type="checkbox">
-					<label class="toggle-label" for="toggle"></label>
+			<div class="card" id="card">
+			{% else %}
+				<div class="card" id="card" style="display : none;">
+				{% endif %}
+				<h3 class="card__title">
+					Ajouter une annonce
+				</h3>
+				<div class="card__content_img">
+					<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
+					<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
+					<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
 				</div>
-				<div class="ES2">Service</div>
-			</div>
-			<div class="card__btn">
-				<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
-					<b>Annuler</b>
-				</button>
-				<button class="plannin-btn" name="plannin-btn">Planning</button>
-				<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
-				{{ form_end(form) }}
-			</div>
-		</div>
-
-		<div class="annonces_liste">
-			{% for annonce in annonces %}
-				<div class="annonce_content">
-					<div class="annonce">
-						<h3>{{ annonce.getNomAnnonce }}</h3>
-						<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#">
-					</div>
-					<div class="annonce_description">
-						<p>{{ annonce.getDescription }}</p>
-						<button type="button" class="annonce_button"><a href="./main/choisir/{{ annonce.getId }}">Choisir</a></button>						
-					</div>
+				<div class="card__content">
+					{{form_row(form.titre)}}
 				</div>
-			{% endfor %}
-		</div>
-	</main>
-	<footer>
-		<ul>
-			<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
-			<li><a href=""><h5></h5></a></li>
-			<li><a href=""><h5>© Copyright 2024 ECOPRET<br>Tous droits réservés.</h5></a></li>
-		</ul>
-	</footer>
+				<div class="card__content">
+					{{form_row(form.description)}}
+				</div>
+				<div class="card__content">
+					{{form_row(form.prix)}}
+					<img src="/img/florain.png" width="48" height="48" id="florain">
+				</div>
+				<div class="card__content">
+					{{form_row(form.ajouterPhoto)}}
+					{{form_row(form.ajouterPhoto2)}}
+					{{form_row(form.ajouterPhoto3)}}
+				</div>
+				<div class="switch">
+					<div class="ES1">Emprunt</div>
+					<div class="toggle-switch">
+						<input name="toggle" class="toggle-input" id="toggle" type="checkbox">
+						<label class="toggle-label" for="toggle"></label>
+					</div>
+					<div class="ES2">Service</div>
+				</div>
+				<div class="card__btn">
+					<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
+						<b>Annuler</b>
+					</button>
+					<button class="plannin-btn" name="plannin-btn">Planning</button>
+					<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
+					{{ form_end(form) }}
+				</div>
+			</div>
 
-{% endblock %}
+			<div class="annonces_liste">
+				{% for annonce in annonces %}
+					<div class="card_list" id="card">
+						<h3 class="card__title" id="titreAnnonce">
+							{{ annonce.getNomAnnonce }}
+						</h3>
+						<div class="card__content_img">
+							<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#" width="150" height="150">
+						</div>
+						<div class="card__content">
+							<p id="descAnnonce">{{ annonce.getDescription }}</p>
+						</div>
+						<div class="card__content">
+							Prix :
+							<p id="price_annonce">{{ annonce.getPrix }}</p>
+						</div>
+
+						<div class="card__btn">
+							<a href="./main/choisir/{{ annonce.getId }}" class="annonce-btn">Choisir</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</main>
+		<footer>
+			<ul>
+				<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
+				<li><a href=""><h5></h5></a></li>
+				<li><a href=""><h5>© Copyright 2024 ECOPRET<br>Tous droits réservés.</h5></a></li>
+			</ul>
+		</footer>
+
+	{% endblock %}
