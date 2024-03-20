@@ -444,6 +444,8 @@ addEventSubmit.addEventListener("click", () => {
     addEventFrom.value = "";
     addEventTo.value = "";
     nbRecursion.value = "";
+    select.value = "none";
+    changeSelect();
 
     initCalendar();
   }
