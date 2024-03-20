@@ -89,6 +89,8 @@ class GelController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $utilisateur->setEstGele(false);
+            $utilisateur->setDateDebGel(null);
+            $utilisateur->setDateFinGel(null);
             $entityManager->persist($utilisateur);
             $entityManager->flush();
             return $this->redirectToRoute('app_main');

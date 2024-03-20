@@ -65,6 +65,17 @@
                     <div class="add-event-input">
                         <input type="text" placeholder="Jusqu'à" class="event-time-to"/>
                     </div>
+                    <div class="dropdown">
+                        <select class="select" onchange="changeSelect()">    
+                            <option value="none">Aucune récurrence</option>
+                            <option value="daily">Tous les jours</option>  
+                            <option value="weekly">Toutes les semaines</option>
+                            <option value="monthly">Tout les mois</option>
+                        </select>
+                    </div>
+                    <div class="add-event-input">
+                        <input type="number" placeholder="Nombre de récursions" class="nb-recursion-input" min="2" max="50" style="display : none;"/>
+                    </div>
                     <div class="add-event-footer">
                         <button type="button" class="event-time-all">Toute la journée</button>
                     </div>
@@ -78,6 +89,9 @@
             {{ form_end(form) }}
         </div>
     </div>
+    <button class="delete" onclick="removeAllEvent()" title="Tout supprimer">
+        <i class="fa fa-trash"></i>
+    </button>
     <button type="submit" class="valid" onclick="submitForm()" title="Valider">
         <i class="fas fa-check"></i>
     </button>
