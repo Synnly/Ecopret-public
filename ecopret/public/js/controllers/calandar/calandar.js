@@ -16,7 +16,8 @@ const calendar = document.querySelector(".calendar"),
   addEventTo = document.querySelector(".event-time-to "),
   addEventSubmit = document.querySelector(".add-event-btn "),
   addEventAllDay = document.querySelector(".event-time-all "),
-  select = document.querySelector("select");
+  select = document.querySelector("select"),
+  nbRecursion = document.querySelector(".nb-recursion-input");
   stockInfos = document.querySelector(".infos ");
   
 
@@ -376,14 +377,26 @@ addEventSubmit.addEventListener("click", () => {
     const selectedOption = select.options[select.selectedIndex].value;
     switch (selectedOption) {
       case "daily":
-          addEventNext30Days(activeDay, month, year, timeFrom, timeTo);
+        if (nbRecursion.value == ""){
+          alert("Choisissez un nombre de récursion");
           break;
+        }
+        addEventNextXDays(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
+        break;
       case "weekly":
-          addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo);
+        if (nbRecursion.value == ""){
+          alert("Choisissez un nombre de récursion");
           break;
+        }
+        addEventNextXWeeks(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
+        break;
       case "monthly":
-          addEventNext12Months(activeDay, month, year, timeFrom, timeTo);
+        if (nbRecursion.value == ""){
+          alert("Choisissez un nombre de récursion");
           break;
+        }
+        addEventNextXMonths(activeDay, month, year, timeFrom, timeTo, nbRecursion.value);
+        break;
       default:
         const newEvent = {
           title: "Disponible",
@@ -434,12 +447,16 @@ addEventSubmit.addEventListener("click", () => {
     var data = JSON.stringify({ "timeFrom": timeFrom, "timeTo": timeTo, "infos": infos });
     xhr.send(data);
 
+    addEventFrom.value = "";
+    addEventTo.value = "";
+    nbRecursion.value = "";
+
     initCalendar();
   }
 
 });
 
-function addEventNext30Days(activeDay, month, year, timeFrom, timeTo) {
+function addEventNextXDays(activeDay, month, year, timeFrom, timeTo, recursion) {
   const newEvent = {
     title: "Disponible",
     time: timeFrom + " - " + timeTo,
@@ -448,7 +465,7 @@ function addEventNext30Days(activeDay, month, year, timeFrom, timeTo) {
   let stringInfos = "";
   let currentDate;
   var newDisponibilite = "";
-  for (let i = 0; i < 31; i++) {
+  for (let i = 0; i < recursion; i++) {
     const eventDate = new Date(year, month, activeDay + i);
     const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
     stringInfos = formattedDate + ";" + newEvent.time + "|";
@@ -468,7 +485,7 @@ function addEventNext30Days(activeDay, month, year, timeFrom, timeTo) {
   setDisponibility(stockInfos.value);
 }
 
-function addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo) {
+function addEventNextXWeeks(activeDay, month, year, timeFrom, timeTo, recursion) {
   const newEvent = {
     title: "Disponible",
     time: timeFrom + " - " + timeTo,
@@ -477,7 +494,7 @@ function addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo) {
   let stringInfos = "";
   let currentDate;
   var newDisponibilite = "";
-  for (let i = 0; i < 91; i += 7) {
+  for (let i = 0; i < (7*recursion); i += 7) {
     const eventDate = new Date(year, month, activeDay + i);
     const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
     stringInfos = formattedDate + ";" + newEvent.time + "|";
@@ -497,7 +514,7 @@ function addEventNext13Weeks(activeDay, month, year, timeFrom, timeTo) {
   setDisponibility(stockInfos.value);
 }
 
-function addEventNext12Months(activeDay, month, year, timeFrom, timeTo) {
+function addEventNextXMonths(activeDay, month, year, timeFrom, timeTo, recursion) {
   const newEvent = {
     title: "Disponible",
     time: timeFrom + " - " + timeTo,
@@ -506,7 +523,7 @@ function addEventNext12Months(activeDay, month, year, timeFrom, timeTo) {
   let stringInfos = "";
   let currentDate;
   var newDisponibilite = "";
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < recursion; i++) {
     const eventDate = new Date(year, month + i, activeDay);
     const formattedDate = eventDate.getDate() + "/" + (eventDate.getMonth() + 1) + "/" + eventDate.getFullYear();
     stringInfos = formattedDate + ";" + newEvent.time + "|";
@@ -680,7 +697,6 @@ function parseDisponibilite(dispo) {
        });
     }
   }
-  console.log(eventsArr);
 }
 
 function setDisponibility(disponibilite) {
@@ -713,3 +729,12 @@ function submitForm() {
 function removeAllEvent(){
   setDisponibility("");
 }
+
+function changeSelect() {
+  if (select.value !== "none") {
+    nbRecursion.style.display = "block";
+  } else {
+    nbRecursion.style.display = "none";
+  }
+}
+

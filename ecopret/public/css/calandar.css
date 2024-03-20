@@ -465,8 +465,8 @@ body {
   transition: max-height 0.5s ease;
 }
 .add-event-wrapper.active {
-  max-height: 390px;
-  min-height: 390px;
+  max-height: 400px;
+  min-height: 400px;
 }
 .add-event-header {
   width: 100%;
@@ -561,8 +561,9 @@ body {
   cursor: pointer;
   padding: 5px 10px;
   border: 1px solid var(--primary-clr);
-  margin-bottom: -30px;
+  margin-bottom: -50px;
 }
+
 .event-time-all:hover {
   background-color: var(--primary-clr);
   color: #fff;
@@ -702,4 +703,16 @@ body {
   top: 0;
   bottom: 0;
   border-radius: 0 3px 3px 0;
+}
+
+.recursionCount {
+  background-color: #658864;
+  color: #fff;
+  border-radius: 5px;
+  padding: .5em;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    appearance: none;
 }
