@@ -13,6 +13,7 @@ use App\Entity\Utilisateur;
 use App\Form\AjouterAnnonceType;
 use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

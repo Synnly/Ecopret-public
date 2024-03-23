@@ -300,4 +300,5 @@ class Annonce
     {
         $this->est_en_litige = $est_en_litige;
     }
+
 }

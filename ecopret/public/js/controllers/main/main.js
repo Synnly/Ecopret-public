@@ -104,11 +104,11 @@ function ValidImage() {
 //window.addEventListener("load", function () {});
 
 document.addEventListener("click", function (event) {
-  var menu = document.getElementById("recherche");
+  var menu = document.getElementById("filtreID");
   var mainElement = document.querySelector("main");
   var target = event.target;
   if (menu.contains(target)) {
-    document.getElementById("rechercheOptions").style.display = "block";
+    document.getElementById("rechercheOptions").style.display = "grid";
     return;
   }else if (mainElement.contains(target)) {
     rechercheOptions.style.display = "none";
@@ -136,10 +136,41 @@ async function filtrageAnnonces() {
     document.getElementById("rechercheOptions").style.display = "none";
     document.getElementById('loader').style.display = 'block';
     var annonces = document.querySelectorAll(".card_list");
-    console.log(annonces)
-    var critereInput = document.getElementById("recherche").value.toLowerCase();
-    console.log(critereInput)
+
+    var radioButtons = document.querySelectorAll('input[name="ES"]');
+    var prixMin = parseInt(document.getElementById("prixMin").value);
+    var prixMax = parseInt(document.getElementById("prixMax").value);
+    var categorie = document.querySelector('input[name="categories[]"]').value;
+    var dateDeb = document.getElementById('DateD').value;
+    var dateFin = document.getElementById('DateF').value;
+    var typeChoisi = "";
+
+    var prixDPossible = false;
+    var prixFPossible = false;
+    var categoriePossible = false;
+    var dateDPossible = false;
+    var dateFPossible = false;
+
+    for (const radioButton of radioButtons) {
+      if (radioButton.checked) {
+         typeChoisi = radioButton.value;
+         break;
+      }
+    }
+    prixDPossible = (! isNaN(prixMin));
+    prixFPossible = (! isNaN(prixMax));
+    categoriePossible = (categorie !== "toute");
+    dateDPossible = (dateDeb !== "");
+    dateFPossible = (dateFin !== "");
+
+
+    console.log(prixDPossible, prixFPossible, categoriePossible, dateDPossible, dateFPossible);
     
+    var critereInput = document.getElementById("recherche").value.toLowerCase();
+    console.log(prixMin, prixMax, categorie, dateDeb, dateFin, typeChoisi, critereInput);
+
+
+
     if(critereInput !== ""){
         var synonymesRequest = await requestPython(critereInput);
         var synonymes = JSON.parse(synonymesRequest.output);
@@ -157,8 +188,66 @@ async function filtrageAnnonces() {
     annonces.forEach(function(annonce) {
         var titreAnnonce = annonce.querySelector("#titreAnnonce").textContent.toLowerCase(); 
         var descAnnonce = annonce.querySelector("#descAnnonce").textContent.toLowerCase(); 
+        var type = annonce.querySelector("#type_annonce").textContent.toLowerCase();
+        var prixAnnonce = parseInt(annonce.querySelector("#price_annonce").textContent.toLowerCase().split(":")[1].trim());
+        //var categorieAnnonce = annonce.querySelector("#categorie_annonce").textContent.toLowerCase();
+        //var dateDAnnonce = annonce.querySelector("#dateb_annonce").textContent.toLowerCase();
+        //var dateFAnnonce = annonce.querySelector("#datef_annonce").textContent.toLowerCase();
         var affichageAnnonce = true;
-
+        var conditionRespectes = true;
+        var conditionRadio = true;
+        
+        if(prixDPossible){
+          if(prixFPossible){
+            if(prixAnnonce >= prixMin && prixAnnonce <= prixMax){
+                conditionRespectes = true;
+            }else {
+              conditionRespectes = false;
+              
+            }  
+          }else {
+            if(prixAnnonce >= prixMin){
+              conditionRespectes = true;
+            }else {
+              conditionRespectes = false;
+            }  
+          }
+        }else if(prixFPossible){
+          if(prixAnnonce <= prixMax){
+            conditionRespectes = true;
+          }else {
+            conditionRespectes = false;
+          }
+        }
+        /*if(categoriePossible){
+          if(annonce.categorie === categorieAnnonce){
+            conditionRespectes = true;
+          }else {
+            conditionRespectes = false;
+          }
+        }
+        if(dateDPossible){
+          if(dateFPossible){
+            if(dateDeb >= dateDAnnonce && dateFin <= dateFAnnonce){
+                conditionRespectes = true;
+            }else {
+              conditionRespectes = false;
+            }  
+          }else {
+            if(dateDeb >= dateDAnnonce){
+              conditionRespectes = true;
+            }else {
+              conditionRespectes = false;
+            }  
+          }
+        }else if(dateFPossible){
+          if(dateFin <= dateFAnnonce){
+            conditionRespectes = true;
+          }else {
+            conditionRespectes = false;
+          }
+        }*/
+        
         if (!titreAnnonce.includes(critereInput)) {
             affichageAnnonce = false;
         }else {
@@ -171,8 +260,13 @@ async function filtrageAnnonces() {
             affichageAnnonce = true;
             return ;
         }
+       
+        if(typeChoisi !== "" && typeChoisi !== type.split(":")[1].trim()){
+          affichageAnnonce = false;
+          conditionRadio = false;
+        }
 
-        if (synonymes) {
+        if (synonymes !== null && conditionRadio && conditionRespectes) {
             for (let mot of synonymes) {
                 if (!titreAnnonce.includes(mot)) {
                     affichageAnnonce = false;
@@ -190,7 +284,8 @@ async function filtrageAnnonces() {
                 }
             }
         }
-        annonce.style.display = affichageAnnonce ? "block" : "none";   
+    
+        annonce.style.display = affichageAnnonce ? "block" : "none";  
     });
     document.getElementById('loader').style.display = 'none';
 }

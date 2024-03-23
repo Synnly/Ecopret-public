@@ -14,7 +14,8 @@ class PythonController extends AbstractController
     #[Route('/pythonRequestDataBase/{mot}', name: 'python_request_data_base')]
     public function getSynonyms(Request $request): JsonResponse
     {
-        // Récupérer le paramètre "mot" de l'URL
+        if($this->getUser()){
+             // Récupérer le paramètre "mot" de l'URL
         $mot = $request->attributes->get('mot');
         // Utilisez $mot comme paramètre pour exécuter votre script Python
         $command = 'python3 js/controllers/main/main.py ' . $mot;
@@ -22,5 +23,6 @@ class PythonController extends AbstractController
 
         // Traitez la sortie du script Python si nécessaire
         return new JsonResponse(['output' => $output]);
+        }
     }
 }
