@@ -30,9 +30,6 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $AdresseMailCOmpte = null;
 
-    #[ORM\ManyToMany(targetEntity: Notification::class, mappedBy: 'no_compte')]
-    private Collection $notifications;
-
     #[ORM\ManyToMany(targetEntity: Lieu::class)]
     private Collection $lieu;
 
@@ -51,6 +48,9 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'plaignant', targetEntity: Litige::class, orphanRemoval: true)]
     private Collection $litiges;
 
+    #[ORM\OneToMany(mappedBy: 'participant1', targetEntity: Conversation::class)]
+    private Collection $conversations;
+
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
@@ -58,6 +58,7 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
         $this->notes = new ArrayCollection();
         $this->transactions = new ArrayCollection();
         $this->litiges = new ArrayCollection();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getRoles(): array
@@ -124,33 +125,6 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAdresseMailCOmpte(string $AdresseMailCOmpte): static
     {
         $this->AdresseMailCOmpte = $AdresseMailCOmpte;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Notification>
-     */
-    public function getNotifications(): Collection
-    {
-        return $this->notifications;
-    }
-
-    public function addNotification(Notification $notification): static
-    {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications->add($notification);
-            $notification->addNoCompte($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(Notification $notification): static
-    {
-        if ($this->notifications->removeElement($notification)) {
-            $notification->removeNoCompte($this);
-        }
 
         return $this;
     }
@@ -280,6 +254,36 @@ class Compte implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($litige->getPlaignant() === $this) {
                 $litige->setPlaignant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): static
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations->add($conversation);
+            $conversation->setParticipant1($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): static
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getParticipant1() === $this) {
+                $conversation->setParticipant1(null);
             }
         }
 
