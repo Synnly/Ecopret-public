@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Annonce;
+use App\Entity\Emprunt;
 use App\Entity\Service;
 use App\Form\SupprimerAnnonceFormType;
 use Doctrine\ORM\EntityManagerInterface;
