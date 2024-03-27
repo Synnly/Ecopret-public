@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Message;
 use App\Repository\ConversationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +20,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageController extends AbstractController
 {
-    #[Route('/message', name: 'app_message', methods: 'POST')]
-    public function sendMessage(Request $request, ConversationRepository $conversationRepository, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
+    #[Route('/message', name: 'app_message', methods: ['GET', 'POST'])]
+    public function sendMessage(Request $request, ConversationRepository $conversationRepository, SerializerInterface $serializer, EntityManagerInterface $em, HubInterface $publisher, LoggerInterface $logger): JsonResponse
     {
         $data = json_decode($request->getContent(), true); // On récupère les data postées et on les déserialize
         if (empty($contenu = $data['content'])) {
