@@ -16,7 +16,7 @@ class Conversation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'dernierMessage', targetEntity: Message::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'conversation', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messages;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]

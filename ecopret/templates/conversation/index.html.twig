@@ -7,30 +7,28 @@
     <div class="container">
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Logout</a>
+                Bonjour {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Logout</a>
             </div>
         {% endif %}
         {% if conversations %}
-            <h2>Which chan do you want to join ?</h2>
+            <h2>Vos conversations :</h2>
             <table class="table table-striped">
                 <tbody>
-                {% if conversations %}
                     {% for conversation in conversations %}
                         {% if conversation %}
                             <tr class="">
                                 <th>
                                     <span>{{ conversation.id }}</span>
-                                    <a class="btn btn-primary float-right" href="{{ path('app_conversation_chat', {id: conversation.id}) }}">Go chat !</a>
+                                    <a class="btn btn-primary float-right" href="{{ path('app_conversation_chat', {id: conversation.id}) }}">Contacter</a>
                                 </th>
                             </tr>
                         {% endif %}
                     {% endfor %}
-                {% endif %}
                 </tbody>
             </table>
         {% else %}
             <div>
-                <div class="alert alert-danger text-center">No Channels found.</div>
+                <div class="alert alert-danger text-center">Aucune conversion trouvée.</div>
             </div>
         {% endif %}
     </div>

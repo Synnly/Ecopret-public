@@ -34,7 +34,7 @@
     <div class="container">
         {% if app.user %}
             <div class="mb-3">
-                You are logged in as {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Logout</a>
+                Bonjour {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Deconnection</a>
             </div>
         {% endif %}
         <div class="container" style="height: 600px">
@@ -60,7 +60,7 @@
             <div>
                 <form id="form" class="container row">
                     <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
-                    <button id="submit" type="submit" class="btn btn-success col-sm-3">Send</button>
+                    <button id="submit" type="submit" class="btn btn-success col-sm-3">Envoyer</button>
                 </form>
             </div>
         </div>

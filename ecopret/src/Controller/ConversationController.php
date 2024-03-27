@@ -15,7 +15,7 @@ class ConversationController extends AbstractController
     {
         $convs = $conversationRepository->findBy(['participant1' => $this->getUser()]);
         $convs[] = $conversationRepository->findBy(['participant2' => $this->getUser()]);
-        $convs = $convs[0];
+
 
         return $this->render('conversation/index.html.twig', [
             'conversations' => $convs
@@ -26,7 +26,10 @@ class ConversationController extends AbstractController
     public function conversation(ConversationRepository $conversationRepository, MessageRepository $messageRepository, int $id): Response
     {
         $conv = $conversationRepository->findOneBy(['id' => $id]);
-        $messages = $conv->getMessages();
+        //Récupération des messages triés par date d'envoi
+        $messages = $messageRepository->findBy([
+            'conversation' => $conv
+        ], ['date' => 'ASC']);
 
         return $this->render('conversation/chat.html.twig', [
             'conv' => $conv,
