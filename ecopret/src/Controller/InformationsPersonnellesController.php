@@ -224,19 +224,25 @@ class InformationsPersonnellesController extends AbstractController
             // Soit tous les champs de la cb sont renseignés, soit aucun
             if($form['carte_credit']->get('numero_carte')->getData() != null && $form['carte_credit']->get('code_cvv')->getData() != null && $form['carte_credit']->get('date_expiration')->getData() != null && $form['carte_credit']->get('nom_carte')->getData() != null) {
 
-                if($user->getCarteCredit() == null) $user->setCarteCredit(new CarteCredit());
+                $carte = new CarteCredit();
 
                 // Modification de la cb
-                $user->getCarteCredit()->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
-                $user->getCarteCredit()->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
-                $user->getCarteCredit()->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
-                $user->getCarteCredit()->setNomCarte($form['carte_credit']->get('nom_carte')->getData());
+                $carte->setNumeroCarte($form['carte_credit']->get('numero_carte')->getData());
+                $carte->setCodeCvv(intval($form['carte_credit']->get('code_cvv')->getData()));
+                $carte->setDateExpiration($form['carte_credit']->get('date_expiration')->getData());
+                $carte->setNomCarte($form['carte_credit']->get('nom_carte')->getData());
 
+                $user->setCarteCredit($carte);
+                $entityManager->persist($carte);
                 $entityManager->persist($user);
             }
             else{
                 if (!($form['carte_credit']->get('numero_carte')->getData() == null && $form['carte_credit']->get('code_cvv')->getData() == null && $form['carte_credit']->get('date_expiration')->getData() == null && $form['carte_credit']->get('nom_carte')->getData() == null)) {
                     $erreur = "Remplir tous les champs de la carte bancaire ou retirer les champs.";
+                }
+                else{
+                    $user->setCarteCredit(null);
+                    $entityManager->persist($user);
                 }
             }
 
@@ -256,11 +262,6 @@ class InformationsPersonnellesController extends AbstractController
                     $userPasswordHasher->hashPassword(
                         $user,
                         $form->get('motDePasseCompte')->getData()));
-
-                // Creation d'une nouvelle cb s'il n'existe pas encore
-                if($user->getCarteCredit() == null){
-                    $user->setCarteCredit(new CarteCredit());
-                }
 
                 $entityManager->flush();
                 return $this->redirectToRoute('app_infos');

@@ -6,6 +6,7 @@ namespace App\Tests\Controller;
 use App\Entity\Annonce;
 use App\Entity\Compte;
 use App\Entity\Prestataire;
+use App\Entity\Service;
 use App\Entity\Transaction;
 use App\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -51,7 +52,7 @@ class ConnexionToEntityManager extends KernelTestCase
     }
 }
 
-class RetourEmpruntTest
+class ClotureService
 
 extends WebTestCase
 {
@@ -61,13 +62,13 @@ extends WebTestCase
         $client = static::createClient();
 
         // Deplacement vers la page de connexion
-        $client->request('GET', '/retour/1');
+        $client->request('GET', '/fin/1');
 
 
         $this->assertResponseRedirects('/', null, "Acces sans ce connecter");
     }
-    
-    public function testRetourEmprunt(): void
+
+    public function testCloturerService(): void
     {
         $client = static::createClient();
         // Deplacement vers la page de creation de compte
@@ -79,7 +80,7 @@ extends WebTestCase
         $client->request('GET', '/register');
 
         // Remplissage du formulaire puis clic sur le bouton de creation
-        $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'TESTT', 'registration_form[PrenomCompte]' => 'Testt', 'registration_form[AdresseMailCOmpte]' => 'test2@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
+        $client->submitForm("Création du compte", ['registration_form[NomCompte]' => 'JEAN', 'registration_form[PrenomCompte]' => 'Testt', 'registration_form[AdresseMailCOmpte]' => 'test2@test.com', 'registration_form[plainPassword]' => 'Testtest123', 'registration_form[agreeTerms]' => '1', 'magicInput' => 'KGsTNQxeeiVoakoZSGNKGVXkhZCxWu'])->selectButton('Création du compte');
 
         // Deplacement vers la page de connexion
         $client->request('GET', '/login');
@@ -102,9 +103,12 @@ extends WebTestCase
         $annonce->setImageAnnonce("");
         $entity->sendDB($annonce);
 
+        $service = new Service();
+        $service->setIdAnnonce($annonce);
+        $entity->sendDB($service);
         //Création de la transaction
         $transaction = new Transaction();
-        $transaction->setClient($entity->getUtilisateur("TESTT"));
+        $transaction->setClient($entity->getUtilisateur("JEAN"));
         $transaction->setPrestataire($prestataire);
         $transaction->setAnnonce($annonce);
         $transaction->setEstCloture(false);
@@ -112,7 +116,7 @@ extends WebTestCase
 
         // Remplissage du formulaire
         $crawler = $client->submitForm("Connexion >", [
-            'AdresseMailCOmpte' => 'test@test.com',
+            'AdresseMailCOmpte' => 'test2@test.com',
             'password' => 'Testtest123'
         ]);
 
@@ -121,11 +125,12 @@ extends WebTestCase
 
         $this->assertResponseRedirects('/main', null, "La connexion d'un compte valide a échoué");
 
-        $client->request('GET', '/retour/1');
-       
-        $crawler->selectButton('retour_emprunt[cloturer]');
+        $client->request('GET', '/fin/1');
 
-        $this->assertResponseRedirects('/', null, "Impossible de cloturer un emprunt");
+        $this->assertResponseIsSuccessful();
 
+        $crawler = $client->getCrawler();
+
+        $this->assertCount(1, $crawler->selectButton('fin_service[cloturer]'), 'Le bouton de cloture est introuvable.');
     }
 }
