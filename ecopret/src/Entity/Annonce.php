@@ -53,6 +53,9 @@ class Annonce
     #[ORM\Column(length: 255)]
     private ?string $prix = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $categorie = null;
+
     public function __construct()
     {
         $this->dates_annonce = new ArrayCollection();
@@ -299,6 +302,18 @@ class Annonce
     public function setEstEnLitige(?bool $est_en_litige): void
     {
         $this->est_en_litige = $est_en_litige;
+    }
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): static
+    {
+        $this->categorie = $categorie;
+
+        return $this;
     }
 
 }

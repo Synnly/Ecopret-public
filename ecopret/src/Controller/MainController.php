@@ -54,6 +54,7 @@ class MainController extends AbstractController
             $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
+            $annonce->setCategorie($form->get("categorie")->getData());
 
             $annonce->setEstEnLitige(false);
 
@@ -68,12 +69,12 @@ class MainController extends AbstractController
             $annonce->setDisponibilite("");
 
             $es = $request->request->get('toggle');
-            if($es === "on"){
+            if($es === null){
                 $annonce->setEstUnEmprunt(true);
                 $service = new Service();
                 $service->setIdAnnonce($annonce);
                 $entityManager->persist($service);
-            }elseif ($es === null){
+            }elseif ($es === "on"){
                 $annonce->setEstUnEmprunt(false);
                 $emprunt = new Emprunt();
                 $emprunt->setIdAnnonce($annonce);

@@ -58,9 +58,10 @@ class MesAnnoncesController extends AbstractController
                 }
                 $i++;
             }
+            $annonce->setCategorie($form->get("categorie")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $es = $request->request->get('toggle');
-            if ($es === "on") {
+            if ($es === null) {
                 if ($entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]) === null) {
                     $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce]);
                     $entityManager->remove($emprunt);
@@ -68,7 +69,7 @@ class MesAnnoncesController extends AbstractController
                     $service->setIdAnnonce($annonce);
                     $entityManager->persist($service);
                 }
-            } elseif ($es === null) {
+            } elseif ($es === "on") {
                 if ($entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce]) === null) {
                     $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce]);
                     $entityManager->remove($service);

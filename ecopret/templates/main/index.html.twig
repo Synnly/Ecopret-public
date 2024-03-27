@@ -92,7 +92,7 @@
 		</ul>
 	</nav>
 	<div id="rechercheOptions" class="filtre" style="display : none">
-		<div class="titre_filtre" >Filtres</div>
+		<div class="titre_filtre">Filtres</div>
 		<div class="EmSe">
 			<div>
 				<input type="radio" id="emprunt" name="ES" class="TypeChoisi" value="emprunt">
@@ -100,127 +100,143 @@
 			</div>
 			<div>
 				<input type="radio" id="service" name="ES" class="TypeChoisi" value="service">
-				<label for="service">Service </label>	
+				<label for="service">Service
+				</label>
 			</div>
 		</div>
 		<div class="cate">
-		<ul>
-			<p style="font-weight : 400;">Catégorie :</p>
-			<li><input value="toute" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Toutes</label></li>
-			<li><input value="bricolage" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Bricolage</label></li>
-			<li><input value="vehicule" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Véhicule</label></li>
-			<li><input value="immobilier" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Immobilier</label></li>
-			<li><input value="electronique" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Eléctronique</label></li>
-			<li><input value="maison" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Maison</label></li>
-			<li><input value="modes" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Modes</label></li>
-			<li><input value="divers" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Divers</label></li>
-		<ul>
-		</div>
-		<div class="prix">
-			<div>
-			<label for="prixMin">Prix minimum</label>
-			<input type="text" id="prixMin" name="prixMin" class="prixI"> </div>
-			<div><label for="prixMax">Prix maximum</label>
-			<input type="text" id="prixMax" name="prixMax" class="prixI"> </div>
-		</div>
-		<div class="date">
-		<div>
-			<label for="dateD">Date de début</label>
-			<input type="date" id="DateD" name="date" class="dateI"></div>
-		<div>
-			<label for="DateF">Date de fin</label>
-			<input type="date" id="DateF" name="date" class="dateI"></div>
-		</div>
-	</div>
-	<main>
-		<div class="loader" id="loader" style="display : none"></div>
-		<div>
-			<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
-				<h3>Ajouter une annonce</h3>
-			</button>
-		</div>
-		{{ form_start(form) }}
-		{% if error is defined and error == "pasValide" %}
-			<div class="card" id="card">
-			{% else %}
-				<div class="card" id="card" style="display : none;">
-				{% endif %}
-				<h3 class="card__title">
-					Ajouter une annonce
-				</h3>
-				<div class="card__content_img">
-					<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
-					<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
-					<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
-				</div>
-				<div class="card__content">
-					{{form_row(form.titre)}}
-				</div>
-				<div class="card__content">
-					{{form_row(form.description)}}
-				</div>
-				<div class="card__content">
-					{{form_row(form.prix)}}
-					<img src="/img/florain.png" width="48" height="48" id="florain">
-				</div>
-				<div class="card__content">
-					{{form_row(form.ajouterPhoto)}}
-					{{form_row(form.ajouterPhoto2)}}
-					{{form_row(form.ajouterPhoto3)}}
-				</div>
-				<div class="switch">
-					<div class="ES1">Emprunt</div>
-					<div class="toggle-switch">
-						<input name="toggle" class="toggle-input" id="toggle" type="checkbox">
-						<label class="toggle-label" for="toggle"></label>
+			<ul>
+				<p style="font-weight : 400;">Catégorie :</p>
+				<li><input value="toute" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Toutes</label>
+				</li>
+				<li><input value="bricolage" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Bricolage</label>
+				</li>
+				<li><input value="vehicule" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Véhicule</label>
+				</li>
+				<li><input value="immobilier" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Immobilier</label>
+				</li>
+				<li><input value="electronique" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Eléctronique</label>
+				</li>
+				<li><input value="maison" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Maison</label>
+				</li>
+				<li><input value="modes" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Modes</label>
+				</li>
+				<li><input value="divers" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Divers</label>
+				</li>
+				<ul></div>
+				<div class="prix">
+					<div>
+						<label for="prixMin">Prix minimum</label>
+						<input type="text" id="prixMin" name="prixMin" class="prixI">
 					</div>
-					<div class="ES2">Service</div>
+					<div>
+						<label for="prixMax">Prix maximum</label>
+						<input type="text" id="prixMax" name="prixMax" class="prixI">
+					</div>
 				</div>
-				<div class="card__btn">
-					<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
-						<b>Annuler</b>
-					</button>
-					<button class="plannin-btn" name="plannin-btn">Planning</button>
-					<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
-					{{ form_end(form) }}
+				<div class="date">
+					<div>
+						<label for="dateD">Date de début</label>
+						<input type="date" id="DateD" name="date" class="dateI"></div>
+					<div>
+						<label for="DateF">Date de fin</label>
+						<input type="date" id="DateF" name="date" class="dateI"></div>
 				</div>
 			</div>
-
-			<div class="annonces_liste">
-				{% for annonce in annonces %}
-					<div class="card_list" id="card">
-						<h3 class="card__title" id="titreAnnonce">
-							{{ annonce.getNomAnnonce }}
+			<main>
+				<div class="loader" id="loader" style="display : none"></div>
+				<div>
+					<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
+						<h3>Ajouter une annonce</h3>
+					</button>
+				</div>
+				{{ form_start(form) }}
+				{% if error is defined and error == "pasValide" %}
+					<div class="card" id="card">
+					{% else %}
+						<div class="card" id="card" style="display : none;">
+						{% endif %}
+						<h3 class="card__title">
+							Ajouter une annonce
 						</h3>
 						<div class="card__content_img">
-							<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#" width="150" height="150">
+							<img src="" width="150" height="150" id="img1" onclick="clickphoto()">
+							<img src="" width="150" height="150" id="img2" onclick="clickphoto()">
+							<img src="" width="150" height="150" id="img3" onclick="clickphoto()">
 						</div>
 						<div class="card__content">
-							<p id="descAnnonce">{{ annonce.getDescription }}</p>
+							{{form_row(form.titre)}}
 						</div>
-						<div class="card__content card__content_prix">
-							<p id="price_annonce">Prix : {{ annonce.getPrix }}</p>
-							{% if annonce.getEstUnEmprunt %}
-								<p id="type_annonce">Type : Emprunt</p>
-							{% else %}
-								<p id="type_annonce">Type : Service</p>
-							{% endif %}
-							</div>
-
-
-							<div class="card__btn">
-								<a href="./main/choisir/{{ annonce.getId }}" class="annonce-btn">Choisir</a>
-							</div>
+						<div class="card__content">
+							{{form_row(form.description)}}
 						</div>
-					{% endfor %}
-				</div>
-			</main>
-			<footer>
-				<ul>
-					<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
-					<li><a href=""><h5></h5></a></li>
-					<li><a href=""><h5>© Copyright 2024 ECOPRET<br>Tous droits réservés.</h5></a></li>
-				</ul>
-			</footer>
+						<div class="card__content">
+							{{form_row(form.prix)}}
+							<img src="/img/florain.png" width="48" height="48" id="florain">
+						</div>
+						<div class="card__content">
+							{{form_row(form.ajouterPhoto)}}
+							{{form_row(form.ajouterPhoto2)}}
+							{{form_row(form.ajouterPhoto3)}}
+						</div>
+						<div class="card__content">
+							{{form_row(form.categorie)}}
+						</div>
+						<div class="switch">
+							<div class="ES1">Emprunt</div>
+							<div class="toggle-switch">
+								<input name="toggle" class="toggle-input" id="toggle" type="checkbox">
+								<label class="toggle-label" for="toggle"></label>
+							</div>
+							<div class="ES2">Service</div>
+						</div>
+						<div class="card__btn">
+							<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
+								<b>Annuler</b>
+							</button>
+							<button class="plannin-btn" name="plannin-btn">Planning</button>
+							<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
+							{{ form_end(form) }}
+						</div>
+					</div>
 
-		{% endblock %}
+					<div class="annonces_liste">
+						{% for annonce in annonces %}
+							<div class="card_list" id="card">
+								<h3 class="card__title" id="titreAnnonce">
+									{{ annonce.getNomAnnonce }}
+								</h3>
+								<div class="card__content">
+									<p id="categorieAnnonce">{{ annonce.getCategorie }}</p>
+								</div>
+								<div class="card__content_img">
+									<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#" width="150" height="150">
+								</div>
+								<div class="card__content">
+									<p id="descAnnonce">{{ annonce.getDescription }}</p>
+								</div>
+								<div class="card__content card__content_prix">
+									<p id="price_annonce">Prix :
+										{{ annonce.getPrix }}</p>
+									{% if annonce.getEstUnEmprunt %}
+										<p id="type_annonce">Type : Emprunt</p>
+									{% else %}
+										<p id="type_annonce">Type : Service</p>
+									{% endif %}
+								</div>
+								<div class="card__btn">
+									<a href="./main/choisir/{{ annonce.getId }}" class="annonce-btn">Choisir</a>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</main>
+				<footer>
+					<ul>
+						<li><a href="/mentions_legales"><h5>Mentions légales</h5></a></li>
+						<li><a href=""><h5></h5></a></li>
+						<li><a href=""><h5>© Copyright 2024 ECOPRET<br>Tous droits réservés.</h5></a></li>
+					</ul>
+				</footer>
+
+			{% endblock %}
