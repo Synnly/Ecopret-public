@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Log\Logger;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -41,6 +45,9 @@ class MessageController extends AbstractController
         $jsonMessage = $serializer->serialize($message, 'json', [
             'groups' => ['message']
         ]);
+
+        $update = new Update( 'localhost:8000/conversation/'.$conv->getId(),$jsonMessage,);
+        $logger->debug($publisher->publish($update));
 
         // Envoi du message
         return new JsonResponse($jsonMessage, Response::HTTP_OK, [], true);
