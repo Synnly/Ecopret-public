@@ -34,6 +34,7 @@ class MessageController extends AbstractController
         $message->setMessage($contenu);
         $message->setExpeditaire($this->getUser());
         $message->setConversation($conv);
+        $message->setEnvoye(true);
 
         $em->persist($message);
         $em->flush();
@@ -56,10 +57,12 @@ class MessageController extends AbstractController
         $jsonMessages = [];
 
         foreach($messages as $message){
-            if($message->getExpeditaire() !== $this->getUser()) $message->setLu(true);
-            $entityManager->persist($message);
+            if($message->getExpeditaire() !== $this->getUser()) {
+                $message->setLu(true);
+                $entityManager->persist($message);
 
-            $jsonMessages[] = ["message" => $message->getMessage(), "expeditaire" => $message->getExpeditaire()->getId(), "prenom" => $message->getExpeditaire()->getPrenomCompte()];
+                $jsonMessages[] = ["message" => $message->getMessage(), "expeditaire" => $message->getExpeditaire()->getId(), "prenom" => $message->getExpeditaire()->getPrenomCompte(), "date" => $message->getDate()];
+            }
         }
         $entityManager->flush();
 

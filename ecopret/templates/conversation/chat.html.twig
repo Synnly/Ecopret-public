@@ -11,8 +11,7 @@
     <script>
         window.onload = function () {
             let chatDiv = document.getElementById('chat');
-
-            chatDiv.scrotop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
+            window.scrollTo(0, document.body.scrollHeight);
 
             let form = document.getElementById('form');
             function handleForm(event) {
@@ -34,7 +33,8 @@
                     message.value = '';
                 });
 
-                chatDiv.innerHTML += ("<div class=\"row w-75 float-left\"><b>{{ app.user.PrenomCompte }}</b><p class=\"alert alert-info w-100\">{message}</p></div>").replace("{message}", message.value);
+                chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{{ app.user.PrenomCompte }}</b><p>{message}</p></div></div>").replace("{message}", message.value);
+                window.scrollTo(0, document.body.scrollHeight);
             }
 
            setInterval(recupererMessages, 2000, {{ conv.id }});
@@ -54,47 +54,46 @@
 
         async function appendMessages(response){
             let chatDiv = document.getElementById('chat');
+            let scrollheight = chatDiv.scrollTop; // TODO
             let messages = JSON.parse(await response.text());
             messages.forEach(message => {
                 console.log(message.expeditaire, {{ app.user.id }})
+
                 if (message.expeditaire === {{ app.user.id }}){
-                    chatDiv.innerHTML += ("<div class=\"row w-75 float-left\"><b>{prenom}</b><p class=\"alert alert-info w-100\">{message}</p></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
+                    chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
                 }
                 else {
-                    chatDiv.innerHTML += ("<div class=\"row w-75 float-right\"><b>{prenom}</b><p class=\"alert alert-info w-100\">{message}</p></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
+                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
                 }
+                window.scrollTo(0, document.body.scrollHeight);
             });
         }
     </script>
 {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="container" style="overflow-y: scroll">
-            <div id="chat" class="container bg-light h-75 overflow-auto">
-                {% for message in messages %}
-                    {% if app.user == message.expeditaire %}
-                        <div class="row w-75 float-right">
+        <div id="chat">
+            {% for message in messages %}
+                {% if app.user == message.expeditaire %}
+                    <div class="message-right">
+                        <div class="bulle-droite">
                             <b>{{ message.expeditaire.PrenomCompte }}</b>
-                            <p class="alert alert-info w-100">
-                                {{ message.message }}
-                            </p>
+                            <p>{{ message.message }}</p>
                         </div>
-                    {% else %}
-                        <div class="row w-75 float-left">
+                    </div>
+                {% else %}
+                    <div class="message-left">
+                        <div class="bulle-gauche">
                             <b>{{ message.expeditaire.PrenomCompte }}</b>
-                            <p class="alert alert-success w-100">
-                                {{ message.message }}
-                            </p>
+                            <p>{{ message.message }}</p>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div>
-                <form id="form" class="container row">
-                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
-                    <button id="submit" type="submit" class="btn btn-success col-sm-3">Envoyer</button>
-                </form>
-            </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
+            <form id="form">
+                <input id="message" class="div_input" placeholder="Message" type="text" />
+                <button id="submit" type="submit" class="message_btn">Envoyer</button>
+            </form>
     </div>
 {% endblock %}

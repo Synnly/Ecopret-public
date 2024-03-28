@@ -20,9 +20,6 @@ class Message
     #[ORM\Column(length: 1024)]
     private ?string $message = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
     #[Groups('message')]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -36,10 +33,17 @@ class Message
     #[ORM\Column]
     private ?bool $lu = null;
 
+    #[ORM\Column]
+    private ?bool $envoye = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
     public function __construct()
     {
         $this->date = new \DateTime(); // Initialisation de la date à chaque nouveau message
         $this->lu = false;
+        $this->envoye = false;
     }
 
     public function getId(): ?int
@@ -103,6 +107,18 @@ class Message
     public function setLu(bool $lu): static
     {
         $this->lu = $lu;
+
+        return $this;
+    }
+
+    public function isEnvoye(): ?bool
+    {
+        return $this->envoye;
+    }
+
+    public function setEnvoye(bool $envoye): static
+    {
+        $this->envoye = $envoye;
 
         return $this;
     }
