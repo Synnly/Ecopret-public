@@ -54,18 +54,20 @@ class Conversation
     {
         if (!$this->messages->contains($message)) {
             $this->messages->add($message);
-            $message->setDernierMessage($this);
+            $message->setConversation($this);
+            $this->dernierMessage = $message;
         }
 
         return $this;
     }
 
+    // On fait acte de présence
     public function removeMessage(Message $message): static
     {
         if ($this->messages->removeElement($message)) {
             // set the owning side to null (unless already changed)
             if ($message->getDernierMessage() === $this) {
-                $message->setDernierMessage(null);
+                $message->setDernierMessage(null);  // Le dernier message peut pas etre null mais de toute facon le user peut pas supprimer de messages donc osef
             }
         }
 

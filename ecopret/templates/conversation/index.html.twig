@@ -11,26 +11,33 @@
 
     <div class="container">
         {% if conversations %}
-            <h2>Vos conversations :</h2>
-            <table class="table table-striped">
-                <tbody>
+            <h2>Vos conversations</h2>
+                <div class="liste_conversation">
                     {% for conversation in conversations %}
                         {% if conversation %}
-                            <tr class="">
-                                <th>
-                                    <a class="btn btn-primary float-right" href="{{ path('app_conversation_chat', {id: conversation.id}) }}">
-                                        {% if app.user == conversation.participant1 %}
-                                            <span>{{ conversation.id }} - {{ conversation.participant2.PrenomCompte }}</span>
+                            <a href="{{ path('app_conversation_chat', {id: conversation.id}) }}">
+                                <div class="conversation">
+                                    {% if app.user == conversation.participant1 %}
+                                        <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }} - {{ conversation.dernierMessage.date|date("H:i d/m") }}</b>
+
+                                        {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                            <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
                                         {% else %}
-                                            <span>{{ conversation.id }} - {{ conversation.participant1.PrenomCompte }}</span>
+                                            <p class="msg">{{ conversation.dernierMessage.message }}</p>
                                         {% endif %}
-                                    </a>
-                                </th>
-                            </tr>
+                                    {% else %}
+                                        <b class="titre_conversation">{{ conversation.participant1.PrenomCompte }}</b>
+                                        {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                            <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                        {% else %}
+                                            <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </a>
                         {% endif %}
                     {% endfor %}
-                </tbody>
-            </table>
+                </div>
         {% else %}
             <div>
                 <div class="alert alert-danger text-center">Aucune conversion trouvée.</div>

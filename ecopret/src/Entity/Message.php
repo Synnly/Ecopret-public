@@ -41,7 +41,7 @@ class Message
 
     public function __construct()
     {
-        $this->date = new \DateTime(); // Initialisation de la date à chaque nouveau message
+        $this->date = new \DateTime("now"); // Initialisation de la date à chaque nouveau message
         $this->lu = false;
         $this->envoye = false;
     }

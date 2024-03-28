@@ -33,10 +33,11 @@ class MessageController extends AbstractController
         $message = new Message();
         $message->setMessage($contenu);
         $message->setExpeditaire($this->getUser());
-        $message->setConversation($conv);
         $message->setEnvoye(true);
+        $conv->addMessage($message);
 
         $em->persist($message);
+        $em->persist($conv);
         $em->flush();
 
         // Envoi du message

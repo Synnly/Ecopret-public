@@ -63,7 +63,7 @@
                     chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
                 }
                 else {
-                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
+                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>Vous</b><p>{message}</p></div></div>".replace("{message}", message.message));
                 }
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -77,7 +77,7 @@
                 {% if app.user == message.expeditaire %}
                     <div class="message-right">
                         <div class="bulle-droite">
-                            <b>{{ message.expeditaire.PrenomCompte }}</b>
+                            <b>Vous</b>
                             <p>{{ message.message }}</p>
                         </div>
                     </div>

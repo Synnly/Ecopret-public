@@ -1,0 +1,40 @@
+.conversation {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+
+    border: 2px solid #658864;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.liste_conversation{
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    margin: 5vh 20vw;
+}
+.msg{
+    color: darkgray;
+    font-style: italic;
+    margin: 0;
+    text-overflow: ellipsis ellipsis;
+    overflow: hidden;
+    margin-left: 20px;
+}
+
+.nonlu{
+    color: black;
+    font-style: normal;
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none;
+}
+
+.titre_conversation{
+    color: black;
+    font-size: 25px;
+}
