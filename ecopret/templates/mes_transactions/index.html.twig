@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vos litiges{% endblock %}
+{% block title %}Vos Transactions{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/transaction.css') }}">
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/transaction/transaction.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% if erreur is defined and erreur is not empty %}
         <script>
@@ -18,12 +22,46 @@
             <h1>Vos Transactions</h1>
         </div>
 
-        <div id="boutons">
-            <button><a href="/">Accueil</a></button>
+        <div id="description">
+            <label class="description">Vous pouvez noter une transaction clôturé.</label>
         </div>
-
-        {{ form_start(TransactionType) }}
-        {{ form_end(TransactionType) }}
+        <div id="boutons">
+            <button class="home-btn" onclick="back()">Accueil</button>
+        </div>
+        <table id="table" class="table table-hover table-mc-light-blue">
+            <thead>
+                <tr>
+                    <th>Numéro annonce</th>
+                    <th>Nom</th>
+                    <th>Statut</th>
+                    <th>Noter</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr  data-transaction-id="{{ transaction.getId() }}">
+                        <td data-title="id">{{ transaction.getId() }}</td>
+                        <td data-title="nom">{{ transaction.getAnnonce().getNomAnnonce() }}</td>
+                        {% if transaction.isEstCloture() == '0' %}
+                            <td data-title="statut">En cours</td>
+                            <td></td>
+                        {% endif %}
+                        {% if transaction.isEstCloture() == '1' %}
+                        {% if transaction.isEstNote() != '1' %}
+                            <td data-title="statut">Clôturé</td>
+                            <td><a href="{{ path('noter', {'idTransaction': transaction.getId()}) }}" class="noter">Noter</a></td>
+                        {% endif %}
+                        {% endif %}
+                        {% if transaction.isEstNote() == '1' %}
+                            <td data-title="statut">Clôturé</td>
+                            <td data-title="statut">Déjà noté</td>
+                        {% endif %}
+                    
+                            
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
     </div>
 

@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Noter transaction{% endblock %}
+
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/noter.css') }}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+{% block javascripts %}
+	<script src="{{ asset('js/controllers/noter/noter.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="noter-transaction">
+    <h1>Transaction numéro {{ idTransaction }}</h1>
+
+    <div class="transaction">
+        {{ form_start(form) }}
+        <div class="annonce">
+            <h3 class="title-section">L'annonce :</h3>
+            <div class="annonce-images">
+                {% if annonce.getImageAnnonce is defined and annonce.getImageAnnonce|split('|') is iterable %}
+                {% set images = annonce.getImageAnnonce|split('|') %}
+                {% if images|length > 0 %}
+                <img src="{{ '/picturesAnnouncement/' ~ images[0] }}" width="150" height="150" id="imge1">
+                {% else %}
+                <img src="/picturesAnnouncement/" width="150" height="150" id="imge1">
+                {% endif %}
+                {% if images|length > 1 %}
+                <img src="{{ '/picturesAnnouncement/' ~ images[1] }}" width="150" height="150" id="imge2">
+                {% else %}
+                <img src="/picturesAnnouncement/" width="150" height="150" id="imge2">
+                {% endif %}
+                {% if images|length > 2 %}
+                <img src="{{ '/picturesAnnouncement/' ~ images[2] }}" width="150" height="150" id="imge3">
+                {% else %}
+                <img src="/picturesAnnouncement/" width="150" height="150" id="imge3">
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="annonce-title">
+                <label class="annpnce-title-label">Nom de l'annonce :&nbsp;</label>
+                <p class="annpnce-title-value">{{ annonce.getNomAnnonce() }}</p>
+            </div>
+            <div class="annonce-description">
+                <label class="annpnce-title-label">Description de l'annonce :&nbsp;</label>
+                <p class="annpnce-title-value">{{ annonce.getDescription() }}</p>
+            </div>
+            <div class="annonce-price">
+                <label class="annpnce-price-label">Prix de l'annonce :&nbsp;</label>
+                <p class="annpnce-price-value">{{ annonce.getPrix() }}</p>
+            </div>
+            <h3 class="title-section">Le prestataire :</h3>
+                <div class="prestataire-nom">
+                    <label class="prestataire-nom-label">Nom du Prestataire :&nbsp;</label>
+                    <p class="prestataire-nom-value">{{ comptePrestataire.getNomCompte() }}&nbsp;{{ comptePrestataire.getPrenomCompte() }}</p>
+                </div>
+                <div class="rating-account">
+                    <input class="star" type="radio" name="rating1" id="1" checked>
+                    <label for="1" class="fa fa-star"></label>
+                    <input class="star" type="radio" name="rating1" id="2">
+                    <label for="2" class="fa fa-star"></label>
+                    <input class="star" type="radio" name="rating1" id="3">
+                    <label for="3" class="fa fa-star"></label>
+                    <input class="star" type="radio" name="rating1" id="4">
+                    <label for="4" class="fa fa-star"></label>
+                    <input class="star" type="radio" name="rating1" id="5">
+                    <label for="5" class="fa fa-star"></label>
+                </div>
+                <textarea id="infos" class="infos" name="infos" style="display : none;"></textarea>
+            </div>
+            <div class="two-btn">
+                <button class="cancel-btn" type="submit" onclick="back()">Annuler</button>
+                <button class="submit-btn" type="submit">Valider</button>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+    
+
+
+</div>
+{% endblock %}
+

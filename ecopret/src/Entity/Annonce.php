@@ -43,6 +43,9 @@ class Annonce
     #[ORM\OneToMany(mappedBy: 'annonce', targetEntity: Transaction::class)]
     private Collection $transaction;
 
+    #[ORM\ManyToMany(targetEntity: Note::class)]
+    private Collection $notes;
+
     #[ORM\ManyToOne(inversedBy: 'annonces')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Prestataire $prestataire = null;
@@ -61,6 +64,7 @@ class Annonce
         $this->dates_annonce = new ArrayCollection();
         $this->mots_cles_annonce = new ArrayCollection();
         $this->transaction = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +219,30 @@ class Annonce
                 $motsClesAnnonce->setAnnonce(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(note $note): static
+    {
+        $this->notes->removeElement($note);
 
         return $this;
     }

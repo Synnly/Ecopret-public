@@ -23,21 +23,14 @@ class MesTransactionsController extends AbstractController
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $compte->getId()]);
 
         $transactions = array_reverse($entityManager->getRepository(Transaction::class)->findBy(['Client' => $utilisateur]));
-
-        $options = ['nbForms' => count($transactions)];
-        foreach ($transactions as $transaction){
-            $options[] = [
-                'id_transaction' => $transaction->getId(),
-                'nom_annonce' => $transaction->getAnnonce()->getNomAnnonce(),
-                'statut' => ($transaction->isEstCloture() ? "Cloturée" : "En cours"),
-            ];
+        
+        if ($request->request->has('noter')) {
+            // Rediriger vers la page Calendar avec l'identifiant de l'annonce
+            return $this->redirectToRoute('noter', ['idTransaction' => $transaction->getId()]);
         }
-
-        $form = $this->createForm(ListeTransactionsType::class, ['data' => $options]);
-        $form->handleRequest($request);
         return $this->render('mes_transactions/index.html.twig', [
             'controller_name' => 'MesTransactionsController',
-            'TransactionType'=>$form->createView(),
+            'transactions' => $transactions,
         ]);
     }
 }

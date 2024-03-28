@@ -37,6 +37,9 @@ class Transaction
     #[ORM\Column]
     private ?bool $est_cloture = null;
 
+    #[ORM\Column]
+    private ?bool $est_note = false;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
@@ -149,6 +152,18 @@ class Transaction
     public function setEstCloture(bool $est_cloture): static
     {
         $this->est_cloture = $est_cloture;
+
+        return $this;
+    }
+
+    public function isEstNote(): ?bool
+    {
+        return $this->est_note;
+    }
+
+    public function setEstNote(bool $est_note): static
+    {
+        $this->est_note = $est_note;
 
         return $this;
     }

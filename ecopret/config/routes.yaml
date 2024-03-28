@@ -16,4 +16,7 @@ eventt_add:
 event_add:
     path: '/calandar/{idAnnonce}'
     controller: 'App\Controller\CalandarController::index'
+noter:
+    path: '/noter_transaction/{idTransaction}'
+    controller: App\Controller\NoterTransactionController::index
 
