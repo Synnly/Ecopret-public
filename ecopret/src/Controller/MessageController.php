@@ -4,24 +4,20 @@ namespace App\Controller;
 
 use App\Entity\Message;
 use App\Repository\ConversationRepository;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Log\Logger;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\PublisherInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageController extends AbstractController
 {
-    #[Route('/message', name: 'app_message', methods: ['GET', 'POST'])]
-    public function sendMessage(Request $request, ConversationRepository $conversationRepository, SerializerInterface $serializer, EntityManagerInterface $em, HubInterface $publisher, LoggerInterface $logger): JsonResponse
+    #[Route('/message/post', name: 'app_message_post', methods: 'POST')]
+    public function sendMessage(Request $request, ConversationRepository $conversationRepository, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true); // On récupère les data postées et on les déserialize
         if (empty($contenu = $data['content'])) {
@@ -42,15 +38,37 @@ class MessageController extends AbstractController
         $em->persist($message);
         $em->flush();
 
+        // Envoi du message
+        return new JsonResponse("OK", Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/message/get', name: 'app_message_get', methods: 'POST')]
+    public function getMessage(Request $request,ConversationRepository $conversationRepository, MessageRepository $messageRepository, SerializerInterface $serializer, EntityManagerInterface $entityManager): Response
+    {
+        $id = json_decode($request->getContent(), true);
+        $conv = $conversationRepository->findOneBy(['id' => $id]);
+        //Récupération des messages triés par date d'envoi
+        $messages = $messageRepository->findBy([
+            'conversation' => $conv,
+            'lu' => false
+        ], ['date' => 'ASC']);
+
+        $jsonMessages = [];
+
+        foreach($messages as $message){
+            if($message->getExpeditaire() !== $this->getUser()) $message->setLu(true);
+            $entityManager->persist($message);
+
+            $jsonMessages[] = ["message" => $message->getMessage(), "expeditaire" => $message->getExpeditaire()->getId(), "prenom" => $message->getExpeditaire()->getPrenomCompte()];
+        }
+        $entityManager->flush();
+
         // Serialisation du message
-        $jsonMessage = $serializer->serialize($message, 'json', [
+        $jsonMessage = $serializer->serialize($jsonMessages, 'json', [
             'groups' => ['message']
         ]);
 
-        $update = new Update( 'localhost:8000/conversation/'.$conv->getId(),$jsonMessage,);
-        $logger->debug($publisher->publish($update));
 
-        // Envoi du message
-        return new JsonResponse($jsonMessage, Response::HTTP_OK, [], true);
+        return new JsonResponse($jsonMessage, 200, [], true);
     }
 }

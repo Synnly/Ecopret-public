@@ -33,9 +33,13 @@ class Message
     #[ORM\JoinColumn(nullable: true)]
     private ?Conversation $conversation = null;
 
+    #[ORM\Column]
+    private ?bool $lu = null;
+
     public function __construct()
     {
         $this->date = new \DateTime(); // Initialisation de la date à chaque nouveau message
+        $this->lu = false;
     }
 
     public function getId(): ?int
@@ -87,6 +91,18 @@ class Message
     public function setConversation(?Conversation $conversation): static
     {
         $this->conversation = $conversation;
+
+        return $this;
+    }
+
+    public function isLu(): ?bool
+    {
+        return $this->lu;
+    }
+
+    public function setLu(bool $lu): static
+    {
+        $this->lu = $lu;
 
         return $this;
     }
