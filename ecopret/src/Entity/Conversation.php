@@ -20,7 +20,7 @@ class Conversation
     private Collection $messages;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Message $dernierMessage = null;
 
     #[ORM\ManyToOne(inversedBy: 'conversations')]
@@ -33,7 +33,6 @@ class Conversation
 
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
         $this->messages = new ArrayCollection();
     }
 

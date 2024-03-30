@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Conversation;
+use App\Entity\Prestataire;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,5 +36,27 @@ class ConversationController extends AbstractController
             'conv' => $conv,
             'messages' => $messages
         ]);
+    }
+
+    #[Route('/conversation/creer/{id}', name: 'app_creer_conversation_chat')]
+    public function creerconversation(EntityManagerInterface $em, int $id): Response
+    {
+        $user = $this->getUser();
+        $prest = $em->getRepository(Prestataire::class)->findOneBy(["id"=>$id])->getNoUtisateur()->getNoCompte();
+        if($user === $prest) $this->redirectToRoute("app_main");
+        $conv = $em->getRepository(Conversation::class)->findByUser1OrUser2($user,$prest);
+        if($conv == null){
+            $conv = new Conversation();
+            $conv->setParticipant1($user);
+            $conv->setParticipant2($prest);
+
+            $em->persist($conv);
+            $em->flush();
+        }
+        else{
+            $conv = $conv[0];
+        }
+
+        return $this->redirectToRoute("app_conversation_chat", ["id" => $conv->getId()]);
     }
 }

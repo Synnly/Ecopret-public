@@ -11,6 +11,7 @@
     <script>
         window.onload = function () {
             let chatDiv = document.getElementById('chat');
+            let timeout = setTimeout(deconnection, 600 * 1000);
             window.scrollTo(0, document.body.scrollHeight);
 
             let form = document.getElementById('form');
@@ -35,6 +36,8 @@
 
                 chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{{ app.user.PrenomCompte }}</b><p>{message}</p></div></div>").replace("{message}", message.value);
                 window.scrollTo(0, document.body.scrollHeight);
+                clearTimeout(timeout);
+                timeout = setTimeout(deconnection, 600 * 1000);
             }
 
            setInterval(recupererMessages, 2000, {{ conv.id }});
@@ -67,6 +70,10 @@
                 }
                 window.scrollTo(0, document.body.scrollHeight);
             });
+        }
+
+        function deconnection(){
+            location.href ="/conversation";
         }
     </script>
 {% endblock %}

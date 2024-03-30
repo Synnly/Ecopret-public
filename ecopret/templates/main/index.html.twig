@@ -142,6 +142,9 @@
 						<p>{{ annonce.getDescription|replace({"&amp;#039;": "'", "&quot;":"\""}) }}</p>
 						<button type="button" class="annonce_button"><a href="./main/choisir/{{ annonce.getId }}">Choisir</a></button>						
 					</div>
+					{% if annonce.prestataire.noUtisateur.noCompte != app.user %}
+						<a href="/conversation/creer/{{ annonce.prestataire.id }}"><button>Contacter</button></a>
+					{% endif %}
 				</div>
 			{% endfor %}
 		</div>

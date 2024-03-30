@@ -45,4 +45,14 @@ class ConversationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findByUser1OrUser2($usr1,$usr2): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('(e.participant1 = :usr1 AND e.participant2 = :usr2) OR (e.participant1 = :usr2 AND e.participant2 = :usr1)')
+            ->setParameter('usr1', $usr1)
+            ->setParameter('usr2',$usr2)
+            ->getQuery()
+            ->getResult();
+    }
 }
