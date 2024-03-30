@@ -39,7 +39,9 @@
 						</svg>
 					</label>
 					<div class="border"></div>
-					<img src="/img/web.png" height="20" width="20" style="margin-left: 2%" id="filtreID">
+					<img src="/img/web.png" height="20" width="20" style="margin-left: 2%; margin-right :2%" id="filtreID">
+					<div class="border"></div>
+					<img src="/img/icons8-cancel.svg" height="20" width="20" style="margin-left: 2%; margin-right :2%" onclick="clearSearch()">
 				</div>
 			</li>
 			<li class="menu-deroulant">
@@ -107,21 +109,21 @@
 		<div class="cate">
 			<ul>
 				<p style="font-weight : 400;">Catégorie :</p>
-				<li><input value="toute" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Toutes</label>
+				<li><input value="toute" type="checkbox" class="ui-checkbox" name="categories"><label for="">Toutes</label>
 				</li>
-				<li><input value="bricolage" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Bricolage</label>
+				<li><input value="bricolage" type="checkbox" class="ui-checkbox" name="categories"><label for="">Bricolage</label>
 				</li>
-				<li><input value="vehicule" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Véhicule</label>
+				<li><input value="vehicule" type="checkbox" class="ui-checkbox" name="categories"><label for="">Véhicule</label>
 				</li>
-				<li><input value="immobilier" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Immobilier</label>
+				<li><input value="immobilier" type="checkbox" class="ui-checkbox" name="categories"><label for="">Immobilier</label>
 				</li>
-				<li><input value="electronique" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Eléctronique</label>
+				<li><input value="electronique" type="checkbox" class="ui-checkbox" name="categories"><label for="">Eléctronique</label>
 				</li>
-				<li><input value="maison" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Maison</label>
+				<li><input value="maison" type="checkbox" class="ui-checkbox" name="categories"><label for="">Maison</label>
 				</li>
-				<li><input value="modes" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Modes</label>
+				<li><input value="modes" type="checkbox" class="ui-checkbox" name="categories"><label for="">Modes</label>
 				</li>
-				<li><input value="divers" type="checkbox" class="ui-checkbox" name="categories[]"><label for="">Divers</label>
+				<li><input value="divers" type="checkbox" class="ui-checkbox" name="categories"><label for="">Divers</label>
 				</li>
 				<ul></div>
 				<div class="prix">
@@ -141,6 +143,14 @@
 					<div>
 						<label for="DateF">Date de fin</label>
 						<input type="date" id="DateF" name="date" class="dateI"></div>
+				</div>
+				<div class="valider">
+					<div>
+						<input type="submit" id="ValiderF" name="ValiderF" value="Valider" onclick="filtrageAnnonces()">
+					</div>
+					<div>
+						<input type="reset" id="ClearF" name="ClearF" value="Effacer" onclick="clearFilter()">
+					</div>
 				</div>
 			</div>
 			<main>

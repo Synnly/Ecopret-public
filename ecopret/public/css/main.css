@@ -499,7 +499,7 @@ label[for="ajouter_annonce_prix"] {
   overflow: hidden;
   cursor: pointer;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
-  margin-left: -50%;
+  margin-left: -55%;
   margin-right: 50%;
 }
 
@@ -807,8 +807,6 @@ label[for="emprunt"]{
   transition: all 0.1s cubic-bezier(0.71, -0.46, 0.88, 0.6),opacity 0.1s;
 }
 
-/* actions */
-
 .ui-checkbox:hover {
   border-color: var(--primary-color);
 }
@@ -882,10 +880,43 @@ label[for="dateD"], label[for="DateF"] {
   margin-left: -20%;
   padding-bottom: 3%;
   padding-left: 3%;
+  font-weight: 300;
 } 
 
 .border {
   height: 40%;
   width: 1.3px;
   background-color: rgb(223, 223, 223);
+  
+}
+
+.formF {
+  height: calc(100vh - 133px);
+}
+
+#ValiderF, #ClearF{
+  border: 1px #c2c2c2 solid;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
+  transition: 0.2s ease-in-out;
+  border-radius: 12px;
+  padding: 5% 5% 5% 5%;
+  color: #658864;
+  font-weight: 500;
+}
+#ClearF {
+  margin-left: 40%;
+}
+
+#ValiderF{
+  margin-left: -40%;
+}
+
+.valider{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
