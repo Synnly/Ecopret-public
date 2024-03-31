@@ -66,12 +66,21 @@
 		<input type="magicInput" name="magicInput" id="magicInput" style="display: none;">
 		<div class="sign-up-agree-terms">
 			{{ form_row(registrationForm.agreeTerms, {
-                    label: 'Veuillez accepter les termes et conditions d\'utilisations de vos données',
-                    }) }}
+				label: 'Veuillez accepter les <a href="/mentions_legales" class="a-lien-cond-util">termes et conditions d\'utilisation</a> de vos données',
+				label_html: true
+			}) }}
             </div>
 
 			<button type="submit" class="sign-up-btn"><b>Création du compte</b></button>
 			{{ form_end(registrationForm) }}
+		</div>
+	<br>
+
+	</div>
+	<div class="div-redirection-inscription">
+	<span class ="span-redirection-inscription">Si vous êtes déja inscrit : </span>
+		<div class="div-lien-inscription">
+			<a href="/login" class="a-redirection-inscription" >Connexion</a>
 		</div>
 	</div>
 	
