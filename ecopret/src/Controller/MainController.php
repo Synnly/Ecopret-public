@@ -6,11 +6,13 @@ use App\Entity\Admin;
 use App\Entity\Compte;
 use App\Entity\Annonce;
 use App\Entity\Emprunt;
+use App\Entity\FileAttenteAnnonce;
 use App\Entity\Transaction;
 use App\Entity\Prestataire;
 use App\Entity\Service;
 use App\Entity\Utilisateur;	
 use App\Form\AjouterAnnonceType;
+use App\Form\AjouterListeAttenteType;
 use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\EntityManagerInterface;
@@ -120,8 +122,9 @@ class MainController extends AbstractController
         $paths = explode('/', $uri);
         $idAnnonce = $paths[sizeof($paths) - 1];
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
-
-        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+    
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
+        dump($idAnnonce, $utilisateur);
         $bool_prix = true;
         if($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
             $bool_prix = false;
@@ -133,6 +136,20 @@ class MainController extends AbstractController
         if($annonceCliquee->getDisponibilite() == "") {
             $no_dispo = true;
         }
+        $formlist = $this->createForm(AjouterListeAttenteType::class);
+        $formlist->handleRequest($request);
+        $DejaAjouter = "";
+        $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
+        if ($formlist->isSubmitted()) {
+            if($DejaAjouter === null){
+                $fileAttente = new FileAttenteAnnonce();
+                $fileAttente->setNoUtilisateur($utilisateur);
+                $fileAttente->setNoAnnonce($annonceCliquee);
+                $entityManager->persist($fileAttente);
+		        $entityManager->flush();
+            }
+        }
+        $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
 
         $form = $this->createForm(ChoisirAnnonceFormType::class);
         $form->handleRequest($request);
@@ -151,7 +168,7 @@ class MainController extends AbstractController
                 $transaction->setClient($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $user]));
                 $transaction->setEstCloture(false);
                 $entityManager->persist($transaction);
-		$entityManager->flush();
+		        $entityManager->flush();
 
 
                 if(gettype($form->get('numero_choix')->getData()) != "int" || $form->get('numero_choix')->getData() - 1 < 0) {
@@ -200,7 +217,9 @@ class MainController extends AbstractController
             'annonceCliquee' => $annonceCliquee,
             'bool_prix' => $bool_prix,
             'no_dispo' => $no_dispo,
-            'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible()
+            'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible(),
+            'listeAttente' => $formlist->createView(),
+            'DejaAjouter' => $DejaAjouter,
         ]);
     }
 }

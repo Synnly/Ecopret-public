@@ -11,8 +11,10 @@ use App\Form\PlanningFormType;
 use App\Entity\Annonce;
 use App\Entity\Utilisateur;
 use App\Entity\Compte;
-
-
+use App\Entity\FileAttenteAnnonce;
+use App\Mail\MailService;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Validator\Constraints\Length;
 
 class CalandarController extends AbstractController
 {
@@ -46,8 +48,17 @@ class CalandarController extends AbstractController
             $timeFrom = $request->request->get('event-time-from');
             $timeTo = $request->request->get('event-time-to');
             $infos = $request->request->get('infos');
-        
+            $ancienne_infos = $annonce->getDisponibilite();
             $annonce->setDisponibilite($infos);
+            $estDansFileAttente = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(['no_annonce' => $idAnnonce],['id' => 'ASC']);
+            if($estDansFileAttente !== null && strlen($infos) > strlen($ancienne_infos)){
+                $mail = new MailService();
+                $userListe = $entityManager->getRepository(Utilisateur::class)->findOneBy(["id" => $estDansFileAttente->getNoUtilisateur()]);
+                $compte = $entityManager->getRepository(Compte::class)->findOneBy(["id" => $userListe->getNoCompte()]);
+                $mail->sendMail($compte, "Nouvelle disponibilitée pour ".$annonce->getNomAnnonce(), "Bonjour, \nde nouvelle(s) disponibilitée(s) pour ".$annonce->getNomAnnonce()." sont disponibles.\n Dépêcher vous !");
+                $entityManager->remove($estDansFileAttente);
+                $entityManager->flush();
+            }
             $entityManager->persist($annonce);
             $entityManager->flush();
 

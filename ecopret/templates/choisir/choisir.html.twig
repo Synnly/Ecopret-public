@@ -63,16 +63,27 @@
 {% if bool_prix and no_dispo %}
 <h2>Etes vous certain de confirmer le choix de '{{ annonceCliquee.getNomAnnonce }}' ?</h2>
 
-<h3 class="choisir_disponibites">Aucune disponibilité !</h3>
+<h3 class="choisir_disponibites">Aucune disponibilité ! <br>Vous pouvez vous s'incrire sur liste d'attente. <br> Vous recevrez un mail dès que le prestataire aura rajouté des disponibilités</h3>
+<div class="btn">
+    {% if DejaAjouter is same as(null) %}
+    <div class="">
+        {{form_start(listeAttente)}}
+            {{form_row(listeAttente.Ajouter)}}
+        {{form_end(listeAttente)}}
+    </div>
+    {% else %}
+        <h3>Cette annonce est déjà dans votre file d'attente</h3>
+    {% endif %}
 
-{{ form_start(choisirAnnonce) }}
-<div class="button_cancel">
-    {{ form_row(choisirAnnonce.numero_choix )}}
-    {{ form_row(choisirAnnonce.oui) }}
-    {{ form_row(choisirAnnonce.non) }}
-</div>
+    {{ form_start(choisirAnnonce) }}
+    <div class="button_cancel">
+        {{ form_row(choisirAnnonce.numero_choix )}}
+        {{ form_row(choisirAnnonce.oui) }}
+        {{ form_row(choisirAnnonce.non) }}
+    </div>
+
 {{ form_end(choisirAnnonce) }}
-
+</div>
 {% endif %}
 {% endblock %}
 
