@@ -20,9 +20,6 @@ class MessageController extends AbstractController
     public function sendMessage(Request $request, ConversationRepository $conversationRepository, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true); // On récupère les data postées et on les déserialize
-        if (empty($contenu = $data['content'])) {
-            throw new AccessDeniedHttpException('Pas de message');  // TODO : Retirer l'exception (overkill)
-        }
         // Recherche de la conversation
         $conv = $conversationRepository->findOneBy(['id' => $data['conv']]);
 

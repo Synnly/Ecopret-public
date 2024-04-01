@@ -46,7 +46,8 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
+            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root');
+            //$pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', '');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -147,10 +148,19 @@ class InformationsPersonnellesController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_infos');
         }
+        //Ajout des informations de l'utilisateur
+
+        // Récupérer le compte correspondant à l'ID
+        //ATTENTION user fait réference à compte
+        //$compte = $entityManager->getRepository(Compte::class)->findAll();
+        $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user->getId()]);
+        $userCompte = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user->getId()]);
 
         return $this->render('informations_personnelles/informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
-            'InformationsPersonnellesForm' => $form->createView()
+            'InformationsPersonnellesForm' => $form->createView(),
+            'compte' => $compte,
+            'userCompte' => $userCompte,
         ]);
     }
 
