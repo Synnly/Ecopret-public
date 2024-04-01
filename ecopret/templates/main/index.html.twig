@@ -22,8 +22,8 @@
 			</li>
 			<li>
 				<div class="container">
-					<span class="hover-me">Florains :
-						{{ florins }}</span>
+					<h3 class="hover-me">Florains :
+						{{ florins }}</h3>
 					<div class="tooltip">
 						<p>Money Money Money 💸</p>
 					</div>
@@ -155,7 +155,7 @@
 				<div class="loader" id="loader" style="display : none"></div>
 				<div>
 					<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
-						<h3>Ajouter une annonce</h3>
+						<h4 style="font-size : 1.2vw">Ajouter une annonce</h4>
 					</button>
 				</div>
 				{{ form_start(form) }}
@@ -218,7 +218,7 @@
 									<p id="categorieAnnonce">{{ annonce.getCategorie }}</p>
 								</div>
 								<div class="card__content_img">
-									<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="#" width="150" height="150">
+									<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="" width="auto" height="auto">
 								</div>
 								<div class="card__content">
 									<p id="descAnnonce">{{ annonce.getDescription }}</p>
