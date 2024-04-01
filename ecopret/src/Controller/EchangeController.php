@@ -115,7 +115,9 @@ class EchangeController extends AbstractController
         if($echange != null){
 
             if($em->getRepository(Prestataire::class)->findOneBy(["noUtisateur"=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])]) !== $echange->getDestinataire()){
-                return $this->redirectToRoute('app_main');
+                return $this->render('echange/hein.html.twig', [
+                    'controller_name' => 'EchangeController',
+                ]);
             }
 
             $echange->setEtat(1);
