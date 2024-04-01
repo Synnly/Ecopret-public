@@ -106,6 +106,14 @@ document.addEventListener("click", function (event) {
   var target = event.target;
   if (menu.contains(target)) {
     document.getElementById("rechercheOptions").style.display = "grid";
+    var dateInput = document.getElementById('DateD');
+    var today = new Date();
+    var todayISOString = today.toISOString().split('T')[0];
+    dateInput.setAttribute('min', todayISOString);
+    dateInput = document.getElementById('DateF');
+    today.setDate(today.getDate() + 1);
+    todayISOString = today.toISOString().split('T')[0];
+    dateInput.setAttribute('min', todayISOString);
     return;
   } else if (mainElement.contains(target)) {
     rechercheOptions.style.display = "none";
@@ -169,7 +177,26 @@ function clearSearch() {
   clearFilter();
 }
 
+function verifPrix() {
+  var prixMin = parseInt(document.getElementById("prixMin").value);
+  var prixMax = parseInt(document.getElementById("prixMax").value);
+  console.log(prixMin, prixMax);
+  if (isNaN(prixMin) || isNaN(prixMax)) {
+    alert("Veuillez saisir uniquement des nombres");
+    return false;
+  }
+  if (prixMin > prixMax) {
+    alert("Veuillez saisir un prix minimum inférieur ou égal au prix maximum");
+    return false;
+  }
+  return true;
+}
+
+
 async function filtrageAnnonces() {
+  if (!verifPrix()){
+    return;
+  }
   document.getElementById("rechercheOptions").style.display = "none";
   document.getElementById("loader").style.display = "block";
   var annonces = document.querySelectorAll(".card_list");
@@ -182,11 +209,9 @@ async function filtrageAnnonces() {
   var dateDeb = document.getElementById("DateD").value;
   var dateFin = document.getElementById("DateF").value;
   if (dateFin !== "") {
-    console.log(dateFin.split("-"))
     dateFin = new Date(dateFin.split("-"));
   }
   if (dateDeb !== "") {
-    console.log(dateDeb.split("-"))
     dateDeb = new Date(dateDeb.split("-"));
   }
   var typeChoisi = "";
@@ -219,8 +244,6 @@ async function filtrageAnnonces() {
     .getElementById("recherche")
     .value.toLowerCase()
     .trim();
-  console.log(critereInput);
-  console.log(critereInput !== "");
 
   if (critereInput !== "") {
     var synonymesRequest = await requestPython(critereInput);
@@ -251,7 +274,6 @@ async function filtrageAnnonces() {
     var jour_annonce = [];
     for (d of dates_annonces) {
       var tab = d.split(";")[0];
-      console.log(tab.split("/")[2],tab.split("/")[1], tab.split("/")[0]);
       let day = tab.split("/")[0];
       let month = tab.split("/")[1];
       if(day !== "" && month !== ""){
@@ -301,11 +323,9 @@ async function filtrageAnnonces() {
       for (let ca of categorieSelect) {
         if (ca === categorieAnnonce) {
           conditionRespectes = true;
-          console.log("ee");
           break;
         } else {
           conditionRespectes = false;
-          console.log("dd");
         }
       }
     }
@@ -315,7 +335,6 @@ async function filtrageAnnonces() {
     }
     if (dateDPossible) {
       if (dateFPossible) {
-        console.log(dateDeb >= jour_annonce[0] && jour_annonce[jour_annonce.length -1] <= dateFin)
         if (dateDeb >= jour_annonce[0] && dateFin <= jour_annonce[jour_annonce.length -1]) {
           conditionRespectes = true;
         } else {
@@ -344,14 +363,12 @@ async function filtrageAnnonces() {
         affichageAnnonce = false;
       } else {
         affichageAnnonce = true;
-        console.log("a");
         return;
       }
       if (!descAnnonce.includes(critereInput)) {
         affichageAnnonce = false;
       } else {
         affichageAnnonce = true;
-        console.log("b");
         return;
       }
     }
@@ -384,7 +401,6 @@ async function filtrageAnnonces() {
         }
       }
     }
-    console.log(affichageAnnonce, " ccc");
     annonce.style.display = affichageAnnonce ? "block" : "none";
   });
   document.getElementById("loader").style.display = "none";
