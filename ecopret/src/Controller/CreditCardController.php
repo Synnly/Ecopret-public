@@ -47,12 +47,15 @@ class CreditCardController extends AbstractController
             //}
             
             $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
-            $utilisateur->setPaiement(true);
-            $utilisateur->setDateDePaiement(new DateTime());
-            $utilisateur->setNbFlorains(1000);
-            
-            $entityManager->persist($utilisateur);
-            $entityManager->flush();
+
+            if(!$utilisateur->isPaiement()) {
+                $utilisateur->setPaiement(true);
+                $utilisateur->setDateDePaiement(new DateTime());
+                $utilisateur->setNbFlorains($utilisateur->getNbFlorains() + 1000);
+
+                $entityManager->persist($utilisateur);
+                $entityManager->flush();
+            }
 
             //Redirection vers la page main
             return $this->redirectToRoute('main');
