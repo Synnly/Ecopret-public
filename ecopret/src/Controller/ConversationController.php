@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Admin;
+use App\Entity\Compte;
 use App\Entity\Conversation;
 use App\Entity\Prestataire;
+use App\Entity\Utilisateur;
 use App\Repository\ConversationRepository;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,4 +62,27 @@ class ConversationController extends AbstractController
 
         return $this->redirectToRoute("app_conversation_chat", ["id" => $conv->getId()]);
     }
+    #[Route('/admin/conversation/creer/{id}', name: 'app_admin_creer_conversation_chat')]
+    public function adminCreerConversation(EntityManagerInterface $em, int $id): Response
+    {
+        $user = $this->getUser();
+        if($em->getRepository(Admin::class)->findOneBy(["noCompte"=>$user]) == null) $this->redirectToRoute("app_main");
+        $dest = $em->getRepository(Compte::class)->findOneBy(["id"=>$id]);
+        if($user === $dest) $this->redirectToRoute("app_main");
+        $conv = $em->getRepository(Conversation::class)->findByUser1OrUser2($user,$dest);
+        if($conv == null){
+            $conv = new Conversation();
+            $conv->setParticipant1($user);
+            $conv->setParticipant2($dest);
+
+            $em->persist($conv);
+            $em->flush();
+        }
+        else{
+            $conv = $conv[0];
+        }
+
+        return $this->redirectToRoute("app_conversation_chat", ["id" => $conv->getId()]);
+    }
+
 }

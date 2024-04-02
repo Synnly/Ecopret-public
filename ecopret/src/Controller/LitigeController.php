@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Admin;
 use App\Entity\Compte;
 use App\Entity\Litige;
+use App\Entity\Prestataire;
 use App\Entity\Transaction;
+use App\Entity\Utilisateur;
 use App\Form\DeclarerLitigeType;
 use App\Form\ListeLitigesType;
 use App\Form\VerifierLitigeType;
@@ -174,8 +176,8 @@ class LitigeController extends AbstractController
             'plaignant' => $litige->getPlaignant(),
             'transaction' => $litige->getTransaction(),
             'litige' => $litige,
-            'lienContactAccuse' => '/',
-            'lienContactPlaignant' => '/',
+            'lienContactAccuse' => '/admin/conversation/creer/'.$litige->getAccuse()->getId(),
+            'lienContactPlaignant' => '/admin/conversation/creer/'.$litige->getPlaignant()->getId(),
         ]);
     }
 }
