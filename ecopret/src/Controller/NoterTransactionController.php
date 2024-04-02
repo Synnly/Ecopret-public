@@ -62,6 +62,7 @@ class NoterTransactionController extends AbstractController
 
 
 
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('noter_transaction/index.html.twig', [
             'controller_name' => 'NoterTransactionController',
@@ -69,6 +70,8 @@ class NoterTransactionController extends AbstractController
             'annonce' => $annonce,
             'comptePrestataire' => $comptePrestataire,
             'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
 
         ]);
     }

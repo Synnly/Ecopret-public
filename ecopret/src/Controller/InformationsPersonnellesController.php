@@ -46,7 +46,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', '');
+            $pdo = new PDO('mysql:host=127.0.0.1:3307;dbname=ecopret', 'root', '');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -147,10 +147,12 @@ class InformationsPersonnellesController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_infos');
         }
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('informations_personnelles/informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
-            'InformationsPersonnellesForm' => $form->createView()
+            'InformationsPersonnellesForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 
@@ -266,11 +268,13 @@ class InformationsPersonnellesController extends AbstractController
                 return $this->redirectToRoute('app_infos');
             }
         }
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('informations_personnelles/form_informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
             'InformationsPersonnellesForm' => $form->createView(),
-            'erreur' => $erreur
+            'erreur' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
         #[Route('/infos/modif/cancel', name:'cancel_sub')]
@@ -302,9 +306,12 @@ class InformationsPersonnellesController extends AbstractController
                 }
             }
     
+            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
             return $this->render('resiliation/cancel_subscription.html.twig', [
                 'controller_name' => 'SupprimerCompteController',
-                'ResiliationFormType' => $form->createView()
+                'ResiliationFormType' => $form->createView(),
+                'user' => $this->getUser(),
+                'florins' => $user->getNbFlorains(),
             ]);
         }
     }

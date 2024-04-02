@@ -28,9 +28,12 @@ class MesTransactionsController extends AbstractController
             // Rediriger vers la page Calendar avec l'identifiant de l'annonce
             return $this->redirectToRoute('noter', ['idTransaction' => $transaction->getId()]);
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('mes_transactions/index.html.twig', [
             'controller_name' => 'MesTransactionsController',
             'transactions' => $transactions,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

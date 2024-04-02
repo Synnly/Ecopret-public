@@ -61,11 +61,14 @@ class GelController extends AbstractController
             }
 
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('gel/gel_compte.html.twig', [
             'controller_name' => 'GelController',
             'GelCompteFormType' => $form->createView(),
             'erreur' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 
@@ -95,10 +98,13 @@ class GelController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_main');
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('gel/degel_compte.html.twig', [
             'controller_name' => 'GelController',
             'DegelCompteFormType' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

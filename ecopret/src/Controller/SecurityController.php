@@ -76,10 +76,12 @@ class SecurityController extends AbstractController
             }
         }
 
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         return $this->render('security/supprimer_compte.html.twig', [
             'controller_name' => 'SupprimerCompteController',
             'SupprimerCompteFormType' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
     #[Route('/forgotpswd', name:'forgotten_password')]

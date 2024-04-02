@@ -46,10 +46,13 @@ class AnnonceController extends AbstractController
 
             return $this->redirectToRoute('app_mes_annonces');
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('annonce/supprimer.html.twig', [
             'controller_name' => 'AnnonceController',
-            'SupprimerAnnonceFormType' => $form
+            'SupprimerAnnonceFormType' => $form,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

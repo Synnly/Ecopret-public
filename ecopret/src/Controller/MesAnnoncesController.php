@@ -88,21 +88,28 @@ class MesAnnoncesController extends AbstractController
 
                 $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
             }
+            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
             return $this->render('mes_annonces/index.html.twig', [
                 'controller_name' => 'MesAnnoncesController',
                 'annonces' => $annonces,
                 'form' => $form,
                 'typesAnnonces' => $typesAnnonces,
+                'user' => $this->getUser(),
+                'florins' => $user->getNbFlorains(),
             ]);
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',
             'annonces' => $annonces,
             'form' => $form,
             'typesAnnonces' => $typesAnnonces,
             'error' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

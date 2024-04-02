@@ -99,9 +99,9 @@ class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
-            'user' => $this->getUser(),
             'adminHtml' => $html,
             'form' => $form,
+            'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
             'annonces' => $annonces,
             'bool_prix' => $bool_prix
@@ -206,7 +206,7 @@ class MainController extends AbstractController
         }
 
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         #dd($annonceCliquee->getDatesAnnonce());
 
         return $this->render('choisir/choisir.html.twig', [
@@ -220,6 +220,7 @@ class MainController extends AbstractController
             'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible(),
             'listeAttente' => $formlist->createView(),
             'DejaAjouter' => $DejaAjouter,
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

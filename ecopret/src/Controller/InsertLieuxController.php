@@ -29,6 +29,8 @@ class InsertLieuxController extends AbstractController
         print "$nbInsertions insertions<br>";
         return $this->render('insert_lieux/index.html.twig', [
             'controller_name' => 'InsertLieuxController',
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

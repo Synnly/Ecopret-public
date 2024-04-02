@@ -68,3 +68,17 @@ li {
   font-size: 70%;
   color: red;
 }
+
+.li {
+  position: unset;
+} 
+
+.login-logo-mdp{
+  margin-left: 130%;
+  margin-top: 275%;
+}
+
+.nav > .ul > .li > .a > .titreMain {
+  margin-top: 275%;
+  margin-left: 130%;
+}

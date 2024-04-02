@@ -57,10 +57,13 @@ class CreditCardController extends AbstractController
             //Redirection vers la page main
             return $this->redirectToRoute('main');
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('credit_card/index.html.twig', [
             'creditCardForm' => $form->createView(),
             'erreur' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }

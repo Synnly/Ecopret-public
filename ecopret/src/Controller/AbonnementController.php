@@ -26,9 +26,11 @@ class AbonnementController extends AbstractController
         if($utilisateur->isPaiement()){
             return $this->redirectToRoute('app_abonnement');
         }
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('abonnement/subscribe.html.twig', [
             'controller_name' => 'AbonnementController',
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 
@@ -59,10 +61,12 @@ class AbonnementController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
 
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('abonnement/abonnement.html.twig', [
             'controller_name' => 'AbonnementController',
             'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
 
     }

@@ -17,6 +17,7 @@ class PageDAccueilController extends AbstractController
 
         return $this->render('page_d_accueil/index.html.twig', [
             'title' => 'EcoPrêt',
+            
         ]);
     }
 }

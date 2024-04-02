@@ -64,10 +64,13 @@ class RetourEmpruntFinServiceController extends AbstractController
                 return $this->redirectToRoute("app_decl_litige_transaction", ["transaction_id" => $transaction_id]);
             }
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('retour/emprunt.html.twig', [
             'controller_name' => 'RetourEmpruntFinServiceController',
-            'RetourEmpruntForm' => $form->createView()
+            'RetourEmpruntForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 
@@ -118,10 +121,14 @@ class RetourEmpruntFinServiceController extends AbstractController
                 return $this->redirectToRoute("app_decl_litige_transaction", ["transaction_id" => $transaction_id]);
             }
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
 
         return $this->render('retour/service.html.twig', [
             'controller_name' => 'RetourEmpruntFinServiceController',
-            'FinServiceForm' => $form->createView()
+            'FinServiceForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
         ]);
     }
 }
