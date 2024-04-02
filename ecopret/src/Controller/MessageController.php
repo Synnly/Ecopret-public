@@ -28,7 +28,7 @@ class MessageController extends AbstractController
         }
 
         $message = new Message();
-        $message->setMessage($contenu);
+        $message->setMessage($data['content']);
         $message->setExpeditaire($this->getUser());
         $message->setEnvoye(true);
         $conv->addMessage($message);

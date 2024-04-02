@@ -18,19 +18,25 @@
                             <a href="{{ path('app_conversation_chat', {id: conversation.id}) }}">
                                 <div class="conversation">
                                     {% if app.user == conversation.participant1 %}
-                                        <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }} - {{ conversation.dernierMessage.date|date("H:i d/m") }}</b>
+                                        {% if conversation.dernierMessage %}
+                                                <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }} - {{ conversation.dernierMessage.date|date("H:i d/m") }}</b>
 
-                                        {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
-                                            <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                            {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                                <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                            {% else %}
+                                                <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                            {% endif %}
                                         {% else %}
-                                            <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                            <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }}</b>
                                         {% endif %}
                                     {% else %}
                                         <b class="titre_conversation">{{ conversation.participant1.PrenomCompte }}</b>
-                                        {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
-                                            <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
-                                        {% else %}
-                                            <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                        {% if conversation.dernierMessage %}
+                                            {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                                <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                            {% else %}
+                                                <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </div>
