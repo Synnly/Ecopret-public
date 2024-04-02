@@ -8,8 +8,10 @@
 
 .container{
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     justify-content: center;
+    align-items: center;
+
 }
 
 form {
@@ -44,4 +46,19 @@ a {
 
 html{
     min-height: 100vh;
+}
+.accepter_echange{
+    border: 2px solid #658864;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    width: 15%;
+    height: 10%;
+    margin: 5px;
+}
+.boutons_choix{
+    display: flex;
+    align-items: center;
+    flex-flow: row;
 }

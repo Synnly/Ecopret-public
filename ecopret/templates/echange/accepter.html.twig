@@ -14,12 +14,15 @@
             {% for echange in echanges %}
                 {% if echange %}
                     <div class="accepter_echange">
-                        <p>{{ echange.expeditaire.prestataire.nom }}</p>
-                        <p>{{ echange.expeditaire.nomAnnonce }}{{ echange.expeditaire.prix }}</p>
-                        <p>{{ echange.expeditaire.description }} </p>
-                        <a href="{{ path('app_echange_accepte', {id: echange.id}) }}"> Accepter</a>
-                        <a href="{{ path('app_echange_refuse', {id: echange.id}) }}"> Refuser</a>
-                        <a href="{{ path('app_creer_conversation_chat', {id: echange.expeditaire.prestataire.id}) }}"> Contacter</a>
+                        <p>Prestataire : {{ echange.expeditaire.prestataire.noUtisateur.noCompte.NomCompte }}</p>
+                        <p>Annonce : {{ echange.expeditaire.nomAnnonce }} </p>
+                        <p>Prix : {{ echange.expeditaire.prix }} florains</p>
+                        <p>Description : {{ echange.expeditaire.description }} </p>
+                        <div class="boutons_choix">
+                            <a href="{{ path('app_echange_accepte', {id: echange.id}) }}"> <button>Accepter</button></a>
+                            <a href="{{ path('app_echange_refuse', {id: echange.id}) }}"> <button>Refuser</button></a>
+                        </div>
+                        <a href="{{ path('app_creer_conversation_chat', {id: echange.expeditaire.prestataire.id}) }}"> <button>Contacter</button></a>
                     </div>
                 {% endif %}
             {% endfor %}

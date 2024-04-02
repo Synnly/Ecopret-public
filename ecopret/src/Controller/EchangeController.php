@@ -35,8 +35,16 @@ class EchangeController extends AbstractController
     #[Route('/echanges', name: 'app_echanges')]
     public function echanges(EntityManagerInterface $em): Response
     {
-        $echanges = $em->getRepository(Echange::class)->findBy(['expeditaire'=>$em->getRepository(Annonce::class)->findOneBy(['prestataire'=>$em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])])]);
-
+        $prest = $em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(["noCompte"=>$this->getUser()])]);
+        $annonces = $em->getRepository(Annonce::class)->findBy(['prestataire'=>$prest]);
+        $echanges = [];
+        foreach($annonces as $annonce){
+            if(($echangesTemp = $em->getRepository(Echange::class)->findBy(['expeditaire'=>$annonce])) != null){
+                foreach($echangesTemp as $echange){
+                    $echanges[] = $echange;
+                }
+            }
+        }
         return $this->render('echange/echanges.html.twig', [
             'controller_name' => 'EchangeController',
             'echanges' => $echanges
