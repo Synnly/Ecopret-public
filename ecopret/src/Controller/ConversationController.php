@@ -35,6 +35,10 @@ class ConversationController extends AbstractController
             'conversation' => $conv
         ], ['date' => 'ASC']);
 
+        if($conv == null){
+            return $this->redirectToRoute('app_creer_conversation_chat', ["id" => $id]);
+        }
+
         return $this->render('conversation/chat.html.twig', [
             'conv' => $conv,
             'messages' => $messages

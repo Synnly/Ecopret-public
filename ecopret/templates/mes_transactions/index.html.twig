@@ -22,9 +22,35 @@
             <button><a href="/">Accueil</a></button>
         </div>
 
-        {{ form_start(TransactionType) }}
-        {{ form_end(TransactionType) }}
-
+        {% if transactions %}
+            {% for transaction in transactions %}
+                {% if transaction %}
+                    <div class="transaction">
+                        <div>
+                            <p>Id</p>
+                            <p class="id_transaction">{{ transaction.id }}</p>
+                        </div>
+                        <div>
+                            <p>Nom</p>
+                            <p class="nom_annonce">{{ transaction.annonce.NomAnnonce }}</p>
+                        </div>
+                        <div>
+                            <p>Statut</p>
+                            <p class="statut">{{ (transaction.EstCloture ? "Cloturée" : "En cours") }}</p>
+                        </div>
+                        <div class="cloturer">
+                            {% if transaction.annonce.prestataire.noUtisateur.noCompte == app.user and transaction.annonce.EstUnEmprunt %}
+                                <a href="/retour/{{ transaction.id }}"><button>Cloturer</button></a>
+                            {% elseif transaction.client.noCompte == app.user and not transaction.annonce.EstUnEmprunt %}
+                                <a href="/fin/{{ transaction.id }}"><button>Cloturer</button></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>Vous n'avez pas effectué de transactions</p>
+        {% endif %}
     </div>
 
 {% endblock %}
