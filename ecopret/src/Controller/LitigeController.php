@@ -136,7 +136,9 @@ class LitigeController extends AbstractController
 
         // User pas admin
         if(!($admin = $entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]))){
-            return $this->redirectToRoute("app_page_accueil");
+            return $this->render('echange/hein.html.twig', [
+                'controller_name' => 'EchangeController',
+            ]);
         }
 
         // Recherche du litige qu'on traitait, sinon d'un litige pas traité
