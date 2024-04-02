@@ -86,7 +86,7 @@ class MainController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
             $form = $this->createForm(AjouterAnnonceType::class);
-            if ($request->request->has('plannin-btn')) {
+            if ($request->request->has('now-btn')) {
                 // Rediriger vers la page Calendar avec l'identifiant de l'annonce
                 return $this->redirectToRoute('event_add', ['idAnnonce' => $annonce->getId()]);
             }

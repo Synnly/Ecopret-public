@@ -405,3 +405,110 @@ async function filtrageAnnonces() {
   });
   document.getElementById("loader").style.display = "none";
 }
+
+function vérifierForm(){
+  var inputTmp = document.getElementById("ajouter_annonce_ajouterPhoto");
+  console.log("avant if");
+  if (inputTmp.files[0] !== undefined) {
+    console.log("dans 1er if");
+    ValidImage();
+    return 0;
+  }
+  console.log("dans 2eme if");
+  var titreAnnonce = document.getElementById("ajouter_annonce_titre").value;
+  var describAnnonce = document.getElementById("ajouter_annonce_description").value;
+  var prixAnnonce = document.getElementById("ajouter_annonce_prix").value;
+  var categorieAnnonce = document.getElementById("ajouter_annonce_categorie").value;
+  
+  var modalBox = document.querySelector('.modal-box');
+  
+  modalBox.innerHTML = "";
+  
+  var erreurMsg = "";
+  var erreurList = document.createElement('ul');
+  
+  
+  if (titreAnnonce == ""){
+    erreurMsg += "erreur titre, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Le titre ne peux pas être vide";
+    erreurList.appendChild(erreurLi);
+  }
+  if (describAnnonce == ""){
+    erreurMsg += "erreur description, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "La description ne peux pas être vide";
+    erreurList.appendChild(erreurLi);
+  }
+  var prixNumber = parseFloat(prixAnnonce);
+  if (isNaN(prixNumber) || prixNumber <= 0) {
+    erreurMsg += "erreur prix, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Le prix être un entier positif";
+    erreurList.appendChild(erreurLi);
+  }
+  if (categorieAnnonce == "") {
+    erreurMsg += "erreur categorie, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Une catégorie doit être choisi";
+    erreurList.appendChild(erreurLi);
+  }
+  
+  if (erreurMsg == "") {
+    var h2Element = document.createElement('h2');
+    h2Element.textContent = "Annonce créée";
+    
+    var h3Element = document.createElement('h3');
+    h3Element.textContent = "Votre annonce a été créée avec succès, vous pouvez ajouter des disponibilités maintenant ou le faire plus tard";
+    
+    var buttonsDiv = document.createElement('div');
+    buttonsDiv.classList.add('buttons');
+    
+    // Bouton plus tard
+    var closeButton = document.createElement('button');
+    closeButton.classList.add('plus-tard-btn');
+    closeButton.textContent = 'Plus tard';
+    closeButton.type = "submit";
+    
+    // Bouton maintenant
+    var nowButton = document.createElement('button');
+    closeButton.classList.add('now-btn');
+    nowButton.textContent = 'Maintenant';
+    nowButton.type = "submit";
+    nowButton.setAttribute('name', 'now-btn');
+    
+    buttonsDiv.appendChild(closeButton);
+    buttonsDiv.appendChild(nowButton);
+    
+    modalBox.appendChild(h2Element);
+    modalBox.appendChild(h3Element);
+    modalBox.appendChild(buttonsDiv);
+  }else {
+    var h2Element = document.createElement('h2');
+    h2Element.textContent = "Erreur lors de la création de l'annonce";
+    
+    var buttonsDiv = document.createElement('div');
+    buttonsDiv.classList.add('buttons');
+    var closeButton = document.createElement('button');
+    closeButton.classList.add('close-btn');
+    closeButton.textContent = 'Ok';
+    closeButton.type = "button";
+    closeButton.onclick = function() {
+      section.classList.remove("active")
+    };
+    
+    buttonsDiv.appendChild(closeButton);
+    
+    modalBox.appendChild(h2Element);
+    modalBox.appendChild(erreurList);
+    modalBox.appendChild(buttonsDiv);
+    
+  }
+  const section = document.querySelector("section");
+  section.classList.add("active");
+
+}
