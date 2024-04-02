@@ -66,5 +66,9 @@ input {
 
 #choisir_annonce_form_non {
     margin-left: -80%;
-    margin-top: 80%;
+    margin-top: 11vh;
 }
+
+.nomUser {
+    text-decoration: none;
+  }
