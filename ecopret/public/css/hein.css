@@ -6,11 +6,11 @@ body {
     background-color: black;
 }
 @font-face {
-    font-family: 'CustomFont';
+    font-family: 'ADS';
     /*noinspection CssInvalidPropertyValue*/
     src: url('../img/ADS.otf') format('opentype')
 }
 h1{
     color: red;
-    font-family: 'CustomFont',sans-serif;
+    font-family: 'ADS';
 }
