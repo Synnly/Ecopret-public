@@ -201,8 +201,34 @@
 							<button type="button" class="annonce-btn" onclick="annulerAddAnnonce()">
 								<b>Annuler</b>
 							</button>
-							<button class="plannin-btn" name="plannin-btn">Planning</button>
-							<input type="submit" class="annonce-btn" value="Création de l'annonce" onclick="return ValidImage()">
+							<section>
+								<button type="button" class="show-modal" onclick="vérifierForm()">Création de l'annonce</button>
+								<span class="overlay"></span>
+								<div class="modal-box">
+									<i class="fa-regular fa-circle-check"></i>
+									<h2>Annonce créée</h2>
+									<h3>Votre annonce a été créé avec succès, vous pouvez ajouter des disponibilités maintenant ou le faire plus tard</h3>
+									<div class="buttons">
+										<button class="close-btn">Plus tard</button>
+										<button>Maintenant</button>
+									</div>
+								</div>
+							</section>
+							<script>
+								const section = document.querySelector("section"),
+								overlay = document.querySelector(".overlay"),
+								showBtn = document.querySelector(".show-modal"),
+								closeBtn = document.querySelector(".close-btn");
+							  
+							  
+							  overlay.addEventListener("click", () =>
+								section.classList.remove("active")
+							  );
+							  
+							  closeBtn.addEventListener("click", () =>
+								section.classList.remove("active")
+							  );
+							</script>
 							{{ form_end(form) }}
 						</div>
 					</div>

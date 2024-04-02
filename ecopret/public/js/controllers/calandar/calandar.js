@@ -723,7 +723,7 @@ function convertTime(time) {
 }
 
 function redirectToMain() {
-  window.history.back();
+  window.location.href = "/main";
 }
 
 function actualiserPage() {
