@@ -25,3 +25,12 @@ services:
     App\Services\Mercure\JwtProvider:
         arguments:
             $key: '%env(MERCURE_JWT_KEY)%'
+
+    App\EventSubscriber\UtilisateurGeleSubscriber:
+        arguments:
+            - '@security.token_storage'
+            - '@router'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
