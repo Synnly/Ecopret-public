@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Compte;
 use App\Entity\Emprunt;
 use App\Entity\Service;
+use App\Entity\Utilisateur;
 use App\Entity\Transaction;
 use App\Form\FinServiceType;
 use App\Form\RetourEmpruntType;

@@ -20,8 +20,11 @@
 	<h3>Voici le récapitulatif de l'annonce</h3>
 	<div class="card" id="card">
 		<div class="card__title">
-			<h4 class="center">{{ annonceCliquee.getNomAnnonce()|replace({"&amp;#039;": "'", "&quot;":"\""}) }}
-					</h4>
+			<h4 class="center">{{ annonceCliquee.getNomAnnonce()|replace({"&amp;#039;": "'", "&quot;":"\""}) }} 
+			{% if note >= 0 %}
+			{{note}}&#9733; /5
+			{% endif %}
+			</h4>
 				</div>
 				<div class="card__content_img">
 					{% if annonceCliquee.getImageAnnonce is defined and annonceCliquee.getImageAnnonce|split('|') is iterable %}

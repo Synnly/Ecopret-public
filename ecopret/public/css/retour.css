@@ -37,3 +37,17 @@ p{
     flex-flow: row;
     justify-content: center;
 }
+
+.login-logo-mdp{
+    margin-left: 0%;
+    margin-top: 170%;
+  }
+  
+  .nav > .ul > .li > .a > .titreMain {
+    margin-top: 170%;
+    margin-left: -140%;
+  }
+
+  .nomUser {
+    text-decoration: none;
+  }
