@@ -94,7 +94,7 @@ class MainController extends AbstractController
             $erreur = "pasValide";
         }
 
-        $annonces = $entityManager->getRepository(Annonce::class)->findAll();
+        $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher($this->getUser());
         $bool_prix = null;
 
         return $this->render('main/index.html.twig', [
