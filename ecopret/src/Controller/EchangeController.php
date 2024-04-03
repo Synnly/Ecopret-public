@@ -62,6 +62,10 @@ class EchangeController extends AbstractController
         }
 
         $annonceDestinataire = $em->getRepository(Annonce::class)->findOneBy(['id' => $id]);
+        if($annonceDestinataire == null){
+            return $this->redirectToRoute("app_main");
+
+        }
         $destinataire = $annonceDestinataire->getPrestataire();
 
         // Echange avec soi meme
