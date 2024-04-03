@@ -34,6 +34,16 @@ class MainController extends AbstractController
         if ($entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])) {
             $html = "<li><a href=\"/litige/verifier\"><h4>Verifier litige</h4></a></li>";
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         //Page Main (il me fallait une redirection)
         //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
         $form = $this->createForm(AjouterAnnonceType::class);
@@ -117,6 +127,7 @@ class MainController extends AbstractController
             'bool_prix' => $bool_prix,
             'nbNotif' => $nbNotif,
             'paiement' => $aPaye,
+            'nbNotif' => $nbNotif
         ]);
     }
 
@@ -226,6 +237,15 @@ class MainController extends AbstractController
             }
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
@@ -256,6 +276,7 @@ class MainController extends AbstractController
             'DejaAjouter' => $DejaAjouter,
             'florins' => $user->getNbFlorains(),
             'note' => $note,
+            'nbNotif' => $nbNotif,
         ]);
     }
 }
