@@ -252,7 +252,7 @@
 						{% for annonce in annonces %}
 							<div class="card_list" id="card">
 								<h3 class="card__title" id="titreAnnonce">
-									{{ annonce.getNomAnnonce }}
+									{{ annonce.getNomAnnonce|replace({"&#039;": "'", "&quot;":"\""}) }}
 								</h3>
 								<div class="card__content">
 									<p id="categorieAnnonce">{{ annonce.getCategorie }}</p>
@@ -261,7 +261,7 @@
 									<img class="annonce_image" src="{{ '/picturesAnnouncement/' ~ annonce.getImageAnnonce|split('|')[0] }}" alt="" width="auto" height="auto">
 								</div>
 								<div class="card__content">
-									<p id="descAnnonce">{{ annonce.getDescription }}</p>
+									<p id="descAnnonce">{{ annonce.getDescription|replace({"&#039;": "'", "&quot;":"\""}) }}</p>
 								</div>
 								<div class="card__content card__content_prix">
 									<p id="price_annonce">Prix :
