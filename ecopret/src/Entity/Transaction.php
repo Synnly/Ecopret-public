@@ -41,6 +41,7 @@ class Transaction
     {
         $this->comptes = new ArrayCollection();
         $this->litiges = new ArrayCollection();
+        $this->est_cloture = false;
     }
 
     public function getId(): ?int

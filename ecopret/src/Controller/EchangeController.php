@@ -126,7 +126,7 @@ class EchangeController extends AbstractController
         $echange = $em->getRepository(Echange::class)->findOneBy(['id'=>$id]);
         if($echange != null){
 
-            if($em->getRepository(Prestataire::class)->findOneBy(["noUtisateur"=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])]) !== $echange->getDestinataire()){
+            if($em->getRepository(Prestataire::class)->findOneBy(["noUtisateur"=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])]) !== $echange->getDestinataire()->getPrestataire()){
                 return $this->render('echange/hein.html.twig', [
                     'controller_name' => 'EchangeController',
                 ]);
@@ -138,10 +138,15 @@ class EchangeController extends AbstractController
 
             //On fait deux transactions parce que pourquoi pas
             $transac1 = new Transaction();
-            $transac1->setAnnonce($echange->getExpeditaire())->setPrestataire($echange->getExpeditaire()->getPrestataire())->setClient($echange->getDestinataire()->getPrestataire());
+            $transac1->setAnnonce($echange->getExpeditaire());
+            $transac1->setPrestataire($echange->getExpeditaire()->getPrestataire());
+            $transac1->setClient($echange->getDestinataire()->getPrestataire()->getNoUtisateur());
             $em->persist($transac1);
+
             $transac2 = new Transaction();
-            $transac1->setAnnonce($echange->getDestinataire())->setPrestataire($echange->getDestinataire()->getPrestataire())->setClient($echange->getExpeditaire()->getPrestataire());
+            $transac2->setAnnonce($echange->getDestinataire());
+            $transac2->setPrestataire($echange->getDestinataire()->getPrestataire());
+            $transac2->setClient($echange->getExpeditaire()->getPrestataire()->getNoUtisateur());
             $em->persist($transac2);
 
             $em->flush();
