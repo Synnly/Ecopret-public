@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\Compte;
 use App\Entity\Echange;
+use App\Entity\Notification;
 use App\Entity\Prestataire;
 use App\Entity\Transaction;
 use App\Entity\Utilisateur;
@@ -103,6 +104,11 @@ class EchangeController extends AbstractController
         }
         //Si l'utilisateur n'a aucune annonce il ne peut pas faire d'échange
         if(empty($choices)){
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Vous ne pouvez pas proposer d'échanges si vous n'avez pas poster d'annonces !");
+            $this->getUser()->addNotification($newNotif);
+            $em->persist($newNotif);
+            $em->flush();
             return $this->redirectToRoute("app_main");
         }
 
@@ -167,7 +173,12 @@ class EchangeController extends AbstractController
             }
 
             $echange->setEtat(1);
-            //TODO : notifier l'utilisateur que sa demande d'échange a été accepté
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Votre demande d'échange a été acceptée");
+
+            $this->getUser()->addNotification($newNotif);
+
+            $em->persist($newNotif);
             $em->persist($echange);
 
             //On fait deux transactions parce que pourquoi pas
@@ -199,7 +210,12 @@ class EchangeController extends AbstractController
             }
 
             $echange->setEtat(2);
-            //TODO : notifier l'utilisateur que sa demande d'échange a été accepté
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Votre demande d'échange a été refusée");
+
+            $this->getUser()->addNotification($newNotif);
+
+            $em->persist($newNotif);
             $em->persist($echange);
             $em->flush();
         }

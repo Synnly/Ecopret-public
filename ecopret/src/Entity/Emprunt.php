@@ -13,7 +13,7 @@ class Emprunt
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Annonce $id_annonce = null;
 
