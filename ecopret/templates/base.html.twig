@@ -51,12 +51,14 @@
 					</div>
 				</li>
 				<li class="li-notif">
-					<a href="/notification" class="notif">
-						<i class="fa fa-bell" aria-hidden="true"></i>
-						{% if nbNotif != 0 %}
-							<span>{{ nbNotif }}</span>
-						{% endif %}
-					</a>
+					{% if user is defined %}
+						<a href="/notification" class="notif">
+							<i class="fa fa-bell" aria-hidden="true"></i>
+							{% if nbNotif != 0 %}
+								<span>{{ nbNotif }}</span>
+							{% endif %}
+						</a>
+					{% endif %}
 				</li>
 				<li class="li menu-deroulant">
 					{% if user is defined %}
