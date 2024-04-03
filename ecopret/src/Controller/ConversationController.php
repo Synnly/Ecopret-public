@@ -30,6 +30,9 @@ class ConversationController extends AbstractController
     public function conversation(ConversationRepository $conversationRepository, MessageRepository $messageRepository, int $id): Response
     {
         $conv = $conversationRepository->findOneBy(['id' => $id]);
+        if(!$conv->estParticipant($this->getUser())){
+            return $this->redirectToRoute("app_main");
+        }
         //Récupération des messages triés par date d'envoi
         $messages = $messageRepository->findBy([
             'conversation' => $conv
