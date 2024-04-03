@@ -26,8 +26,16 @@ class EchangeController extends AbstractController
     #[Route('/echange/accepter', name: 'app_echange_accepter')]
     public function accepter(EntityManagerInterface $em): Response
     {
-        $echanges = $em->getRepository(Echange::class)->findBy(['destinataire'=>$em->getRepository(Annonce::class)->findOneBy(['prestataire'=>$em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])]),'etat'=>0]);
-
+        $prest = $em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(["noCompte"=>$this->getUser()])]);
+        $annonces = $em->getRepository(Annonce::class)->findBy(['destinataire'=>$prest]);
+        $echanges = [];
+        foreach($annonces as $annonce){
+            if(($echangesTemp = $em->getRepository(Echange::class)->findBy(['expeditaire'=>$annonce,'etat'=>0])) != null){
+                foreach($echangesTemp as $echange){
+                    $echanges[] = $echange;
+                }
+            }
+        }
         $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         $nbNotif = 0;
         $notifications = $this->getUser()->getNotifications();
