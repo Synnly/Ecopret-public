@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
@@ -20,6 +21,9 @@ class Notification
 
     #[ORM\ManyToMany(targetEntity: compte::class, inversedBy: 'notifications')]
     private Collection $no_compte;
+
+    #[ORM\Column]
+    private ?int $status = 0;
 
     public function __construct()
     {
@@ -63,6 +67,18 @@ class Notification
     public function removeNoCompte(compte $noCompte): static
     {
         $this->no_compte->removeElement($noCompte);
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
