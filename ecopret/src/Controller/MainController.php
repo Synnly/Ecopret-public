@@ -39,6 +39,7 @@ class MainController extends AbstractController
         $form = $this->createForm(AjouterAnnonceType::class);
         $form->handleRequest($request);
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $aPaye = $user->isPaiement();
         if ($form->isSubmitted() && $form->isValid()) {
             $linkImagesForAnnouncement = "";
             $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
@@ -115,6 +116,7 @@ class MainController extends AbstractController
             'annonces' => $annonces,
             'bool_prix' => $bool_prix,
             'nbNotif' => $nbNotif,
+            'paiement' => $aPaye,
         ]);
     }
 

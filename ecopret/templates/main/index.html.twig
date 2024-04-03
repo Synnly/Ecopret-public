@@ -162,9 +162,15 @@
 			<main>
 				<div class="loader" id="loader" style="display : none"></div>
 				<div>
+					{% if paiement %}
 					<button type="button" class="add-btn" onclick="afficherAddAnnonce()">
 						<h4 style="font-size : 1.2vw">Ajouter une annonce</h4>
 					</button>
+					{% else %}
+						<br>
+						<p style="margin-left : 35vw;">Merci de payer l'<a href="/subscribe">abonnement</a> si vous voulez poster une annonce !</p>
+						<br>
+					{% endif %}
 				</div>
 				{{ form_start(form) }}
 				{% if error is defined and error == "pasValide" %}
