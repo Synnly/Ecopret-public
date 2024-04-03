@@ -48,7 +48,6 @@ class InformationsPersonnellesController extends AbstractController
         // Connexion bdd
         try{
             $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', '');
-            //$pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -279,6 +278,11 @@ class InformationsPersonnellesController extends AbstractController
                     $userPasswordHasher->hashPassword(
                         $user,
                         $form->get('motDePasseCompte')->getData()));
+
+                // Creation d'une nouvelle cb s'il n'existe pas encore
+                if($user->getCarteCredit() == null){
+                    $user->setCarteCredit(new CarteCredit());
+                }
 
                 $entityManager->flush();
                 return $this->redirectToRoute('app_infos');

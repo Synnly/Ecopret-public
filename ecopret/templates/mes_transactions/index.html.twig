@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Vos litiges{% endblock %}
+{% block title %}Vos Transactions{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/transaction.css') }}">
 {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/controllers/transaction/transaction.js') }}"></script>
+{% endblock %}
+
 {% block body %}
     {% if erreur is defined and erreur is not empty %}
         <script>
@@ -18,8 +22,11 @@
             <h1>Vos Transactions</h1>
         </div>
 
+        <div id="description">
+            <label class="description">Vous pouvez noter une transaction clôturé.</label>
+        </div>
         <div id="boutons">
-            <button><a href="/">Accueil</a></button>
+            <button class="home-btn" onclick="back()">Accueil</button>
         </div>
 
         {% if transactions %}

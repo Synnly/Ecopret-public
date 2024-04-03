@@ -48,3 +48,18 @@ input {
     margin-right: 8px;
 }
 
+.btn {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#ajouter_liste_attente_Ajouter{
+    margin-left: 120%;
+    margin-top: 80%;
+}
+
+#choisir_annonce_form_non {
+    margin-left: -80%;
+    margin-top: 80%;
+}

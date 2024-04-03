@@ -4,16 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Admin;
 use App\Entity\Compte;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Annonce;
 use App\Entity\Emprunt;
+use App\Entity\FileAttenteAnnonce;
 use App\Entity\Transaction;
 use App\Entity\Prestataire;
 use App\Entity\Service;
 use App\Entity\Utilisateur;
 use App\Form\AjouterAnnonceType;
+use App\Form\AjouterListeAttenteType;
 use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,6 +56,7 @@ class MainController extends AbstractController
             $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
+            $annonce->setCategorie($form->get("categorie")->getData());
 
             $annonce->setEstEnLitige(false);
 
@@ -68,12 +71,12 @@ class MainController extends AbstractController
             $annonce->setDisponibilite("");
 
             $es = $request->request->get('toggle');
-            if($es === "on"){
+            if($es === null){
                 $annonce->setEstUnEmprunt(true);
                 $service = new Service();
                 $service->setIdAnnonce($annonce);
                 $entityManager->persist($service);
-            }elseif ($es === null){
+            }elseif ($es === "on"){
                 $annonce->setEstUnEmprunt(false);
                 $emprunt = new Emprunt();
                 $emprunt->setIdAnnonce($annonce);
@@ -119,8 +122,9 @@ class MainController extends AbstractController
         $paths = explode('/', $uri);
         $idAnnonce = $paths[sizeof($paths) - 1];
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
-
-        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+    
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
+        dump($idAnnonce, $utilisateur);
         $bool_prix = true;
         if($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
             $bool_prix = false;
@@ -132,6 +136,20 @@ class MainController extends AbstractController
         if($annonceCliquee->getDisponibilite() == "") {
             $no_dispo = true;
         }
+        $formlist = $this->createForm(AjouterListeAttenteType::class);
+        $formlist->handleRequest($request);
+        $DejaAjouter = "";
+        $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
+        if ($formlist->isSubmitted()) {
+            if($DejaAjouter === null){
+                $fileAttente = new FileAttenteAnnonce();
+                $fileAttente->setNoUtilisateur($utilisateur);
+                $fileAttente->setNoAnnonce($annonceCliquee);
+                $entityManager->persist($fileAttente);
+		        $entityManager->flush();
+            }
+        }
+        $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
 
         $form = $this->createForm(ChoisirAnnonceFormType::class);
         $form->handleRequest($request);
@@ -197,7 +215,9 @@ class MainController extends AbstractController
             'annonceCliquee' => $annonceCliquee,
             'bool_prix' => $bool_prix,
             'no_dispo' => $no_dispo,
-            'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible()
+            'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible(),
+            'listeAttente' => $formlist->createView(),
+            'DejaAjouter' => $DejaAjouter,
         ]);
     }
 }
