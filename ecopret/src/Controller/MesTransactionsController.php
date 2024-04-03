@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class MesTransactionsController extends AbstractController
 {
     #[Route('/mes/transactions', name: 'app_mes_transactions')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id'=>$this->getUser()]);
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $compte->getId()]);
@@ -27,10 +27,11 @@ class MesTransactionsController extends AbstractController
         $transactionsUtilisateur = array_reverse($entityManager->getRepository(Transaction::class)->findBy(['Client' => $utilisateur]));
         $transactionsPrestataire = array_reverse($entityManager->getRepository(Transaction::class)->findBy(['Prestataire' => $prestataire]));
 
-        foreach($transactionsPrestataire as $transaction){
-            if (!array_search($transaction, $transactionsUtilisateur)){
+        foreach($transactionsPrestataire as $transaction) {
+            if (!array_search($transaction, $transactionsUtilisateur)) {
                 $transactionsUtilisateur[] = $transaction;
             }
+        }
 
         $nbNotif = 0;
         $notifications = $this->getUser()->getNotifications();

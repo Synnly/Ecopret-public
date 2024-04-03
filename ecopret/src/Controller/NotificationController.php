@@ -31,8 +31,8 @@ class NotificationController extends AbstractController
             if ($notification->getStatus() != 2) {
                 $notification->setStatus($notification->getStatus()+1);
             }
+            $entityManager->persist($notification);
         }
-        $entityManager->persist($notification);
         $entityManager->flush();
         
         foreach ($notifications as $notification) {
