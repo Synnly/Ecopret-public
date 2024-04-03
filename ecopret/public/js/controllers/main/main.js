@@ -486,7 +486,11 @@ function vérifierForm(){
     
     buttonsDiv.appendChild(closeButton);
     buttonsDiv.appendChild(nowButton);
+
+    var iconElement = document.createElement('i');
+    iconElement.classList.add ("fa-regular","fa-circle-check");
     
+    modalBox.appendChild(iconElement);
     modalBox.appendChild(h2Element);
     modalBox.appendChild(h3Element);
     modalBox.appendChild(buttonsDiv);
