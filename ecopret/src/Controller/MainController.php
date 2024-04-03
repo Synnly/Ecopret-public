@@ -97,6 +97,15 @@ class MainController extends AbstractController
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
         $bool_prix = null;
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
             'adminHtml' => $html,
@@ -104,7 +113,8 @@ class MainController extends AbstractController
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
             'annonces' => $annonces,
-            'bool_prix' => $bool_prix
+            'bool_prix' => $bool_prix,
+            'nbNotif' => $nbNotif,
         ]);
     }
 

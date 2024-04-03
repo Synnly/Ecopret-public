@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Compte;
 use App\Entity\Utilisateur;
 use App\Entity\Notification;
-use App\Form\NotificationFormType;
 
 
 class NotificationController extends AbstractController
@@ -23,10 +22,7 @@ class NotificationController extends AbstractController
 
         
         $notifications = $user->getNotifications();
-        
-        $form = $this->createForm(NotificationFormType::class);
-        
-        $form->handleRequest($request);
+                
         foreach ($notifications as $notification) {
             if ($notification->getStatus() != 2) {
                 $notification->setStatus($notification->getStatus()+1);
