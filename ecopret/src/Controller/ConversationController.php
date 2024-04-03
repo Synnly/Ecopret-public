@@ -32,7 +32,7 @@ class ConversationController extends AbstractController
         $conv = $conversationRepository->findOneBy(['id' => $id]);
 
         if($conv == null){
-            return $this->redirectToRoute('app_creer_conversation_chat', ["id" => $id]);
+            return $this->redirectToRoute("app_main");
         }
 
         if(!$conv->estParticipant($this->getUser())){
