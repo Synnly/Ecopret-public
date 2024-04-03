@@ -49,7 +49,7 @@ class AnnonceRepository extends ServiceEntityRepository
     public function findAnnoncesaAfficherPrest($usr): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.prestataire.noUtisateur.noCompte != :usr')
+            ->andWhere('a.prestataire != :usr')
             ->andWhere('a.prestataire.noUtisateur.est_gele = :gel')
             ->setParameter('usr', $usr)
             ->setParameter('gel', false)
