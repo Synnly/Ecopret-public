@@ -80,12 +80,6 @@ ul{
     padding: 0;
 }
 
-li{
-    font-size: 70%;
-    color: red;
-    list-style-type: none;
-}
-
 a {
     color: white;
     text-decoration: none;
