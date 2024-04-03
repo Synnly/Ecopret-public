@@ -525,6 +525,7 @@ label[for="ajouter_annonce_ajouterPhoto3"] {
   justify-self: center;
   box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
   transition: 0.2s ease-in-out;
+  overflow-wrap: anywhere;
 }
 .card_list:hover {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
