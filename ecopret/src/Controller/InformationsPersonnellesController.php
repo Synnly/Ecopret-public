@@ -149,13 +149,22 @@ class InformationsPersonnellesController extends AbstractController
             return $this->redirectToRoute('app_infos');
         }
         //Ajout des informations de l'utilisateur
+       /* $sql = "UPDATE utilisateur u
+            INNER JOIN compte c ON u.id = c.id
+            SET u.a_une_reduction = TRUE
+            WHERE c.adresse_mail_compte = 'tests7@gmail.com'";
+        $resultat = $pdo->prepare($sql);
+        $resultat->execute();
+       */
+
 
         // Récupérer le compte correspondant à l'ID
         //ATTENTION user fait réference à compte
         //$compte = $entityManager->getRepository(Compte::class)->findAll();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user->getId()]);
         $userCompte = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user->getId()]);
-
+        //getNoUtisateur()
+        //$prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['id' => $userCompte->getId()]);
         return $this->render('informations_personnelles/informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
             'InformationsPersonnellesForm' => $form->createView(),

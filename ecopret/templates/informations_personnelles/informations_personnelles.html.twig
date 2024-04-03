@@ -36,7 +36,7 @@
         <h3>Prenom : {{compte.PrenomCompte}}</h3>
         <h3>Mail : {{compte.AdresseMailCOmpte}}</h3>
         <h3>Nombre Florains : {{userCompte.getNbFlorains()}}</h3>
-    </div>
+        <h3>Réduction abonnement ? {% if userCompte.isAUneReduction() %}Oui{% else %}Non{% endif %}</h3>    </div>
     <br>
     <br>
 

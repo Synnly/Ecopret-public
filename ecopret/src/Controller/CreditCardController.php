@@ -51,7 +51,15 @@ class CreditCardController extends AbstractController
             if(!$utilisateur->isPaiement()) {
                 $utilisateur->setPaiement(true);
                 $utilisateur->setDateDePaiement(new DateTime());
-                $utilisateur->setNbFlorains($utilisateur->getNbFlorains() + 1000);
+                //Gestion de la réduction lors du paiement d l'abonnement
+                if($utilisateur->isAUneReduction()){
+                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() + 1200);
+                    $utilisateur->setAUneReduction(False);
+
+                }else{
+                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() + 1000);
+                }
+
 
                 $entityManager->persist($utilisateur);
                 $entityManager->flush();
