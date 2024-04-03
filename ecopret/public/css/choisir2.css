@@ -32,8 +32,9 @@ button:hover {
 
 .liste_dispo {
     position: relative;
-    left: 37%;
+    left: 45%;
     text-align: center;
+    margin-right: 50%;
 }
 
 li {

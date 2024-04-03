@@ -168,6 +168,16 @@ class MainController extends AbstractController
                 $transaction->setClient($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $user]));
                 $transaction->setEstCloture(false);
                 $entityManager->persist($transaction);
+                $dispos = explode("|", $annonceCliquee->getDisponibilite());
+                $nDispo = "";
+                for ($i=0; $i < count($dispos); $i++) { 
+                    if( $i !== $indexChoice){
+                        $nDispo .= $dispos[$i]."|";
+                    }
+                }
+                
+                $annonceCliquee->setDisponibilite($nDispo);
+                $entityManager->persist($annonceCliquee);
                 $entityManager->flush();
 
 
