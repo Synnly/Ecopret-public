@@ -33,6 +33,14 @@ class NoterTransactionController extends AbstractController
         $idComptePrestataire = $prestataire->getNoUtisateur()->getNoCompte();
         $comptePrestataire = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $idComptePrestataire]);
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         $form = $this->createForm(NoterTransactionType::class);
 
@@ -72,7 +80,7 @@ class NoterTransactionController extends AbstractController
             'form' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
-
+            'nbNotif' =>$nbNotif,
         ]);
     }
 }

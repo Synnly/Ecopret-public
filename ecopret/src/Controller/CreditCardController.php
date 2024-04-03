@@ -31,6 +31,15 @@ class CreditCardController extends AbstractController
         } else {
             return $this->redirectToRoute('infos_modif');
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         
         $carte = $user->getCarteCredit();
 
@@ -64,6 +73,7 @@ class CreditCardController extends AbstractController
             'erreur' => $erreur,
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

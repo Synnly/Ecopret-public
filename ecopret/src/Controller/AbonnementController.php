@@ -26,11 +26,22 @@ class AbonnementController extends AbstractController
         if($utilisateur->isPaiement()){
             return $this->redirectToRoute('app_abonnement');
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('abonnement/subscribe.html.twig', [
             'controller_name' => 'AbonnementController',
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -45,6 +56,15 @@ class AbonnementController extends AbstractController
 
         if(!$utilisateur->isPaiement()){
             return $this->redirectToRoute('app_subscribe');
+        }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
         }
         
         $form = $this->createForm(UnsubscribeType::class);
@@ -67,6 +87,7 @@ class AbonnementController extends AbstractController
             'form' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
 
     }

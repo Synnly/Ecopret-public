@@ -181,6 +181,31 @@ img#plante3{
     position: absolute;
     left: -7vw;
   }
+
+  .notif {
+    color: #658864;
+    position: relative;
+  }
+
+  i {
+    font-size: 1.4vw;
+  }
+  
+  span {
+    position: absolute;
+    left: 4.0rem;
+    bottom : 0.7rem;
+    background-color: #658864;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: -50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60%;
+    color: #fff;
+  }
   
   .nomUser {
     font-weight: 900;

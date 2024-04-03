@@ -22,21 +22,24 @@ class NotificationController extends AbstractController
 
         
         $notifications = $user->getNotifications();
+        $nbNotif = 0;
                 
         foreach ($notifications as $notification) {
             if ($notification->getStatus() != 2) {
                 $notification->setStatus($notification->getStatus()+1);
                 $entityManager->persist($notification);
             }
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
         }
 
-        $entityManager->flush();
-        
 
         return $this->render('notification/index.html.twig', [
             'notifications' => $notifications,
             'user' => $user,
             'florins' => $utilisateur->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

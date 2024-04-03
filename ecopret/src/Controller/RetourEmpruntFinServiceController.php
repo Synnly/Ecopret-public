@@ -37,6 +37,15 @@ class RetourEmpruntFinServiceController extends AbstractController
         $prestataire = $transaction->getAnnonce()->getPrestataire();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         // User pas le prestataire de l'annonce
         if($prestataire->getNoUtisateur()->getNoCompte() != $compte){
             return $this->redirectToRoute("app_page_accueil");
@@ -72,6 +81,7 @@ class RetourEmpruntFinServiceController extends AbstractController
             'RetourEmpruntForm' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -94,6 +104,15 @@ class RetourEmpruntFinServiceController extends AbstractController
 
         $prestataire = $transaction->getAnnonce()->getPrestataire();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         // User pas le client de l'annonce
         if($transaction->getClient()->getNoCompte() != $compte){
@@ -130,6 +149,7 @@ class RetourEmpruntFinServiceController extends AbstractController
             'FinServiceForm' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }
