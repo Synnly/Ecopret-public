@@ -4,7 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +19,7 @@ class AjouterAnnonceType extends AbstractType
             ->add('titre', TextType::class)
             ->add('description', TextareaType::class,[ 'attr' => [
                 'rows' => 3,
-                'cols' => 45, 
+                'cols' => 32, 
             ],    
         ])
             ->add('ajouterPhoto', FileType::class, [
@@ -33,6 +33,19 @@ class AjouterAnnonceType extends AbstractType
             ->add('ajouterPhoto3', FileType::class, [
                 'attr' => ['onchange' => "ajoutPhoto()",],
                 'required' => false,
+            ])
+            ->add('categorie', ChoiceType::class, [
+                'label' => 'Catégorie :',
+                'choices' => [
+                    'Bricolage' => 'bricolage',
+                    'Véhicule' => 'vehicule',
+                    'Immobilier' => 'immobilier',
+                    'Électronique' => 'electronique',
+                    'Maison' => 'maison',
+                    'Modes' => 'modes',
+                    'Divers' => 'divers',
+                ],
+                'placeholder' => 'Choisissez une catégorie',
             ])
             ->add('prix', TextType::class, ['constraints' => [
                 new Regex([

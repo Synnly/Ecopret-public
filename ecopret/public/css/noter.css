@@ -1,0 +1,148 @@
+.transaction {
+    display: flex; 
+    flex-direction: column; 
+    border-bottom: 1px solid #ccc; 
+    padding: 10px; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.annonce,
+.prestataire {
+    border: 1px solid rgb(214, 214, 214); 
+    border-radius: 10px;
+    padding: 30px; 
+    background-color: #EFEFEF;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1), 
+    0 2px 2px rgba(0,0,0,0.1), 
+    0 4px 4px rgba(0,0,0,0.1), 
+    0 8px 8px rgba(0,0,0,0.1),
+    0 16px 16px rgba(0,0,0,0.1);
+    margin-bottom: 50px;
+}
+
+.transaction-id {
+    margin-bottom: 10px;
+}
+
+.annonce-images {
+    margin-bottom: 10px;
+}
+
+.annonce-title {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.annonce-price {
+    margin-bottom: 10px;
+}
+
+.title-section {
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    color: #656E6F;
+}
+
+p {
+    margin: 0; 
+}
+
+.transaction-id,
+.annonce-title,
+.annonce-price,
+.prestataire-nom {
+    display: flex; 
+    align-items: center;
+}
+
+.rating-annonce,
+.rating-account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rating-annonce input,
+.rating-account input {
+    display: none;
+}
+
+.rating-annonce input + label,
+.rating-account input + label {
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.rating-annonce label,
+.rating-account label {
+    color: #ffe400;
+    text-shadow: 1px 1px 2px #FFAC00, 0 0 1em #FFAC00, 0 0 0.2em #ff6600;
+}
+
+.rating-annonce input:checked + label ~ label,
+.rating-account input:checked + label ~ label {
+    color: #F7F7F7;
+    text-shadow: none;
+}
+
+.rating-annonce label:active,
+.rating-account label:active {
+    transform: scale(0.8);
+    transition: 0.3s ease;
+}
+
+.rating-annonce label:hover,
+.rating-account label:hover {
+    transform: scale(1.25);
+    transition: 0.3s ease-out;
+}
+
+.two-btn {
+    display: flex;
+    align-items: center;
+}
+
+.cancel-btn {
+    margin-right: 10px;
+    margin-left: 10%;
+    height: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    color: #658864;
+    background-color: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #658864;
+}
+
+.cancel-btn:hover {
+    background-color: #658864;
+    color: #fff;
+}
+
+.submit-btn {
+  margin-left: 50%;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: 500;
+  outline: none;
+  border: none;
+  color: #fff;
+  background-color: #658864;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #658864;
+}
+.submit-btn:hover {
+  background-color: transparent;
+  color: #658864;
+}
