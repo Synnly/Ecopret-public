@@ -485,7 +485,6 @@ function vérifierForm(){
       if (modalBoxElement) {
         modalBoxElement.style.display = 'none';
       }
-      //annulerAddAnnonce();
     });
 
     // Bouton maintenant
@@ -503,7 +502,7 @@ function vérifierForm(){
       if (modalBoxElement) {
         modalBoxElement.style.display = 'none';
       }
-      annulerAddAnnonce();
+      //annulerAddAnnonce();
     });
     
     buttonsDiv.appendChild(closeButton);

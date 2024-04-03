@@ -100,6 +100,8 @@ class MainController extends AbstractController
             if ($request->request->has('now-btn')) {
                 // Rediriger vers la page Calendar avec l'identifiant de l'annonce
                 return $this->redirectToRoute('event_add', ['idAnnonce' => $annonce->getId()]);
+            }else {
+                return $this->redirectToRoute('main');
             }
         } else if ($form->isSubmitted() && !$form->isValid()) {
             $erreur = "pasValide";
