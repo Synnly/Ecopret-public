@@ -46,12 +46,21 @@ class AnnonceRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findAnnoncesaAfficher($usr): array
+    public function findAnnoncesaAfficherPrest($usr): array
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.prestataire.noUtisateur.noCompte != :usr')
             ->andWhere('a.prestataire.noUtisateur.est_gele = :gel')
             ->setParameter('usr', $usr)
+            ->setParameter('gel', false)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAnnoncesaAfficher(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.prestataire.noUtisateur.est_gele = :gel')
             ->setParameter('gel', false)
             ->getQuery()
             ->getResult();

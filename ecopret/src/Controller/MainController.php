@@ -93,8 +93,12 @@ class MainController extends AbstractController
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
+        if($prestUser = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisatuer'=>$entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])){
+            $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficherPrest($prestUser);
+        }else{
+            $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher();
+        }
 
-        $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher($this->getUser());
         $bool_prix = null;
 
         return $this->render('main/index.html.twig', [
