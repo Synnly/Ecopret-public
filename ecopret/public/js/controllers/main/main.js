@@ -74,31 +74,25 @@ function annulerAddAnnonce() {
 }
 function ValidImage() {
   extensions_admises = ["png", "jpg", "jpeg", ""];
-  if (
-    !extensions_admises.includes(
-      document
-        .getElementById("ajouter_annonce_ajouterPhoto")
-        .files[0].name.split(".")
-        .pop()
-    ) ||
-    !extensions_admises.includes(
-      document
-        .getElementById("ajouter_annonce_ajouterPhoto2")
-        .files[0].name.split(".")
-        .pop()
-    ) ||
-    !extensions_admises.includes(
-      document
-        .getElementById("ajouter_annonce_ajouterPhoto3")
-        .files[0].name.split(".")
-        .pop()
-    )
-  ) {
-    alert("Les photos doivent avoir comme format : png, jpg, jpeg ou pdf.");
-    return false;
-  } else {
-    return true;
+  if (document.getElementById("ajouter_annonce_ajouterPhoto").files[0] != undefined){
+    if (!extensions_admises.includes(document.getElementById("ajouter_annonce_ajouterPhoto").files[0].name.split(".").pop())) {
+      alert("Les photos doivent avoir comme format : png, jpg, jpeg ou pdf.");
+      return false;
+    }
   }
+  if (document.getElementById("ajouter_annonce_ajouterPhoto2").files[0] != undefined){
+    if (!extensions_admises.includes(document.getElementById("ajouter_annonce_ajouterPhoto2").files[0].name.split(".").pop())) {
+      alert("Les photos doivent avoir comme format : png, jpg, jpeg ou pdf.");
+      return false;
+    }
+  }
+  if (document.getElementById("ajouter_annonce_ajouterPhoto3").files[0] != undefined){
+    if (!extensions_admises.includes(document.getElementById("ajouter_annonce_ajouterPhoto3").files[0].name.split(".").pop())) {
+      alert("Les photos doivent avoir comme format : png, jpg, jpeg ou pdf.");
+      return false;
+    }
+  }
+  return true;
 }
 
 //window.addEventListener("load", function () {});
@@ -413,7 +407,6 @@ function vérifierForm(){
   var inputTmp = document.getElementById("ajouter_annonce_ajouterPhoto");
   if (inputTmp.files[0] !== undefined) {
     ValidImage();
-    return 0;
   }
   var titreAnnonce = document.getElementById("ajouter_annonce_titre").value;
   var describAnnonce = document.getElementById("ajouter_annonce_description").value;
