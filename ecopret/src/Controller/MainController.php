@@ -152,7 +152,7 @@ class MainController extends AbstractController
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
 
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
-        dump($idAnnonce, $utilisateur);
+
         $bool_prix = true;
         if ($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
             $bool_prix = false;
@@ -266,7 +266,6 @@ class MainController extends AbstractController
                 $note = round($somme / $n, 1);
             }
         }
-        #dd($annonceCliquee->getDatesAnnonce());
 
         return $this->render('choisir/choisir.html.twig', [
             'title' => 'EcoPrêt',

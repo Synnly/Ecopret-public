@@ -26,14 +26,12 @@ button:hover {
 
 .liste_dispo {
   position: relative;
-  left: 45%;
+  left: 35%;
   text-align: center;
   margin-right: 50%;
 }
 
 li {
-  width: 25%;
-  font-size: 200%;
   margin-top: 0%;
   color: #658864;
 }
@@ -105,3 +103,8 @@ input {
 .nomUser {
     text-decoration: none;
   }
+
+.choisir_disponibites{
+  width: 100%;
+  font-size: 200%;
+}

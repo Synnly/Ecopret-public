@@ -195,7 +195,7 @@ function verifPrix() {
       return false;
     }
   }else if(document.getElementById("prixMax").value != ""){
-    var prixMin = parseInt(document.getElementById("prixMax").value);
+    var prixMax = parseInt(document.getElementById("prixMax").value);
     if (isNaN(prixMax)) {
       alert("Veuillez saisir uniquement des nombres");
       return false;
@@ -213,6 +213,9 @@ async function filtrageAnnonces() {
   document.getElementById("rechercheOptions").style.display = "none";
   document.getElementById("loader").style.display = "block";
   var annonces = document.querySelectorAll(".card_list");
+  annonces.forEach((annonce) => {
+   annonce.style.display = "block"
+  });
 
   var radioButtons = document.querySelectorAll('input[name="ES"]');
   var prixMin = parseInt(document.getElementById("prixMin").value);
