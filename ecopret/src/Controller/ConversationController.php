@@ -30,6 +30,11 @@ class ConversationController extends AbstractController
     public function conversation(ConversationRepository $conversationRepository, MessageRepository $messageRepository, int $id): Response
     {
         $conv = $conversationRepository->findOneBy(['id' => $id]);
+
+        if($conv == null){
+            return $this->redirectToRoute('app_creer_conversation_chat', ["id" => $id]);
+        }
+
         if(!$conv->estParticipant($this->getUser())){
             return $this->redirectToRoute("app_main");
         }
@@ -38,9 +43,7 @@ class ConversationController extends AbstractController
             'conversation' => $conv
         ], ['date' => 'ASC']);
 
-        if($conv == null){
-            return $this->redirectToRoute('app_creer_conversation_chat', ["id" => $id]);
-        }
+
 
         return $this->render('conversation/chat.html.twig', [
             'conv' => $conv,
