@@ -22,7 +22,7 @@
 
             const submit = document.querySelector('button');
             submit.onclick = e => {
-                const message = document.getElementById('message').value;
+                let message = document.getElementById('message').value;
                 if(message !== "") {
                     const data = {
                         'content': message,
@@ -32,7 +32,7 @@
                         method: 'POST',
                         body: JSON.stringify(data)
                     }).then((response) => {
-
+			document.getElementById('message').value = '';	
                     });
 
                     chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>Vous</b><p>{message}</p></div></div>").replace("{message}", message);
@@ -62,10 +62,10 @@
             let messages = JSON.parse(await response.text());
             messages.forEach(message => {
                 if (message.expeditaire === {{ app.user.id }}){
-                    chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
+                    chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>Vous</b><p>{message}</p></div></div>".replace("{message}", message.message));
                 }
                 else {
-                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>Vous</b><p>{message}</p></div></div>".replace("{message}", message.message));
+                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
                 }
                 window.scrollTo(0, document.body.scrollHeight);
             });
