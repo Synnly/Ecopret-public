@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\Emprunt;
 use App\Entity\Service;
+use App\Entity\Utilisateur;
 use App\Form\SupprimerAnnonceFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
