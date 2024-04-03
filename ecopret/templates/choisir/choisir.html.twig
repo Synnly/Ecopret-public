@@ -75,6 +75,7 @@
     {{ form_row(choisirAnnonce.oui) }}
     {{ form_row(choisirAnnonce.non) }}
 		<button><a href="/echange/{{annonceCliquee.getId}}" style="text-decoration: none; color : white;">Demande d'échange</a></button>
+	<button><a href="/conversation/creer/{{annonceCliquee.prestataire.id}}" style="text-decoration: none; color : white;">Contacter</a></button>
 </div>
 {{ form_end(choisirAnnonce) }}
 
@@ -113,6 +114,7 @@
         {{form_start(listeAttente)}}
             {{form_row(listeAttente.Ajouter)}}
         {{form_end(listeAttente)}}
+		<button><a href="/conversation/creer/{{annonceCliquee.prestataire.id}}" style="text-decoration: none; color : white;">Contacter</a></button>
     </div>
     {% else %}
         <h3>Cette annonce est déjà dans votre file d'attente</h3>
