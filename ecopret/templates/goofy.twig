@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block body %}
+    <img src="https://gifdb.com/images/high/fast-spinning-monkeys-dib6ot255tvz97ci.gif" alt="" style="position: absolute; z-index: 999;width:800px;height:800px; margin-left : 30vw" id="main-menu">
+    <audio controls>
+  <source src="{{asset('js/s.mp3')}}" type="audio/mp3">
+  Your browser does not support the audio tag.
+</audio>
+
+{% endblock %}

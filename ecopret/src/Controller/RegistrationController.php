@@ -65,4 +65,5 @@ class RegistrationController extends AbstractController
             'erreur' => $erreur,
         ]);
     }
+    
 }

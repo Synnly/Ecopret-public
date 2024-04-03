@@ -1,0 +1,61 @@
+*{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #9f9f9f;
+}
+#titre {
+    position: absolute;
+    top: -60%;
+    left: 5%;
+    font-size: 1000%;
+    color:#ffffff;
+    text-shadow: 15px 15px 8px rgba(0, 0, 0, 1);
+    font-weight: 900;
+    z-index: 999;
+}
+
+#main-menu{
+    display:grid;
+    align-content: center;
+    justify-content: center;
+    margin-left: 28%;
+    margin-right: 35%;
+    padding: 5% 5% 5% 5%;
+    margin-top: 10%;
+    background-color: transparent; 
+    color:#ffffff;
+    text-shadow: 15px 15px 8px rgba(0, 0, 0, 1);
+    font-weight: 900;
+}
+.phacrr{
+    position: relative;
+    margin-left: -60%;
+    font-size: 140%;
+    top: -60%;
+    margin-right: -85%;
+    color:#ffffff;
+    text-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+    font-weight: 900;
+}
+
+
+#log, #conn {
+    font-size: 600%;
+    font-weight: 900;
+    color: lightgray;
+}
+
+
+#log {
+    margin-bottom: -10%;
+    width: 100%;
+    text-align: center;
+    color: lightgray;
+}
+
+#conn{
+    margin-bottom: 10%;
+    margin-top: -10%;
+    width: 100%;
+    text-align: center;
+    color: lightgray;
+}
