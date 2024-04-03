@@ -93,7 +93,7 @@ class MainController extends AbstractController
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
-        if($prestUser = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisatuer'=>$entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])){
+        if($prestUser = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])){
             $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficherPrest($prestUser);
         }else{
             $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher();
