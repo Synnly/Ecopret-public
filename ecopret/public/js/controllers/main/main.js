@@ -411,13 +411,10 @@ async function filtrageAnnonces() {
 
 function vérifierForm(){
   var inputTmp = document.getElementById("ajouter_annonce_ajouterPhoto");
-  console.log("avant if");
   if (inputTmp.files[0] !== undefined) {
-    console.log("dans 1er if");
     ValidImage();
     return 0;
   }
-  console.log("dans 2eme if");
   var titreAnnonce = document.getElementById("ajouter_annonce_titre").value;
   var describAnnonce = document.getElementById("ajouter_annonce_description").value;
   var prixAnnonce = document.getElementById("ajouter_annonce_prix").value;

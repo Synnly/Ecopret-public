@@ -672,8 +672,8 @@ label[for="ajouter_annonce_ajouterPhoto3"] {
 .show-modal {
   display: flex;
   margin: auto;
+  width: auto;
   color: #6e6b80;
-  font-size: 1.3rem;
   text-align: center;
   border: 2px #c2c2c2 solid;
   padding: 2% 2% 2% 2%;
