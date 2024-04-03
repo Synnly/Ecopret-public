@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\CarteCredit;
+use App\Entity\Emprunt;
 use App\Form\ResiliationFormType;
 use App\Entity\Compte;
 use App\Entity\Lieu;
@@ -46,7 +47,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
+            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', '');
             //$pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', 'Df869JUNqyI1w9geKoAJ');
         }
         catch(Exception $e){
@@ -125,6 +126,12 @@ class InformationsPersonnellesController extends AbstractController
 
             // Si l'utilisateur ne veut plus etre prestataire
             if($form->get('annonce')->getData() == "non" && $prestataire != null) {
+                foreach($prestataire->getAnnonces() as $annonce){
+                    if($aSuppr = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce])){
+                        $entityManager->remove($aSuppr);
+                    }
+                }
+
                 $entityManager->remove($prestataire);
             }
             // Remplacage de l'ancien lieu par le nouveau
@@ -148,15 +155,6 @@ class InformationsPersonnellesController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_infos');
         }
-        //Ajout des informations de l'utilisateur
-       /* $sql = "UPDATE utilisateur u
-            INNER JOIN compte c ON u.id = c.id
-            SET u.a_une_reduction = TRUE
-            WHERE c.adresse_mail_compte = 'tests7@gmail.com'";
-        $resultat = $pdo->prepare($sql);
-        $resultat->execute();
-       */
-
 
         // Récupérer le compte correspondant à l'ID
         //ATTENTION user fait réference à compte
