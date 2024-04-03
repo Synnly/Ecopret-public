@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CarteCredit;
 use App\Entity\Compte;
 use App\Entity\Utilisateur;
+use App\Entity\Notification;
 use App\Form\CreditCardFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -59,7 +60,14 @@ class CreditCardController extends AbstractController
             $utilisateur->setPaiement(true);
             $utilisateur->setDateDePaiement(new DateTime());
             $utilisateur->setNbFlorains(1000);
+
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Vous avez souscrit un abonnement, merci ! Vous avez reçu 100 florains !");
+
+            $this->getUser()->addNotification($newNotif);
             
+            $entityManager->persist($newNotif);
+            $entityManager->persist($user);
             $entityManager->persist($utilisateur);
             $entityManager->flush();
 
