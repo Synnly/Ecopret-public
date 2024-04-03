@@ -476,13 +476,35 @@ function vérifierForm(){
     closeButton.classList.add('plus-tard-btn');
     closeButton.textContent = 'Plus tard';
     closeButton.type = "submit";
-    
+    closeButton.addEventListener('click', function(event) {
+      var cardElement = document.querySelector('.card');
+      var modalBoxElement = document.querySelector('.modal-box');
+      if (cardElement) {
+        cardElement.style.display = 'none';
+      }
+      if (modalBoxElement) {
+        modalBoxElement.style.display = 'none';
+      }
+      annulerAddAnnonce();
+    });
+
     // Bouton maintenant
     var nowButton = document.createElement('button');
     closeButton.classList.add('now-btn');
     nowButton.textContent = 'Maintenant';
     nowButton.type = "submit";
     nowButton.setAttribute('name', 'now-btn');
+    nowButton.addEventListener('click', function(event) {
+      var cardElement = document.querySelector('.card');
+      var modalBoxElement = document.querySelector('.modal-box');
+      if (cardElement) {
+        cardElement.style.display = 'none';
+      }
+      if (modalBoxElement) {
+        modalBoxElement.style.display = 'none';
+      }
+      annulerAddAnnonce();
+    });
     
     buttonsDiv.appendChild(closeButton);
     buttonsDiv.appendChild(nowButton);
