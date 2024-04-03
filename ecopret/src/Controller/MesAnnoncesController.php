@@ -29,6 +29,8 @@ class MesAnnoncesController extends AbstractController
         $prestaire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
         $annonces = $entityManager->getRepository(Annonce::class)->findBy(['prestataire' => $prestaire]);
         $typesAnnonces = [];
+
+        
         foreach ($annonces as $annonce) {
             $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce->getId()]);
             $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce->getId()]);

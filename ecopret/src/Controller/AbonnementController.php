@@ -54,6 +54,8 @@ class AbonnementController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
 
+
+        
         if(!$utilisateur->isPaiement()){
             return $this->redirectToRoute('app_subscribe');
         }
