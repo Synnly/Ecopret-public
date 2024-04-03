@@ -175,18 +175,34 @@ function clearSearch() {
 }
 
 function verifPrix() {
-  var prixMin = parseInt(document.getElementById("prixMin").value);
-  var prixMax = parseInt(document.getElementById("prixMax").value);
-  console.log(prixMin, prixMax);
-  if (isNaN(prixMin) || isNaN(prixMax)) {
-    alert("Veuillez saisir uniquement des nombres");
-    return false;
+  if(document.getElementById("prixMin").value != "" && document.getElementById("prixMax").value != ""){
+    var prixMin = parseInt(document.getElementById("prixMin").value);
+    var prixMax = parseInt(document.getElementById("prixMax").value);
+    console.log(prixMin, prixMax);
+    if (isNaN(prixMin) || isNaN(prixMax)) {
+      alert("Veuillez saisir uniquement des nombres");
+      return false;
+    }
+    if (prixMin > prixMax) {
+      alert("Veuillez saisir un prix minimum inférieur ou égal au prix maximum");
+      return false;
+    }
+    return true;
+  }else if(document.getElementById("prixMin").value != ""){
+    var prixMin = parseInt(document.getElementById("prixMin").value);
+    if (isNaN(prixMin)) {
+      alert("Veuillez saisir uniquement des nombres");
+      return false;
+    }
+  }else if(document.getElementById("prixMax").value != ""){
+    var prixMin = parseInt(document.getElementById("prixMax").value);
+    if (isNaN(prixMax)) {
+      alert("Veuillez saisir uniquement des nombres");
+      return false;
+    }
   }
-  if (prixMin > prixMax) {
-    alert("Veuillez saisir un prix minimum inférieur ou égal au prix maximum");
-    return false;
-  }
-  return true;
+  return true
+
 }
 
 
