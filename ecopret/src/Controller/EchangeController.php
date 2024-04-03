@@ -27,10 +27,10 @@ class EchangeController extends AbstractController
     public function accepter(EntityManagerInterface $em): Response
     {
         $prest = $em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(["noCompte"=>$this->getUser()])]);
-        $annonces = $em->getRepository(Annonce::class)->findBy(['destinataire'=>$prest]);
+        $annonces = $em->getRepository(Annonce::class)->findBy(['prestataire'=>$prest]);
         $echanges = [];
         foreach($annonces as $annonce){
-            if(($echangesTemp = $em->getRepository(Echange::class)->findBy(['expeditaire'=>$annonce,'etat'=>0])) != null){
+            if(($echangesTemp = $em->getRepository(Echange::class)->findBy(['destinataire'=>$annonce,'etat'=>0])) != null){
                 foreach($echangesTemp as $echange){
                     $echanges[] = $echange;
                 }
