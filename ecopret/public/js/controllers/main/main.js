@@ -485,7 +485,7 @@ function vérifierForm(){
       if (modalBoxElement) {
         modalBoxElement.style.display = 'none';
       }
-      annulerAddAnnonce();
+      //annulerAddAnnonce();
     });
 
     // Bouton maintenant
