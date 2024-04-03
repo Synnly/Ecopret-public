@@ -13,7 +13,7 @@
             {% for echange in echanges %}
                 {% if echange %}
                     <div class="accepter_echange">
-                        <p>{{ echange.destinataire.prestataire.noUtisateur.noCompte.NomCompte }}</p>
+                        <p>Destinataire : {{ echange.destinataire.prestataire.noUtisateur.noCompte.NomCompte }}</p>
 
                         {% if echange.etat == 0 %}
                             <p>Statut : Demandé</p>
@@ -24,8 +24,9 @@
                         {% else%}
                             <p>Statut : Terminé</p>
                         {% endif %}
-                        <p>{{ echange.destinataire.nomAnnonce }} {{ echange.destinataire.prix }}</p>
-                        <p>{{ echange.destinataire.description }} </p>
+                        <p>Annonce : {{ echange.destinataire.nomAnnonce }} </p>
+                        <p>Prix : {{ echange.destinataire.prix }}</p>
+                        <p>Description : {{ echange.destinataire.description }} </p>
                         <a href="{{ path('app_echange_annuler', {id: echange.id}) }}"> <button>Annuler</button></a>
                         <a href="{{ path('app_creer_conversation_chat', {id: echange.destinataire.prestataire.id}) }}"> <button>Contacter</button></a>
                     </div>
