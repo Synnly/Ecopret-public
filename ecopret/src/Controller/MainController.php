@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Annonce;
+use App\Entity\Admin;
 use App\Entity\Compte;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Annonce;
 use App\Entity\Emprunt;
+use App\Entity\Transaction;
 use App\Entity\Prestataire;
 use App\Entity\Service;
-use App\Entity\Utilisateur;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Utilisateur;	
 use App\Form\AjouterAnnonceType;
 use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
@@ -19,15 +21,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
 {
-
     #[Route('/main', name: 'app_main')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        if(!$this->getUser()){
+
+        if(!($user=$this->getUser())){
             return $this->redirectToRoute('app_login');
         }
+        $html = '';
+        if($entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])){
+            $html = "<li><a href=\"/litige/verifier\"><h4>Verifier litige</h4></a></li>";
+        }
+        //Page Main (il me fallait une redirection)
+        //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
         $form = $this->createForm(AjouterAnnonceType::class);
         $form->handleRequest($request);
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         if ($form->isSubmitted() && $form->isValid()) {
             $linkImagesForAnnouncement = "";
             $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
@@ -45,15 +54,15 @@ class MainController extends AbstractController
             $annonce->setPrix($form->get("prix")->getData());
             $annonce->setImageAnnonce($linkImagesForAnnouncement);
             $annonce->setEstRendu(false);
-        
+
             $annonce->setEstEnLitige(false);
-            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
             $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $user]);
             if($prestataire !== null){
-                $prestataire->setNoUtisateur($user); 
+                $prestataire->setNoUtisateur($user);
             }else {
                 $prestataire = new Prestataire();
-                $prestataire->setNoUtisateur($user); 
+                $prestataire->setNoUtisateur($user);
             }
             $annonce->setPrestataire($prestataire);
             $annonce->setDisponibilite("");
@@ -72,12 +81,12 @@ class MainController extends AbstractController
             }
             $entityManager->persist($prestataire);
             $entityManager->persist($annonce);
-            $entityManager->flush(); 
-            $form = $this->createForm(AjouterAnnonceType::class); 
+            $entityManager->flush();
+            $form = $this->createForm(AjouterAnnonceType::class);
             if ($request->request->has('plannin-btn')) {
                 // Rediriger vers la page Calendar avec l'identifiant de l'annonce
                 return $this->redirectToRoute('event_add', ['idAnnonce' => $annonce->getId()]);
-            }             
+            }
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
@@ -88,7 +97,9 @@ class MainController extends AbstractController
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
             'user' => $this->getUser(),
+            'adminHtml' => $html,
             'form' => $form,
+            'florins' => $user->getNbFlorains(),
             'annonces' => $annonces,
             'bool_prix' => $bool_prix
         ]);
@@ -108,7 +119,7 @@ class MainController extends AbstractController
         $paths = explode('/', $uri);
         $idAnnonce = $paths[sizeof($paths) - 1];
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
-        
+
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         $bool_prix = true;
         if($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
@@ -132,26 +143,45 @@ class MainController extends AbstractController
 
                 $disponibilites = $annonceCliquee->getDisponibiliteLisible();
                 $indexChoice = $form->get('numero_choix')->getData() - 1;
+					
+                $transaction = new Transaction();
+                $transaction->setAnnonce($annonceCliquee);
+                $transaction->setPrestataire($annonceCliquee->getPrestataire());
+                $transaction->setClient($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $user]));
+                $transaction->setEstCloture(false);
+                $entityManager->persist($transaction);
+		$entityManager->flush();
 
-                if(!$annonceCliquee->getEstUnEmprunt()) {
-                    $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
-                    $emprunt->setIdEmprunteur($user->getId());
-                    $emprunt->setDatesEmprunt($disponibilites[$indexChoice]);
-                    $annonceCliquee->removeChoice($indexChoice);
-                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
-                    $entityManager->flush(); 
+
+                if(gettype($form->get('numero_choix')->getData()) != "int" || $form->get('numero_choix')->getData() - 1 < 0) {
+                    return $this->redirectToRoute("app_main");
                 } else {
-                    $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
-                    $service->setIdClient($user->getId());
-                    $service->setDatesService($disponibilites[$indexChoice]);
-                    $annonceCliquee->removeChoice($indexChoice);
-                    $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
-                    $entityManager->flush(); 
-                }
+                    $disponibilites = $annonceCliquee->getDisponibiliteLisible();
+                    $indexChoice = $form->get('numero_choix')->getData() - 1;
 
-                return $this->redirectToRoute('app_main');
+                    if(!$annonceCliquee->getEstUnEmprunt()) {
+                        $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
+                        $emprunt->setIdEmprunteur($user->getId());
+                        $emprunt->setDatesEmprunt($disponibilites[$indexChoice]);
+                        $annonceCliquee->removeChoice($indexChoice);
+                        $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
+			$entityManager->persist($utilisateur);
+                        $entityManager->flush(); 
+                    } else {
+                        $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
+                        $service->setIdClient($user->getId());
+                        $service->setDatesService($disponibilites[$indexChoice]);
+                        $annonceCliquee->removeChoice($indexChoice);
+                        $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
+			$entityManager->persist($utilisateur);
+                        $entityManager->flush(); 
+                    }
+                    $entityManager->flush();
 
-            } elseif ($form->get('non')->isClicked()) {
+                    return $this->redirectToRoute('app_main');
+                	}
+		}
+		 elseif ($form->get('non')->isClicked()) {
                 // L'utilisateur a annulé le choix
                 return $this->redirectToRoute('app_main');
             }

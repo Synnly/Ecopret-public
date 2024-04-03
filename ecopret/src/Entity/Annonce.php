@@ -22,6 +22,15 @@ class Annonce
     #[ORM\Column(length: 14500)]
     private ?string $disponibilite = null;
 
+    #[ORM\Column]
+    private ?bool $est_rendu = null;
+
+    #[ORM\Column]
+    private ?bool $est_en_litige = null;
+
+    #[ORM\Column]
+    private ?bool $est_un_emprunt = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image_annonce = null;
 
@@ -59,6 +68,18 @@ class Annonce
     public function getNomAnnonce(): ?string
     {
         return $this->nom_annonce;
+    }
+
+    public function getEstUnEmprunt(): ?bool
+    {
+        return $this->est_un_emprunt;
+    }
+
+    public function setEstUnEmprunt(bool $isEmprunt): static
+    {
+        $this->est_un_emprunt = $isEmprunt;
+
+        return $this;
     }
 
     public function setNomAnnonce(string $nom_annonce): static
@@ -137,8 +158,8 @@ class Annonce
     {
         return $this->dates_annonce;
     }
-    
-    public function getSizeDatesAnnonce() : int 
+
+    public function getSizeDatesAnnonce() : int
     {
         return sizeof($this->dates_annonce);
     }
@@ -259,5 +280,24 @@ class Annonce
         $this->prix = $prix;
 
         return $this;
+    }
+    public function getEstRendu(): ?bool
+    {
+        return $this->est_rendu;
+    }
+
+    public function setEstRendu(?bool $est_rendu): void
+    {
+        $this->est_rendu = $est_rendu;
+    }
+
+    public function getEstEnLitige(): ?bool
+    {
+        return $this->est_en_litige;
+    }
+
+    public function setEstEnLitige(?bool $est_en_litige): void
+    {
+        $this->est_en_litige = $est_en_litige;
     }
 }
