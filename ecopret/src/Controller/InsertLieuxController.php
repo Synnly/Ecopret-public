@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Lieu;
+use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,8 @@ class InsertLieuxController extends AbstractController
         }
         $nbNotif = 0;
         $notifications = $this->getUser()->getNotifications();
-        
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
         foreach ($notifications as $notification) {
             if ($notification->getStatus() == 0) {
                 $nbNotif ++;

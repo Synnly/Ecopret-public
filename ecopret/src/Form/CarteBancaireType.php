@@ -48,7 +48,7 @@ class CarteBancaireType extends AbstractType
                 'html5' => false,
                 'required' => false,
                 'format' => 'M/y',
-                'attr' => ['placeholder' => 'mm/yy'],
+                'attr' => ['placeholder' => 'mm/yyyy'],
                 'mapped' => false,
                 'constraints' => [
                     new GreaterThanOrEqual('+1 month')

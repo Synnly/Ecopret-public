@@ -71,7 +71,7 @@ class CreditCardController extends AbstractController
                 }
 
                 $newNotif = new Notification();
-                $newNotif->setMessageNotification("Vous avez souscrit un abonnement, merci ! Vous avez reçu 100 florains !");
+                $newNotif->setMessageNotification("Vous avez souscrit un abonnement, merci ! Vous avez reçu 1000 florains !");
 
                 $this->getUser()->addNotification($newNotif);
 

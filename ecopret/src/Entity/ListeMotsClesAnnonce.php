@@ -14,6 +14,7 @@ class ListeMotsClesAnnonce
     private ?int $id = null;
 
     #[ORM\Column]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?int $id_annonce = null;
 
     #[ORM\Column(length: 255)]

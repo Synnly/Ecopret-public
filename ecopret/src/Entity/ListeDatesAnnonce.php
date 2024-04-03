@@ -18,6 +18,7 @@ class ListeDatesAnnonce
     private ?\DateTimeInterface $date_annonce = null;
 
     #[ORM\Column]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     private ?int $id_annonce = null;
 
     #[ORM\ManyToOne(inversedBy: 'dates_annonce')]

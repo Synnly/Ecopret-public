@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\Compte;
 use App\Entity\Echange;
+use App\Entity\Notification;
 use App\Entity\Prestataire;
 use App\Entity\Transaction;
 use App\Entity\Utilisateur;
@@ -27,14 +28,27 @@ class EchangeController extends AbstractController
     {
         $echanges = $em->getRepository(Echange::class)->findBy(['destinataire'=>$em->getRepository(Annonce::class)->findOneBy(['prestataire'=>$em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])]),'etat'=>0]);
 
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/accepter.html.twig', [
             'controller_name' => 'EchangeController',
-            'echanges' => $echanges
+            'echanges' => $echanges,
+            'florins' => $user->getNbFlorains(),
+            'user' => $this->getUser(),
+            'nbNotif' => $nbNotif,
         ]);
     }
     #[Route('/echanges', name: 'app_echanges')]
     public function echanges(EntityManagerInterface $em): Response
     {
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         $prest = $em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(["noCompte"=>$this->getUser()])]);
         $annonces = $em->getRepository(Annonce::class)->findBy(['prestataire'=>$prest]);
         $echanges = [];
@@ -45,9 +59,20 @@ class EchangeController extends AbstractController
                 }
             }
         }
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/echanges.html.twig', [
             'controller_name' => 'EchangeController',
-            'echanges' => $echanges
+            'echanges' => $echanges,
+            'florins' => $user->getNbFlorains(),
+            'user' => $this->getUser(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -79,6 +104,11 @@ class EchangeController extends AbstractController
         }
         //Si l'utilisateur n'a aucune annonce il ne peut pas faire d'échange
         if(empty($choices)){
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Vous ne pouvez pas proposer d'échanges si vous n'avez pas poster d'annonces !");
+            $this->getUser()->addNotification($newNotif);
+            $em->persist($newNotif);
+            $em->flush();
             return $this->redirectToRoute("app_main");
         }
 
@@ -113,10 +143,20 @@ class EchangeController extends AbstractController
 
             return $this->redirectToRoute('app_main');
         }
-
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/index.html.twig', [
             'controller_name' => 'EchangeController',
-            'form' => $form
+            'form' => $form,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -133,7 +173,12 @@ class EchangeController extends AbstractController
             }
 
             $echange->setEtat(1);
-            //TODO : notifier l'utilisateur que sa demande d'échange a été accepté
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Votre demande d'échange a été acceptée");
+
+            $this->getUser()->addNotification($newNotif);
+
+            $em->persist($newNotif);
             $em->persist($echange);
 
             //On fait deux transactions parce que pourquoi pas
@@ -165,7 +210,12 @@ class EchangeController extends AbstractController
             }
 
             $echange->setEtat(2);
-            //TODO : notifier l'utilisateur que sa demande d'échange a été accepté
+            $newNotif = new Notification();
+            $newNotif->setMessageNotification("Votre demande d'échange a été refusée");
+
+            $this->getUser()->addNotification($newNotif);
+
+            $em->persist($newNotif);
             $em->persist($echange);
             $em->flush();
         }
