@@ -1,0 +1,64 @@
+.formulaire {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+}
+
+.container{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+form {
+    margin-top: 10px;
+    display: flex;
+    flex-flow: column;
+}
+
+select {
+    font-size: 15px;
+}
+
+button {
+    font-size: 100%;
+    font-weight: 900;
+    margin: 10px;
+    padding: 10px;
+    background-color: #658864;
+    color: white;
+    border-radius: 30px;
+    border: none;
+}
+
+body{
+    background: white;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+html{
+    min-height: 100vh;
+}
+.accepter_echange{
+    border: 2px solid #658864;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    width: 15%;
+    height: 10%;
+    margin: 5px;
+}
+.boutons_choix{
+    display: flex;
+    align-items: center;
+    flex-flow: row;
+}

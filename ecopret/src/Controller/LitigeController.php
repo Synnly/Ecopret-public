@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Admin;
 use App\Entity\Compte;
 use App\Entity\Litige;
+use App\Entity\Prestataire;
 use App\Entity\Transaction;
+use App\Entity\Utilisateur;
 use App\Form\DeclarerLitigeType;
 use App\Form\ListeLitigesType;
 use App\Form\VerifierLitigeType;
@@ -57,7 +59,6 @@ class LitigeController extends AbstractController
     #[Route('/litige/declarer/{transaction_id}', name: 'app_decl_litige_transaction')]
     public function declarerLitigeTransaction(Request $request,EntityManagerInterface $entityManager, int $transaction_id = null): Response
     {
-        // TODO : Liste déroulante des transactions
         if(!$this->getUser()){
             return $this->redirectToRoute("app_page_accueil");
         }
@@ -135,7 +136,9 @@ class LitigeController extends AbstractController
 
         // User pas admin
         if(!($admin = $entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]))){
-            return $this->redirectToRoute("app_page_accueil");
+            return $this->render('echange/hein.html.twig', [
+                'controller_name' => 'EchangeController',
+            ]);
         }
 
         // Recherche du litige qu'on traitait, sinon d'un litige pas traité
@@ -175,8 +178,8 @@ class LitigeController extends AbstractController
             'plaignant' => $litige->getPlaignant(),
             'transaction' => $litige->getTransaction(),
             'litige' => $litige,
-            'lienContactAccuse' => '/',
-            'lienContactPlaignant' => '/',
+            'lienContactAccuse' => '/admin/conversation/creer/'.$litige->getAccuse()->getId(),
+            'lienContactPlaignant' => '/admin/conversation/creer/'.$litige->getPlaignant()->getId(),
         ]);
     }
 }

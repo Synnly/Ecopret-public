@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/error.css') }}">
+{% endblock %}
+
 
 {% block body %}
-	<div>
-		<h1>Page non trouvée</h1>
+	<div class="titre">
+		<h1>Cette page n'existe pas !</h1>
 	</div>
+
 {% endblock %}

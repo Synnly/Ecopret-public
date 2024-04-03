@@ -22,6 +22,23 @@
     <div class="modif-infos-titre">
         <h1>Informations personnelles</h1>
     </div>
+    <div style="border: 2px solid black; padding: 10px;
+    width: 60%;
+    border-radius:45px;
+    opacity:0.85;
+    transition:  opacity 0.3s;
+    transition:  width 0.8s;
+    transition:  width height 0.5s;
+    transition:  font-size 0.1s;
+    box-shadow: 2px 2px 3px 2px rgb(58, 49, 52);
+    margin: 0 auto; /*Forcer centrage texte*/">
+        <h3>Nom : {{compte.NomCompte}}</h3>
+        <h3>Prenom : {{compte.PrenomCompte}}</h3>
+        <h3>Mail : {{compte.AdresseMailCOmpte}}</h3>
+        <h3>Nombre Florains : {{userCompte.getNbFlorains()}}</h3>
+        <h3>Réduction abonnement ? {% if userCompte.isAUneReduction() %}Oui{% else %}Non{% endif %}</h3>    </div>
+    <br>
+    <br>
 
     {{ form_start(InformationsPersonnellesForm, {'attr' : {'onsubmit': 'return validerCarteIdentite();'}}) }}
 

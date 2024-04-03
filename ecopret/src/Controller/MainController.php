@@ -10,7 +10,7 @@ use App\Entity\Emprunt;
 use App\Entity\Transaction;
 use App\Entity\Prestataire;
 use App\Entity\Service;
-use App\Entity\Utilisateur;	
+use App\Entity\Utilisateur;
 use App\Form\AjouterAnnonceType;
 use App\Form\ChoisirAnnonceFormType;
 use Doctrine\ORM\Mapping\Entity;
@@ -150,7 +150,7 @@ class MainController extends AbstractController
                 $transaction->setClient($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $user]));
                 $transaction->setEstCloture(false);
                 $entityManager->persist($transaction);
-		$entityManager->flush();
+		        $entityManager->flush();
 
 
                 if(gettype($form->get('numero_choix')->getData()) != "int" || $form->get('numero_choix')->getData() - 1 < 0) {
@@ -165,31 +165,29 @@ class MainController extends AbstractController
                         $emprunt->setDatesEmprunt($disponibilites[$indexChoice]);
                         $annonceCliquee->removeChoice($indexChoice);
                         $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
-			$entityManager->persist($utilisateur);
-                        $entityManager->flush(); 
+                        $entityManager->persist($utilisateur);
+                        $entityManager->flush();
                     } else {
                         $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                         $service->setIdClient($user->getId());
                         $service->setDatesService($disponibilites[$indexChoice]);
                         $annonceCliquee->removeChoice($indexChoice);
                         $utilisateur->setNbFlorains($utilisateur->getNbFlorains() - $annonceCliquee->getPrix());
-			$entityManager->persist($utilisateur);
-                        $entityManager->flush(); 
+                        $entityManager->persist($utilisateur);
+                        $entityManager->flush();
                     }
                     $entityManager->flush();
 
                     return $this->redirectToRoute('app_main');
-                	}
-		}
-		 elseif ($form->get('non')->isClicked()) {
+                }
+		    }
+            elseif ($form->get('non')->isClicked()) {
                 // L'utilisateur a annulé le choix
                 return $this->redirectToRoute('app_main');
             }
         }
 
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
-
-        #dd($annonceCliquee->getDatesAnnonce());
 
         return $this->render('choisir/choisir.html.twig', [
             'title' => 'EcoPrêt',

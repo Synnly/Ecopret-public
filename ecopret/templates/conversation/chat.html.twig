@@ -1,68 +1,105 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Chat{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/chat.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script>
-        let chatDiv = document.getElementById("chat");
-        chatDiv.scrollTop = chatDiv.scrollHeight; // On souhaite scroller toujours jusqu'au dernier message du chat
+        window.onload = function () {
+            let chatDiv = document.getElementById('chat');
+            let timeout = setTimeout(deconnection, 600 * 1000);
+            window.scrollTo(0, document.body.scrollHeight);
 
-        let form = document.getElementById('form');
-        function handleForm(event) {
-        event.preventDefault(); // Empêche la page de se rafraîchir après le submit du formulaire
-        }
-        form.addEventListener('submit', handleForm);
+            let form = document.getElementById('form');
+            function handleForm(event) {
+                event.preventDefault();
+            }
+            form.addEventListener('submit', handleForm);
 
-        const submit = document.querySelector('button');
-        submit.onclick = e => { // On change le comportement du submit
-        const message = document.getElementById('message'); // Récupération du message dans l'input correspondant
-        const data = { // La variable data sera envoyée au controller
-            'content': message.value, // On transmet le message...
-            'conv': {{ conv.id }} // ... Et la conversation correspondant
+            const submit = document.querySelector('button');
+            submit.onclick = e => {
+                const message = document.getElementById('message').value;
+                if(message !== "") {
+                    const data = {
+                        'content': message,
+                        'conv': {{ conv.id }}
+                    }
+                    fetch('/message/post', {
+                        method: 'POST',
+                        body: JSON.stringify(data)
+                    }).then((response) => {
+
+                    });
+
+                    chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>Vous</b><p>{message}</p></div></div>").replace("{message}", message);
+                    window.scrollTo(0, document.body.scrollHeight);
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(deconnection, 600 * 1000);
+            }
+
+           setInterval(recupererMessages, 2000, {{ conv.id }});
         }
-        console.log(data); // Pour vérifier vos informations
-        fetch('/message', { // On envoie avec un post nos datas sur le endpoint /message de notre application
-            method: 'POST',
-            body: JSON.stringify(data) // On envoie les data sous format JSON
-        }).then((response) => {
-            message.value = '';
-            console.log(response);
-        });
+
+        async function recupererMessages(id){
+            fetch('/message/get', {
+                method: 'POST',
+                body: id
+            }).then((response) => {
+                appendMessages(response)
+            });
+
+            let chatDiv = document.getElementById('chat');
+            chatDiv.scrotop = chatDiv.scrollHeight;
+        }
+
+        async function appendMessages(response){
+            let chatDiv = document.getElementById('chat');
+            let messages = JSON.parse(await response.text());
+            messages.forEach(message => {
+                if (message.expeditaire === {{ app.user.id }}){
+                    chatDiv.innerHTML += ("<div class=\"message-right\"><div class=\"bulle-droite\"><b>{prenom}</b><p>{message}</p></div></div>".replace("{prenom}", message.prenom).replace("{message}", message.message));
+                }
+                else {
+                    chatDiv.innerHTML += ("<div class=\"message-left\"><div class=\"bulle-gauche\"><b>Vous</b><p>{message}</p></div></div>".replace("{message}", message.message));
+                }
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        }
+
+        function deconnection(){
+            location.href ="/conversation";
         }
     </script>
 {% endblock %}
 {% block body %}
     <div class="container">
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-        <div class="container" style="height: 600px">
-            <div id="chat" class="container bg-light h-75 overflow-auto">
-                {% for message in messages %}
-                    {% if app.user == message.expeditaire %}
-                        <div class="row w-75 float-right">
-                            <b>{{ message.expeditaire.PrenomCompte }}</b>
-                            <p class="alert alert-info w-100">
-                                {{ message.message }}
-                            </p>
+        <div id="chat">
+            {% for message in messages %}
+                {% if app.user == message.expeditaire %}
+                    <div class="message-right">
+                        <div class="bulle-droite">
+                            <b>Vous</b>
+                            <p>{{ message.message }}</p>
                         </div>
-                    {% else %}
-                        <div class="row w-75 float-left">
+                    </div>
+                {% else %}
+                    <div class="message-left">
+                        <div class="bulle-gauche">
                             <b>{{ message.expeditaire.PrenomCompte }}</b>
-                            <p class="alert alert-success w-100">
-                                {{ message.message }}
-                            </p>
+                            <p>{{ message.message }}</p>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-            <div>
-                <form id="form" class="container row">
-                    <input id="message" class="input-group-text col-sm-9" placeholder="Message" type="text" />
-                    <button id="submit" type="submit" class="btn btn-success col-sm-3">Send</button>
-                </form>
-            </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         </div>
+            <form id="form">
+                <input id="message" class="div_input" placeholder="Message" type="text" />
+                <button id="submit" type="submit" class="message_btn">Envoyer</button>
+            </form>
     </div>
 {% endblock %}

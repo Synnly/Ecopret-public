@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Echanges{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/echange.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <h1>Demande d'échanges reçus</h1>
+    {% if echanges %}
+        <div class="container">
+            {% for echange in echanges %}
+                {% if echange %}
+                    <div class="accepter_echange">
+                        <p>Prestataire : {{ echange.expeditaire.prestataire.noUtisateur.noCompte.NomCompte }}</p>
+                        <p>Annonce : {{ echange.expeditaire.nomAnnonce }} </p>
+                        <p>Prix : {{ echange.expeditaire.prix }} florains</p>
+                        <p>Description : {{ echange.expeditaire.description }} </p>
+                        <div class="boutons_choix">
+                            <a href="{{ path('app_echange_accepte', {id: echange.id}) }}"> <button>Accepter</button></a>
+                            <a href="{{ path('app_echange_refuse', {id: echange.id}) }}"> <button>Refuser</button></a>
+                        </div>
+                        <a href="{{ path('app_creer_conversation_chat', {id: echange.expeditaire.prestataire.id}) }}"> <button>Contacter</button></a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <h3> Aucune demande d'échange reçue </h3>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+body {
+    background-image: url('../img/hein.gif');
+    background-repeat: no-repeat;
+    background-size: 50%;
+    background-position: center;
+    background-color: black;
+}
+@font-face {
+    font-family: 'ADS';
+    /*noinspection CssInvalidPropertyValue*/
+    src: url('../img/ADS.otf') format('opentype')
+}
+h1{
+    color: red;
+    font-family: 'ADS';
+}

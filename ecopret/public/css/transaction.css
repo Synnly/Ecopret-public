@@ -40,8 +40,10 @@ h1 {
     flex-flow: column;
     border: 1px solid #658864;
     text-align: center;
+    justify-content: center;
     color: black;
-    min-height: fit-content;
+    padding: 10px 10px;
+    border-radius: 3px;
 }
 
 #boutons{
@@ -52,4 +54,14 @@ h1 {
 
 button {
     margin: 0 2vw 5vh;
+}
+.cloturer {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+
+}
+
+.cloturer button {
+    margin: 0;
 }

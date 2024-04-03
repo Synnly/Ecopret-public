@@ -1,36 +1,52 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/conversations.css') }}">
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 
 {% block body %}
 
     <div class="container">
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.PrenomCompte }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
         {% if conversations %}
-            <h2>Which chan do you want to join ?</h2>
-            <table class="table table-striped">
-                <tbody>
-                {% if conversations %}
+            <h2>Vos conversations</h2>
+                <div class="liste_conversation">
                     {% for conversation in conversations %}
                         {% if conversation %}
-                            <tr class="">
-                                <th>
-                                    <span>{{ conversation.id }}</span>
-                                    <a class="btn btn-primary float-right" href="{{ path('app_conversation_chat', {id: conversation.id}) }}">Go chat !</a>
-                                </th>
-                            </tr>
+                            <a href="{{ path('app_conversation_chat', {id: conversation.id}) }}">
+                                <div class="conversation">
+                                    {% if app.user == conversation.participant1 %}
+                                        {% if conversation.dernierMessage %}
+                                                <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }} - {{ conversation.dernierMessage.date|date("H:i d/m") }}</b>
+
+                                            {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                                <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                            {% else %}
+                                                <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                            {% endif %}
+                                        {% else %}
+                                            <b class="titre_conversation">{{ conversation.participant2.PrenomCompte }}</b>
+                                        {% endif %}
+                                    {% else %}
+                                        <b class="titre_conversation">{{ conversation.participant1.PrenomCompte }}</b>
+                                        {% if conversation.dernierMessage %}
+                                            {% if app.user != conversation.dernierMessage.expeditaire and not conversation.dernierMessage.lu %}
+                                                <p class="msg nonlu">{{ conversation.dernierMessage.message }}</p>
+                                            {% else %}
+                                                <p class="msg">{{ conversation.dernierMessage.message }}</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </a>
                         {% endif %}
                     {% endfor %}
-                {% endif %}
-                </tbody>
-            </table>
+                </div>
         {% else %}
             <div>
-                <div class="alert alert-danger text-center">No Channels found.</div>
+                <div class="alert alert-danger text-center">Aucune conversion trouvée.</div>
             </div>
         {% endif %}
     </div>

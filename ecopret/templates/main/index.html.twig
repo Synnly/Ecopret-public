@@ -39,6 +39,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="/conversation">
+							<h4>Mes conversations</h4>
+						</a>
+					</li>
+					<li>
 						<a href="/payment_information">
 							<h4>Paiement de l'abonnement</h4>
 						</a>
@@ -51,6 +56,16 @@
 					<li>
 						<a href="/mes/transactions">
 							<h4>Vos transactions</h4>
+						</a>
+					</li>
+					<li>
+						<a href="/echanges">
+							<h4>Vos échanges</h4>
+						</a>
+					</li>
+					<li>
+						<a href="/echange/accepter">
+							<h4>Demandes d'échanges reçues</h4>
 						</a>
 					</li>
 					<li>
@@ -137,6 +152,9 @@
 						<p>{{ annonce.getDescription|replace({"&amp;#039;": "'", "&quot;":"\""}) }}</p>
 						<button type="button" class="annonce_button"><a href="./main/choisir/{{ annonce.getId }}">Choisir</a></button>						
 					</div>
+					{% if annonce.prestataire.noUtisateur.noCompte != app.user %}
+						<a href="/conversation/creer/{{ annonce.prestataire.id }}"><button>Contacter</button></a>
+					{% endif %}
 				</div>
 			{% endfor %}
 		</div>
