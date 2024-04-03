@@ -1,65 +1,107 @@
 .button_cancel {
-    position: absolute;
-    left: 35%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+  position: absolute;
+  left: 35%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .button_cancel button:first-child {
-    margin-right: 14px;
+  margin-right: 14px;
 }
 
 button {
-    padding: 14px;
-    text-decoration: none;
-    background-color: #658864;
-    color: white;
-    font-size: 1.8em;
-    font-weight: 900;
-    border-radius: 30px;
+  padding: 14px;
+  text-decoration: none;
+  background-color: #658864;
+  color: white;
+  font-size: 1.8em;
+  font-weight: 900;
+  border-radius: 30px;
 }
 
 button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .liste_dispo {
-    position: relative;
-    left: 37%;
-    text-align: center;
+  position: relative;
+  left: 45%;
+  text-align: center;
+  margin-right: 50%;
 }
 
 li {
-    width: 25%;
-    font-size: 200%;
-    margin-top: 0%;
-    color: #658864;
+  width: 25%;
+  font-size: 200%;
+  margin-top: 0%;
+  color: #658864;
 }
 
 label {
-    color: #658864;
-    font-weight: 900;
-    margin-right: 3%;
+  color: #658864;
+  font-weight: 900;
+  margin-right: 3%;
 }
 
 input {
-    height: 32px;
-    margin-right: 8px;
+  height: 32px;
+  margin-right: 8px;
 }
 
 .btn {
-    display: flex;
-    align-content: center;
-    justify-content: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
-#ajouter_liste_attente_Ajouter{
-    margin-left: 120%;
-    margin-top: 80%;
+
+.card {
+  --border-radius: 1rem;
+  --primary-color: #4d624c;
+  --secondary-color: #3c3852;
+  width: 500px;
+  font-family: "Arial";
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  background: #e0e0e0;
+  box-shadow: 0px 8px 16px 0px rgb(0 0 0 / 3%);
+  position: relative;
+  z-index: 1;
+  justify-self: center;
 }
 
-#choisir_annonce_form_non {
-    margin-left: -80%;
-    margin-top: 80%;
+.card .card__title {
+  padding: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1.2rem;
 }
+
+.card .card__content label {
+  margin-right: 1%;
+}
+
+.center {
+  text-align: center;
+}
+
+.card .card__content {
+  display: flex;
+  margin: auto;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.arh {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, 0.3fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 10px; 
+}
+
+.nomUser {
+    text-decoration: none;
+  }

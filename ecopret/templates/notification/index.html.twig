@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notification{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/notification.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="page">
+    <h1>Notification</h1>
+
+    <div class="notifications-block">
+            {% for notification in notifications %}
+                {% if notification.getStatus() == 2 %}
+                    <div class="notification">
+                {% else %}
+                    <div class="notification-new">
+                {% endif %}
+                        <div class="notification-content">
+                            <h3 class="notification-name">Notification</h3>
+                            <p class="notification-text">{{notification.getMessageNotification()}}</p>
+                        </div>
+                    </div>
+            {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}

@@ -51,6 +51,15 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         $form = $this->createForm(SupprimerCompteFormType::class);
         $form->handleRequest($request);
 
@@ -76,10 +85,13 @@ class SecurityController extends AbstractController
             }
         }
 
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         return $this->render('security/supprimer_compte.html.twig', [
             'controller_name' => 'SupprimerCompteController',
             'SupprimerCompteFormType' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
     #[Route('/forgotpswd', name:'forgotten_password')]

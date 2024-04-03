@@ -30,3 +30,7 @@ h3{
     border-color: #658864;
     border: none;
 }
+
+.nomUser {
+    text-decoration: none;
+  }

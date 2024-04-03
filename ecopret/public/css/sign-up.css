@@ -80,6 +80,19 @@ li {
   display: inline-block; /* border entoure texte*/
   margin: 0 auto; /*Forcer centrage texte*/
 
+.li {
+  position: unset;
+}
+
+.login-logo-mdp{
+  margin-left: 130%;
+  margin-top: 275%;
+}
+
+.nav > .ul > .li > .a > .titreMain {
+  margin-top: 275%;
+  margin-left: 130%;
+}
 }
 .a-redirection-inscription {
   text-align: center;

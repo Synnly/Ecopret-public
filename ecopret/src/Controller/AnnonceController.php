@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Annonce;
 use App\Entity\Emprunt;
 use App\Entity\Service;
+use App\Entity\Utilisateur;
 use App\Form\SupprimerAnnonceFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,15 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('app_mes_annonces');
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form = $this->createForm(SupprimerAnnonceFormType::class);
         $form->handleRequest($request);
 
@@ -46,10 +56,14 @@ class AnnonceController extends AbstractController
 
             return $this->redirectToRoute('app_mes_annonces');
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('annonce/supprimer.html.twig', [
             'controller_name' => 'AnnonceController',
-            'SupprimerAnnonceFormType' => $form
+            'SupprimerAnnonceFormType' => $form,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

@@ -1,0 +1,36 @@
+.notifications-block {
+    width: 60%;
+    margin: auto;
+}
+.notification,
+.notification-new {
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    background-color: #EFEFEF;
+    padding: 10px 10px 10px 15px;
+    display: flex;
+    margin-bottom: 20px;
+    transition: 0.3s ease-out;
+}
+
+.notification-new {
+    background-color: #D8E1D8;
+}
+
+
+.notification-name {
+    text-align: left;
+}
+
+.notification-content{
+    width: 100%;
+    text-align: left;
+
+}
+
+.notification-new:hover,
+.notification:hover {
+    transform: scale(1.02);
+}
+
+

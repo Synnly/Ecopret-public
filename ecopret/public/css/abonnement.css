@@ -274,3 +274,13 @@ body {
 .home span:hover:after {
   width: 100%;
 }
+
+.nav {
+  margin-top: -6vh;
+
+}
+
+.nomUser {
+  text-decoration: none;
+}
+

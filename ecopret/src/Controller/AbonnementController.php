@@ -27,8 +27,21 @@ class AbonnementController extends AbstractController
             return $this->redirectToRoute('app_abonnement');
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('abonnement/subscribe.html.twig', [
             'controller_name' => 'AbonnementController',
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -41,8 +54,19 @@ class AbonnementController extends AbstractController
         $user = $this->getUser();
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
 
+
+        
         if(!$utilisateur->isPaiement()){
             return $this->redirectToRoute('app_subscribe');
+        }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
         }
         
         $form = $this->createForm(UnsubscribeType::class);
@@ -59,10 +83,13 @@ class AbonnementController extends AbstractController
             return $this->redirectToRoute('app_main');
         }
 
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('abonnement/abonnement.html.twig', [
             'controller_name' => 'AbonnementController',
             'form' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
 
     }

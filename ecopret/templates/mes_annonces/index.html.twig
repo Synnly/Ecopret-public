@@ -20,7 +20,7 @@
 			{% set typeAnnonce = typesAnnonces[index] %}
 			<div class="card" id="card">
 				<div class="card__title">
-					<h4 class="center">{{ annonce.getNomAnnonce()|replace({"&amp;#039;": "'", "&quot;":"\""}) }}
+					<h4 class="center">{{ annonce.getNomAnnonce()|replace({"&#039;": "'", "&quot;":"\""}) }}
 					</h4>
 				</div>
 				<div class="card__content_img">
@@ -44,7 +44,7 @@
 					{% endif %}
 				</div>
 				<div class="card__content">
-					<p class="center">{{ annonce.description|replace({"&amp;#039;": "'"})|replace({"&amp;#039;": "'", "&quot;":"\""}) }}</p>
+					<p class="center">{{ annonce.description|replace({"&amp;#039;": "'"})|replace({"&#039;": "'", "&quot;":"\""}) }}</p>
 				</div>
 				<div class="card__content">
 					<p class="center">{{annonce.prix}}</p>
@@ -79,7 +79,7 @@
 							</button>
 						{% endif %}
 					{% endif %}
-					<a href="/annonce/supprimer/{{annonce.id}}">Supprimer Annonce</a>
+					<button class="annonce-btn"><a href="/annonce/supprimer/{{annonce.id}}" style="color : black">Supprimer Annonce</a></button>
 
 				</div>
 			</div>

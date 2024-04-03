@@ -27,25 +27,36 @@ class MainController extends AbstractController
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
 
-        if(!($user=$this->getUser())){
+        if (!($user = $this->getUser())) {
             return $this->redirectToRoute('app_login');
         }
         $html = '';
-        if($entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])){
+        if ($entityManager->getRepository(Admin::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])) {
             $html = "<li><a href=\"/litige/verifier\"><h4>Verifier litige</h4></a></li>";
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         //Page Main (il me fallait une redirection)
         //Si vous changer la route ou de fichier oublie pas de remplacer RegistrationController.php ligne 46
         $form = $this->createForm(AjouterAnnonceType::class);
         $form->handleRequest($request);
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $aPaye = $user->isPaiement();
         if ($form->isSubmitted() && $form->isValid()) {
             $linkImagesForAnnouncement = "";
             $files = [$form->get('ajouterPhoto')->getData(), $form->get('ajouterPhoto2')->getData(), $form->get('ajouterPhoto3')->getData()];
-            foreach($files as $file){
-                if($file !== null){
-                    $filename = md5(uniqid()).".png";
-                    $linkImagesForAnnouncement = $linkImagesForAnnouncement.$filename.'|';
+            foreach ($files as $file) {
+                if ($file !== null) {
+                    $filename = md5(uniqid()) . ".png";
+                    $linkImagesForAnnouncement = $linkImagesForAnnouncement . $filename . '|';
                     $file->move($this->getParameter('imgs_annonces'), $filename);
                 }
             }
@@ -61,9 +72,9 @@ class MainController extends AbstractController
             $annonce->setEstEnLitige(false);
 
             $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $user]);
-            if($prestataire !== null){
+            if ($prestataire !== null) {
                 $prestataire->setNoUtisateur($user);
-            }else {
+            } else {
                 $prestataire = new Prestataire();
                 $prestataire->setNoUtisateur($user);
             }
@@ -71,12 +82,12 @@ class MainController extends AbstractController
             $annonce->setDisponibilite("");
 
             $es = $request->request->get('toggle');
-            if($es === null){
+            if ($es === null) {
                 $annonce->setEstUnEmprunt(true);
                 $service = new Service();
                 $service->setIdAnnonce($annonce);
                 $entityManager->persist($service);
-            }elseif ($es === "on"){
+            } elseif ($es === "on") {
                 $annonce->setEstUnEmprunt(false);
                 $emprunt = new Emprunt();
                 $emprunt->setIdAnnonce($annonce);
@@ -86,11 +97,13 @@ class MainController extends AbstractController
             $entityManager->persist($annonce);
             $entityManager->flush();
             $form = $this->createForm(AjouterAnnonceType::class);
-            if ($request->request->has('plannin-btn')) {
+            if ($request->request->has('now-btn')) {
                 // Rediriger vers la page Calendar avec l'identifiant de l'annonce
                 return $this->redirectToRoute('event_add', ['idAnnonce' => $annonce->getId()]);
+            }else {
+                return $this->redirectToRoute('main');
             }
-        }else if ($form->isSubmitted() && !$form->isValid()){
+        } else if ($form->isSubmitted() && !$form->isValid()) {
             $erreur = "pasValide";
         }
         if($prestUser = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])){
@@ -99,7 +112,17 @@ class MainController extends AbstractController
             $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher();
         }
 
+        $annonces = $entityManager->getRepository(Annonce::class)->findAll();
         $bool_prix = null;
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         return $this->render('main/index.html.twig', [
             'title' => 'EcoPrêt',
@@ -108,14 +131,17 @@ class MainController extends AbstractController
             'form' => $form,
             'florins' => $user->getNbFlorains(),
             'annonces' => $annonces,
-            'bool_prix' => $bool_prix
+            'bool_prix' => $bool_prix,
+            'nbNotif' => $nbNotif,
+            'paiement' => $aPaye,
+            'nbNotif' => $nbNotif
         ]);
     }
 
     #[Route('/main/choisir/{annonceId}', name: 'app_choisir')]
     public function choisirAnnonce(Request $request, EntityManagerInterface $entityManager): Response
     {
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -126,18 +152,18 @@ class MainController extends AbstractController
         $paths = explode('/', $uri);
         $idAnnonce = $paths[sizeof($paths) - 1];
         $annonceCliquee = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $idAnnonce]);
-    
+
         $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         dump($idAnnonce, $utilisateur);
         $bool_prix = true;
-        if($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
+        if ($utilisateur->getNbFlorains() < intval($annonceCliquee->getPrix())) {
             $bool_prix = false;
         } else {
             $bool_prix = true;
         }
 
         $no_dispo = false;
-        if($annonceCliquee->getDisponibilite() == "") {
+        if ($annonceCliquee->getDisponibilite() == "") {
             $no_dispo = true;
         }
         $formlist = $this->createForm(AjouterListeAttenteType::class);
@@ -145,12 +171,12 @@ class MainController extends AbstractController
         $DejaAjouter = "";
         $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
         if ($formlist->isSubmitted()) {
-            if($DejaAjouter === null){
+            if ($DejaAjouter === null) {
                 $fileAttente = new FileAttenteAnnonce();
                 $fileAttente->setNoUtilisateur($utilisateur);
                 $fileAttente->setNoAnnonce($annonceCliquee);
                 $entityManager->persist($fileAttente);
-		        $entityManager->flush();
+                $entityManager->flush();
             }
         }
         $DejaAjouter = $entityManager->getRepository(FileAttenteAnnonce::class)->findOneBy(["no_utilisateur" => $utilisateur, "no_annonce" => $idAnnonce]);
@@ -165,23 +191,33 @@ class MainController extends AbstractController
 
                 $disponibilites = $annonceCliquee->getDisponibiliteLisible();
                 $indexChoice = $form->get('numero_choix')->getData() - 1;
-					
+
                 $transaction = new Transaction();
                 $transaction->setAnnonce($annonceCliquee);
                 $transaction->setPrestataire($annonceCliquee->getPrestataire());
                 $transaction->setClient($entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $user]));
                 $transaction->setEstCloture(false);
                 $entityManager->persist($transaction);
-		        $entityManager->flush();
+                $dispos = explode("|", $annonceCliquee->getDisponibilite());
+                $nDispo = "";
+                for ($i=0; $i < count($dispos); $i++) {
+                    if( $i !== $indexChoice){
+                        $nDispo .= $dispos[$i]."|";
+                    }
+                }
+
+                $annonceCliquee->setDisponibilite($nDispo);
+                $entityManager->persist($annonceCliquee);
+                $entityManager->flush();
 
 
-                if(gettype($form->get('numero_choix')->getData()) != "int" || $form->get('numero_choix')->getData() - 1 < 0) {
+                if (gettype($form->get('numero_choix')->getData()) != "int" || $form->get('numero_choix')->getData() - 1 < 0) {
                     return $this->redirectToRoute("app_main");
                 } else {
                     $disponibilites = $annonceCliquee->getDisponibiliteLisible();
                     $indexChoice = $form->get('numero_choix')->getData() - 1;
 
-                    if(!$annonceCliquee->getEstUnEmprunt()) {
+                    if (!$annonceCliquee->getEstUnEmprunt()) {
                         $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonceCliquee->getId()]);
                         $emprunt->setIdEmprunteur($user->getId());
                         $emprunt->setDatesEmprunt($disponibilites[$indexChoice]);
@@ -202,14 +238,38 @@ class MainController extends AbstractController
 
                     return $this->redirectToRoute('app_main');
                 }
-		    }
-            elseif ($form->get('non')->isClicked()) {
+            } elseif ($form->get('non')->isClicked()) {
                 // L'utilisateur a annulé le choix
                 return $this->redirectToRoute('app_main');
             }
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
+
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+        $notes = $compte->getNotes();
+        $somme = 0;
+        if ($notes != null) {
+            foreach ($notes as $note) {
+                $somme += intval($note->getNote());
+            }
+            $n = count($notes);
+            $note = -1;
+            if ($n > 0) {
+                $note = round($somme / $n, 1);
+            }
+        }
+        #dd($annonceCliquee->getDatesAnnonce());
 
         return $this->render('choisir/choisir.html.twig', [
             'title' => 'EcoPrêt',
@@ -222,6 +282,9 @@ class MainController extends AbstractController
             'listeDisponibilite' => $annonceCliquee->getDisponibiliteLisible(),
             'listeAttente' => $formlist->createView(),
             'DejaAjouter' => $DejaAjouter,
+            'florins' => $user->getNbFlorains(),
+            'note' => $note,
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

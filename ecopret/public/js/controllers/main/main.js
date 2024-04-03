@@ -68,6 +68,9 @@ function annulerAddAnnonce() {
   document.getElementById("ajouter_annonce_description").value = "";
   document.getElementById("ajouter_annonce_prix").value = "";
   document.getElementById("toggle").checked = false;
+  document.getElementById("ajouter_annonce_ajouterPhoto").value = ""
+  document.getElementById("ajouter_annonce_ajouterPhoto2").value = ""
+  document.getElementById("ajouter_annonce_ajouterPhoto3").value = ""
 }
 function ValidImage() {
   extensions_admises = ["png", "jpg", "jpeg", ""];
@@ -106,6 +109,14 @@ document.addEventListener("click", function (event) {
   var target = event.target;
   if (menu.contains(target)) {
     document.getElementById("rechercheOptions").style.display = "grid";
+    var dateInput = document.getElementById('DateD');
+    var today = new Date();
+    var todayISOString = today.toISOString().split('T')[0];
+    dateInput.setAttribute('min', todayISOString);
+    dateInput = document.getElementById('DateF');
+    today.setDate(today.getDate() + 1);
+    todayISOString = today.toISOString().split('T')[0];
+    dateInput.setAttribute('min', todayISOString);
     return;
   } else if (mainElement.contains(target)) {
     rechercheOptions.style.display = "none";
@@ -169,7 +180,26 @@ function clearSearch() {
   clearFilter();
 }
 
+function verifPrix() {
+  var prixMin = parseInt(document.getElementById("prixMin").value);
+  var prixMax = parseInt(document.getElementById("prixMax").value);
+  console.log(prixMin, prixMax);
+  if (isNaN(prixMin) || isNaN(prixMax)) {
+    alert("Veuillez saisir uniquement des nombres");
+    return false;
+  }
+  if (prixMin > prixMax) {
+    alert("Veuillez saisir un prix minimum inférieur ou égal au prix maximum");
+    return false;
+  }
+  return true;
+}
+
+
 async function filtrageAnnonces() {
+  if (!verifPrix()){
+    return;
+  }
   document.getElementById("rechercheOptions").style.display = "none";
   document.getElementById("loader").style.display = "block";
   var annonces = document.querySelectorAll(".card_list");
@@ -182,11 +212,9 @@ async function filtrageAnnonces() {
   var dateDeb = document.getElementById("DateD").value;
   var dateFin = document.getElementById("DateF").value;
   if (dateFin !== "") {
-    console.log(dateFin.split("-"))
     dateFin = new Date(dateFin.split("-"));
   }
   if (dateDeb !== "") {
-    console.log(dateDeb.split("-"))
     dateDeb = new Date(dateDeb.split("-"));
   }
   var typeChoisi = "";
@@ -219,8 +247,6 @@ async function filtrageAnnonces() {
     .getElementById("recherche")
     .value.toLowerCase()
     .trim();
-  console.log(critereInput);
-  console.log(critereInput !== "");
 
   if (critereInput !== "") {
     var synonymesRequest = await requestPython(critereInput);
@@ -251,7 +277,6 @@ async function filtrageAnnonces() {
     var jour_annonce = [];
     for (d of dates_annonces) {
       var tab = d.split(";")[0];
-      console.log(tab.split("/")[2],tab.split("/")[1], tab.split("/")[0]);
       let day = tab.split("/")[0];
       let month = tab.split("/")[1];
       if(day !== "" && month !== ""){
@@ -301,11 +326,9 @@ async function filtrageAnnonces() {
       for (let ca of categorieSelect) {
         if (ca === categorieAnnonce) {
           conditionRespectes = true;
-          console.log("ee");
           break;
         } else {
           conditionRespectes = false;
-          console.log("dd");
         }
       }
     }
@@ -315,7 +338,6 @@ async function filtrageAnnonces() {
     }
     if (dateDPossible) {
       if (dateFPossible) {
-        console.log(dateDeb >= jour_annonce[0] && jour_annonce[jour_annonce.length -1] <= dateFin)
         if (dateDeb >= jour_annonce[0] && dateFin <= jour_annonce[jour_annonce.length -1]) {
           conditionRespectes = true;
         } else {
@@ -344,14 +366,12 @@ async function filtrageAnnonces() {
         affichageAnnonce = false;
       } else {
         affichageAnnonce = true;
-        console.log("a");
         return;
       }
       if (!descAnnonce.includes(critereInput)) {
         affichageAnnonce = false;
       } else {
         affichageAnnonce = true;
-        console.log("b");
         return;
       }
     }
@@ -384,8 +404,136 @@ async function filtrageAnnonces() {
         }
       }
     }
-    console.log(affichageAnnonce, " ccc");
     annonce.style.display = affichageAnnonce ? "block" : "none";
   });
   document.getElementById("loader").style.display = "none";
+}
+
+function vérifierForm(){
+  var inputTmp = document.getElementById("ajouter_annonce_ajouterPhoto");
+  if (inputTmp.files[0] !== undefined) {
+    ValidImage();
+    return 0;
+  }
+  var titreAnnonce = document.getElementById("ajouter_annonce_titre").value;
+  var describAnnonce = document.getElementById("ajouter_annonce_description").value;
+  var prixAnnonce = document.getElementById("ajouter_annonce_prix").value;
+  var categorieAnnonce = document.getElementById("ajouter_annonce_categorie").value;
+  
+  var modalBox = document.querySelector('.modal-box');
+  
+  modalBox.innerHTML = "";
+  
+  var erreurMsg = "";
+  var erreurList = document.createElement('ul');
+  
+  
+  if (titreAnnonce == ""){
+    erreurMsg += "erreur titre, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Le titre ne peux pas être vide";
+    erreurList.appendChild(erreurLi);
+  }
+  if (describAnnonce == ""){
+    erreurMsg += "erreur description, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "La description ne peux pas être vide";
+    erreurList.appendChild(erreurLi);
+  }
+  var prixNumber = parseFloat(prixAnnonce);
+  if (isNaN(prixNumber) || prixNumber <= 0) {
+    erreurMsg += "erreur prix, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Le prix être un entier positif";
+    erreurList.appendChild(erreurLi);
+  }
+  if (categorieAnnonce == "") {
+    erreurMsg += "erreur categorie, ";
+    
+    var erreurLi = document.createElement('li');
+    erreurLi.textContent = "Une catégorie doit être choisi";
+    erreurList.appendChild(erreurLi);
+  }
+  
+  if (erreurMsg == "") {
+    var h2Element = document.createElement('h2');
+    h2Element.textContent = "Annonce créée";
+    
+    var h3Element = document.createElement('h3');
+    h3Element.textContent = "Votre annonce a été créée avec succès, vous pouvez ajouter des disponibilités maintenant ou le faire plus tard";
+    
+    var buttonsDiv = document.createElement('div');
+    buttonsDiv.classList.add('buttons');
+    
+    // Bouton plus tard
+    var closeButton = document.createElement('button');
+    closeButton.classList.add('plus-tard-btn');
+    closeButton.textContent = 'Plus tard';
+    closeButton.type = "submit";
+    closeButton.addEventListener('click', function(event) {
+      var cardElement = document.querySelector('.card');
+      var modalBoxElement = document.querySelector('.modal-box');
+      if (cardElement) {
+        cardElement.style.display = 'none';
+      }
+      if (modalBoxElement) {
+        modalBoxElement.style.display = 'none';
+      }
+    });
+
+    // Bouton maintenant
+    var nowButton = document.createElement('button');
+    closeButton.classList.add('now-btn');
+    nowButton.textContent = 'Maintenant';
+    nowButton.type = "submit";
+    nowButton.setAttribute('name', 'now-btn');
+    nowButton.addEventListener('click', function(event) {
+      var cardElement = document.querySelector('.card');
+      var modalBoxElement = document.querySelector('.modal-box');
+      if (cardElement) {
+        cardElement.style.display = 'none';
+      }
+      if (modalBoxElement) {
+        modalBoxElement.style.display = 'none';
+      }
+      //annulerAddAnnonce();
+    });
+    
+    buttonsDiv.appendChild(closeButton);
+    buttonsDiv.appendChild(nowButton);
+
+    var iconElement = document.createElement('i');
+    iconElement.classList.add ("fa-regular","fa-circle-check");
+    
+    modalBox.appendChild(iconElement);
+    modalBox.appendChild(h2Element);
+    modalBox.appendChild(h3Element);
+    modalBox.appendChild(buttonsDiv);
+  }else {
+    var h2Element = document.createElement('h2');
+    h2Element.textContent = "Erreur lors de la création de l'annonce";
+    
+    var buttonsDiv = document.createElement('div');
+    buttonsDiv.classList.add('buttons');
+    var closeButton = document.createElement('button');
+    closeButton.classList.add('close-btn');
+    closeButton.textContent = 'Ok';
+    closeButton.type = "button";
+    closeButton.onclick = function() {
+      section.classList.remove("active")
+    };
+    
+    buttonsDiv.appendChild(closeButton);
+    
+    modalBox.appendChild(h2Element);
+    modalBox.appendChild(erreurList);
+    modalBox.appendChild(buttonsDiv);
+    
+  }
+  const section = document.querySelector("section");
+  section.classList.add("active");
+
 }

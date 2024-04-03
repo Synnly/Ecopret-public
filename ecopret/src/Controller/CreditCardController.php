@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CarteCredit;
 use App\Entity\Compte;
 use App\Entity\Utilisateur;
+use App\Entity\Notification;
 use App\Form\CreditCardFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,7 +32,16 @@ class CreditCardController extends AbstractController
         } else {
             return $this->redirectToRoute('infos_modif');
         }
-        
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         $carte = $user->getCarteCredit();
 
         //Création du formulaire
@@ -60,7 +70,12 @@ class CreditCardController extends AbstractController
                     $utilisateur->setNbFlorains($utilisateur->getNbFlorains() + 1000);
                 }
 
+                $newNotif = new Notification();
+                $newNotif->setMessageNotification("Vous avez souscrit un abonnement, merci ! Vous avez reçu 100 florains !");
 
+                $this->getUser()->addNotification($newNotif);
+
+                $entityManager->persist($newNotif);
                 $entityManager->persist($utilisateur);
                 $entityManager->flush();
             }
@@ -68,10 +83,14 @@ class CreditCardController extends AbstractController
             //Redirection vers la page main
             return $this->redirectToRoute('main');
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('credit_card/index.html.twig', [
             'creditCardForm' => $form->createView(),
             'erreur' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

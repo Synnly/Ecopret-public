@@ -62,6 +62,16 @@ class InformationsPersonnellesController extends AbstractController
             if ($resultat != null) $villes[$nom[1]] = $nom[0];
 
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         // Création du formulaire
         $form = $this->createForm(InformationsPersonnellesType::class)
             ->add('lieu', ChoiceType::class, [
@@ -162,9 +172,13 @@ class InformationsPersonnellesController extends AbstractController
         $userCompte = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $user->getId()]);
         //getNoUtisateur()
         //$prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['id' => $userCompte->getId()]);
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('informations_personnelles/informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
             'InformationsPersonnellesForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
             'compte' => $compte,
             'userCompte' => $userCompte,
         ]);
@@ -186,6 +200,15 @@ class InformationsPersonnellesController extends AbstractController
         }
 
         $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         $form = $this->createForm(ModifierInformationsPersonnellesFormType::class)
             ->add('NomCompte', TextType::class, [
@@ -288,11 +311,14 @@ class InformationsPersonnellesController extends AbstractController
                 return $this->redirectToRoute('app_infos');
             }
         }
-
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
         return $this->render('informations_personnelles/form_informations_personnelles.html.twig', [
             'controller_name' => 'InformationsPersonnellesController',
             'InformationsPersonnellesForm' => $form->createView(),
-            'erreur' => $erreur
+            'erreur' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
         #[Route('/infos/modif/cancel', name:'cancel_sub')]

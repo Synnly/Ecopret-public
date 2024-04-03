@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Compte;
 use App\Entity\Emprunt;
 use App\Entity\Service;
+use App\Entity\Utilisateur;
 use App\Entity\Transaction;
 use App\Form\FinServiceType;
 use App\Form\RetourEmpruntType;
@@ -36,6 +37,15 @@ class RetourEmpruntFinServiceController extends AbstractController
         $prestataire = $transaction->getAnnonce()->getPrestataire();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         // User pas le prestataire de l'annonce
         if($prestataire->getNoUtisateur()->getNoCompte() != $compte){
             return $this->redirectToRoute("app_page_accueil");
@@ -64,10 +74,14 @@ class RetourEmpruntFinServiceController extends AbstractController
                 return $this->redirectToRoute("app_decl_litige_transaction", ["transaction_id" => $transaction_id]);
             }
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('retour/emprunt.html.twig', [
             'controller_name' => 'RetourEmpruntFinServiceController',
-            'RetourEmpruntForm' => $form->createView()
+            'RetourEmpruntForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -90,6 +104,15 @@ class RetourEmpruntFinServiceController extends AbstractController
 
         $prestataire = $transaction->getAnnonce()->getPrestataire();
         $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         // User pas le client de l'annonce
         if($transaction->getClient()->getNoCompte() != $compte){
@@ -118,10 +141,15 @@ class RetourEmpruntFinServiceController extends AbstractController
                 return $this->redirectToRoute("app_decl_litige_transaction", ["transaction_id" => $transaction_id]);
             }
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+
 
         return $this->render('retour/service.html.twig', [
             'controller_name' => 'RetourEmpruntFinServiceController',
-            'FinServiceForm' => $form->createView()
+            'FinServiceForm' => $form->createView(),
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

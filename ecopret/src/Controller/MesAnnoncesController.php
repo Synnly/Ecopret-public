@@ -29,12 +29,24 @@ class MesAnnoncesController extends AbstractController
         $prestaire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
         $annonces = $entityManager->getRepository(Annonce::class)->findBy(['prestataire' => $prestaire]);
         $typesAnnonces = [];
+
+        
         foreach ($annonces as $annonce) {
             $emprunt = $entityManager->getRepository(Emprunt::class)->findOneBy(['id_annonce' => $annonce->getId()]);
             $service = $entityManager->getRepository(Service::class)->findOneBy(['id_annonce' => $annonce->getId()]);
 
             $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $annonce = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $form->get("id")->getData()]);
@@ -88,21 +100,30 @@ class MesAnnoncesController extends AbstractController
 
                 $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
             }
+            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
             return $this->render('mes_annonces/index.html.twig', [
                 'controller_name' => 'MesAnnoncesController',
                 'annonces' => $annonces,
                 'form' => $form,
                 'typesAnnonces' => $typesAnnonces,
+                'user' => $this->getUser(),
+                'florins' => $user->getNbFlorains(),
+                'nbNotif' => $nbNotif,
             ]);
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',
             'annonces' => $annonces,
             'form' => $form,
             'typesAnnonces' => $typesAnnonces,
             'error' => $erreur,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

@@ -25,10 +25,21 @@ class InsertLieuxController extends AbstractController
                 $nbInsertions ++;
             }
         }
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         set_time_limit(30); // Remise de la limite de temps d'execution
         print "$nbInsertions insertions<br>";
         return $this->render('insert_lieux/index.html.twig', [
             'controller_name' => 'InsertLieuxController',
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

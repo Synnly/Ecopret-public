@@ -33,6 +33,14 @@ class NoterTransactionController extends AbstractController
         $idComptePrestataire = $prestataire->getNoUtisateur()->getNoCompte();
         $comptePrestataire = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $idComptePrestataire]);
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
 
         $form = $this->createForm(NoterTransactionType::class);
 
@@ -62,6 +70,7 @@ class NoterTransactionController extends AbstractController
 
 
 
+        $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
 
         return $this->render('noter_transaction/index.html.twig', [
             'controller_name' => 'NoterTransactionController',
@@ -69,7 +78,9 @@ class NoterTransactionController extends AbstractController
             'annonce' => $annonce,
             'comptePrestataire' => $comptePrestataire,
             'form' => $form->createView(),
-
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' =>$nbNotif,
         ]);
     }
 }

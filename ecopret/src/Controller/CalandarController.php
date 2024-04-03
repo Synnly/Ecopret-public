@@ -70,6 +70,7 @@ class CalandarController extends AbstractController
             'disponibilite' => $disponibilite,
             'erreur' => $erreur,
             'form' => $form->createView(),
+            
         ]);
     }
 }

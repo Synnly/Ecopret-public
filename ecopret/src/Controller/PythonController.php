@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PythonController extends AbstractController
 {
@@ -14,15 +15,23 @@ class PythonController extends AbstractController
     #[Route('/pythonRequestDataBase/{mot}', name: 'python_request_data_base')]
     public function getSynonyms(Request $request): JsonResponse
     {
-        if($this->getUser()){
-             // Récupérer le paramètre "mot" de l'URL
-        $mot = $request->attributes->get('mot');
-        // Utilisez $mot comme paramètre pour exécuter votre script Python
-        $command = 'python3 js/controllers/main/main.py ' . $mot;
-        $output = shell_exec($command);
+        if ($this->getUser()) {
+            // Récupérer le paramètre "mot" de l'URL
+            $mot = $request->attributes->get('mot');
+            // Utilisez $mot comme paramètre pour exécuter votre script Python
+            $command = 'python3 js/controllers/main/main.py ' . $mot;
+            $output = shell_exec($command);
 
-        // Traitez la sortie du script Python si nécessaire
-        return new JsonResponse(['output' => $output]);
+            // Traitez la sortie du script Python si nécessaire
+            return new JsonResponse(['output' => $output]);
         }
+    }
+
+
+    #[Route('/goofy', name: 'goofy')]
+    public function index(): Response
+    {
+        return $this->render('goofy.twig', [
+        ]);
     }
 }
