@@ -46,9 +46,9 @@
                             <p class="statut">{{ (transaction.EstCloture ? "Cloturée" : "En cours") }}</p>
                         </div>
                         <div class="cloturer">
-                            {% if transaction.annonce.prestataire.noUtisateur.noCompte == app.user and transaction.annonce.EstUnEmprunt %}
+                            {% if transaction.annonce.prestataire.noUtisateur.noCompte == app.user and not  transaction.annonce.EstUnEmprunt %}
                                 <a href="/retour/{{ transaction.id }}"><button>Cloturer</button></a>
-                            {% elseif transaction.client.noCompte == app.user and not transaction.annonce.EstUnEmprunt %}
+                            {% elseif transaction.client.noCompte == app.user and transaction.annonce.EstUnEmprunt %}
                                 <a href="/fin/{{ transaction.id }}"><button>Cloturer</button></a>
                             {% endif %}
                         </div>
