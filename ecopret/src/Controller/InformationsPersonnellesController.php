@@ -46,7 +46,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Connexion bdd
         try{
-            $pdo = new PDO('mysql:host=127.0.0.1:3307;dbname=ecopret', 'root', '');
+            $pdo = new PDO('mysql:host=127.0.0.1:3306;dbname=ecopret', 'root', '');
         }
         catch(Exception $e){
             exit($e->getMessage());
@@ -61,6 +61,16 @@ class InformationsPersonnellesController extends AbstractController
             if ($resultat != null) $villes[$nom[1]] = $nom[0];
 
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         // Création du formulaire
         $form = $this->createForm(InformationsPersonnellesType::class)
             ->add('lieu', ChoiceType::class, [
@@ -153,6 +163,7 @@ class InformationsPersonnellesController extends AbstractController
             'InformationsPersonnellesForm' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -173,6 +184,15 @@ class InformationsPersonnellesController extends AbstractController
 
         $user = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form = $this->createForm(ModifierInformationsPersonnellesFormType::class)
             ->add('NomCompte', TextType::class, [
                 'attr' => ['value' => $user->getNomCompte()],
@@ -275,43 +295,7 @@ class InformationsPersonnellesController extends AbstractController
             'erreur' => $erreur,
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
-        #[Route('/infos/modif/cancel', name:'cancel_sub')]
-        public function resilierAbonnement(Request $request, EntityManagerInterface $entityManager): Response
-        {
-            if(!$this->getUser()){
-                return $this->redirectToRoute('app_login');
-            }
-    
-            $form = $this->createForm(ResiliationFormType::class);
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                if ($form->get('oui')->isClicked()) {
-                    // L'utilisateur a confirmé la suppression du compte
-                    //Récupération de l'utilisateur courant
-                    //$user = $utilisateurRepository->findOneBy(['id' => $this->getUser()->getId()]);
-                    $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['id' => $this->getUser()]);
-    
-    
-                    if($user->isPaiement()) {
-                        $user->setPaiement(false);
-                    }
-    
-                    return $this->redirectToRoute('app_main');
-                } elseif ($form->get('non')->isClicked()) {
-                    // L'utilisateur a annulé la résiliation de son abonnement
-                    return $this->redirectToRoute('app_infos');
-                }
-            }
-    
-            $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
-            return $this->render('resiliation/cancel_subscription.html.twig', [
-                'controller_name' => 'SupprimerCompteController',
-                'ResiliationFormType' => $form->createView(),
-                'user' => $this->getUser(),
-                'florins' => $user->getNbFlorains(),
-            ]);
-        }
     }

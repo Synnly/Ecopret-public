@@ -35,6 +35,16 @@ class MesAnnoncesController extends AbstractController
 
             $typesAnnonces[] = ($emprunt !== null) ? 0 : (($service !== null) ? 1 : null);
         }
+
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $annonce = $entityManager->getRepository(Annonce::class)->findOneBy(['id' => $form->get("id")->getData()]);
@@ -96,12 +106,13 @@ class MesAnnoncesController extends AbstractController
                 'typesAnnonces' => $typesAnnonces,
                 'user' => $this->getUser(),
                 'florins' => $user->getNbFlorains(),
+                'nbNotif' => $nbNotif,
             ]);
         }else if ($form->isSubmitted() && !$form->isValid()){
             $erreur = "pasValide";
         }
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
-
+        
         return $this->render('mes_annonces/index.html.twig', [
             'controller_name' => 'MesAnnoncesController',
             'annonces' => $annonces,
@@ -110,6 +121,7 @@ class MesAnnoncesController extends AbstractController
             'error' => $erreur,
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

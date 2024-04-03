@@ -36,6 +36,15 @@ class LitigeController extends AbstractController
             ];
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         $form = $this->createForm(ListeLitigesType::class, ['data' => $options]);
         $form->handleRequest($request);
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
@@ -45,19 +54,20 @@ class LitigeController extends AbstractController
             'LitigeType' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
-
+    
     #[Route('/litige/declarer', name: 'app_decl_litige')]
     public function declarerLitige(Request $request,EntityManagerInterface $entityManager): Response
     {
         if(!$this->getUser()){
             return $this->redirectToRoute("app_page_accueil");
         }
-
+        
         return $this->declarerLitigeTransaction($request, $entityManager);
     }
-
+    
     #[Route('/litige/declarer/{transaction_id}', name: 'app_decl_litige_transaction')]
     public function declarerLitigeTransaction(Request $request,EntityManagerInterface $entityManager, int $transaction_id = null): Response
     {
@@ -66,30 +76,39 @@ class LitigeController extends AbstractController
             return $this->redirectToRoute("app_page_accueil");
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form = $this->createForm(DeclarerLitigeType::class);
-
+        
         if($transaction_id != null){
             $form->get('transaction')->setData($transaction_id);
         }
-
+        
         $form->handleRequest($request);
-
+        
         if($form->isSubmitted() && $form->isValid()){
             $erreur = null;
-
+            
             // Transaction inexistante
             if(!($transaction = $entityManager->getRepository(Transaction::class)->findOneBy(['id' => $form['transaction']->getData()]))){
                 $erreur = "La transaction n'existe pas.";
             }
-
+            
             $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id' => $this->getUser()]);
-
+            
             // Le compte n'est pas en lien avec la transaction
             if($erreur == null && $transaction->getClient()->getNoCompte() != $compte && $transaction->getPrestataire()->getNoUtisateur()->getNoCompte() != $compte){
                 $erreur = "Vous n'avez pas de lien avec la transaction.";
             }
             $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
-
+            
             if($erreur != null){
                 return $this->render('litige/declarer.html.twig', [
                     'controller_name' => 'LitigeController',
@@ -97,10 +116,11 @@ class LitigeController extends AbstractController
                     'erreur' => $erreur,
                     'user' => $this->getUser(),
                     'florins' => $user->getNbFlorains(),
+                    'nbNotif' => $nbNotif,
                 ]);
             }
             $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
-
+            
             // Limite de litiges /annonce /compte atteinte (ici 3)
             if(count($entityManager->getRepository(Litige::class)->findBy(['plaignant' => $compte, 'transaction' => $transaction])) >= 3){
                 return $this->render('litige/declarer.html.twig', [
@@ -109,33 +129,35 @@ class LitigeController extends AbstractController
                     'erreur' => "Limite de litiges pour cette annonce atteinte. Vous ne pouvez plus déposer de litiges pour cette annonce.",
                     'user' => $this->getUser(),
                     'florins' => $user->getNbFlorains(),
+                    'nbNotif' => $nbNotif,
                 ]);
             }
-
+            
             $litige = new Litige();
             $litige->setPlaignant($compte);
-
+            
             // Si le client est celui qui se plaint, l'accusé est le prestataire et vice-versa
             $litige->setAccuse(($transaction->getClient()->getNoCompte() === $litige->getPlaignant()) ?
-                $transaction->getPrestataire()->getNoUtisateur()->getNoCompte() :
-                $transaction->getClient()->getNoCompte());
-
+            $transaction->getPrestataire()->getNoUtisateur()->getNoCompte() :
+            $transaction->getClient()->getNoCompte());
+            
             $litige->setDescription($form['description']->getData());
             $litige->setStatut(0);
             $litige->setTransaction($transaction);
-
+            
             $entityManager->persist($litige);
             $entityManager->flush();
             return $this->redirectToRoute("app_litige");
         }
-
+        
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
-
+        
         return $this->render('litige/declarer.html.twig', [
             'controller_name' => 'LitigeController',
             'DeclarerLitigeType' => $form->createView(),
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -152,6 +174,15 @@ class LitigeController extends AbstractController
             return $this->redirectToRoute("app_page_accueil");
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         // Recherche du litige qu'on traitait, sinon d'un litige pas traité
         if(!($litige = $entityManager->getRepository(Litige::class)->findOneBy(['statut' => 1, 'admin' => $admin]))){
 
@@ -160,6 +191,7 @@ class LitigeController extends AbstractController
                     'controller_name' => 'LitigeController',
                     'user' => $this->getUser(),
                     'florins' => $user->getNbFlorains(),
+                    'nbNotif' => $nbNotif,
                 ]);
             }
             else{
@@ -197,6 +229,7 @@ class LitigeController extends AbstractController
             'lienContactPlaignant' => '/',
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

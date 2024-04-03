@@ -31,6 +31,15 @@ class AnnonceController extends AbstractController
             return $this->redirectToRoute('app_mes_annonces');
         }
 
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+        
         $form = $this->createForm(SupprimerAnnonceFormType::class);
         $form->handleRequest($request);
 
@@ -54,6 +63,7 @@ class AnnonceController extends AbstractController
             'SupprimerAnnonceFormType' => $form,
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }

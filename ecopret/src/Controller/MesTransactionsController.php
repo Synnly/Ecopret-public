@@ -24,6 +24,15 @@ class MesTransactionsController extends AbstractController
 
         $transactions = array_reverse($entityManager->getRepository(Transaction::class)->findBy(['Client' => $utilisateur]));
         
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
+
         if ($request->request->has('noter')) {
             // Rediriger vers la page Calendar avec l'identifiant de l'annonce
             return $this->redirectToRoute('noter', ['idTransaction' => $transaction->getId()]);
@@ -34,6 +43,7 @@ class MesTransactionsController extends AbstractController
             'transactions' => $transactions,
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 }
