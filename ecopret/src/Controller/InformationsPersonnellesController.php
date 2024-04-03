@@ -111,18 +111,7 @@ class InformationsPersonnellesController extends AbstractController
 
         // Traitement du formulaire
         if($form->isSubmitted() && $form->isValid()){
-
-            // Si pas d'utilisateur associé au compte, on en crée un
-            if(($utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])])) == null){
-                $utilisateur = new Utilisateur();
-            }
-                $utilisateur->setNoCompte($entityManager->getRepository(Compte::class)->findOneBy(['id' => $user]));
-                $utilisateur->setEstVerifie(false);
-                $utilisateur->setEstGele(false);
-                $utilisateur->setPaiement(false);
-                $utilisateur->setAUneReduction(false);
-                $utilisateur->setNbFlorains(0);
-                $entityManager->persist($utilisateur);
+            $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $entityManager->getRepository(Compte::class)->findOneBy(['id' => $user])]);
 
             // Si l'utilisateur veut passer prestataire
 	    $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
