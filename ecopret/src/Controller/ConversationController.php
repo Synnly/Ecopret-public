@@ -17,17 +17,27 @@ use Symfony\Component\Routing\Attribute\Route;
 class ConversationController extends AbstractController
 {
     #[Route('/conversation', name: 'app_conversation')]
-    public function index(ConversationRepository $conversationRepository): Response
+    public function index(ConversationRepository $conversationRepository,EntityManagerInterface $em): Response
     {
          $convs = array_merge($conversationRepository->findBy(['participant1' => $this->getUser()]), $conversationRepository->findBy(['participant2' => $this->getUser()]));
-
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('conversation/index.html.twig', [
-            'conversations' => $convs
+            'conversations' => $convs,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
     #[Route('/conversation/{id}', name: 'app_conversation_chat')]
-    public function conversation(ConversationRepository $conversationRepository, MessageRepository $messageRepository, int $id): Response
+    public function conversation(ConversationRepository $conversationRepository, MessageRepository $messageRepository, int $id,EntityManagerInterface $em): Response
     {
         $conv = $conversationRepository->findOneBy(['id' => $id]);
 
@@ -44,10 +54,20 @@ class ConversationController extends AbstractController
         ], ['date' => 'ASC']);
 
 
-
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('conversation/chat.html.twig', [
             'conv' => $conv,
-            'messages' => $messages
+            'messages' => $messages,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 

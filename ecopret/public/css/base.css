@@ -81,33 +81,33 @@ img#plante3{
     z-index: 3;
     border-bottom: 0.08vw #c2c2c2 solid;
   }
-  
+
   .nav > .ul {
     display: flex;
     text-align: center;
     height: var(--hauteur-menu);
   }
-  
+
   .li {
     font-size: clamp(1rem, 0.9769rem + 0.1235vw, 1.125rem);
   }
   .nav .ul {
     list-style-type: none;
   }
-  
+
   .nav > .ul > .li {
     position: relative;
     height: var(--hauteur-menu);
     flex: 1;
   }
-  
+
   .nav > .ul > .li > .a {
     position: absolute;
     top: 3vh;
     left: 12vw;
     transform: translate(-50%, -50%);
   }
-  
+
   .li .a {
     text-decoration: none;
     color: black;
@@ -129,7 +129,7 @@ img#plante3{
     max-height: 0;
     z-index: 3;
   }
-  
+
   .sous-menu > .li > .a {
     height: 5vh;
     padding-left: 1vw;
@@ -137,23 +137,23 @@ img#plante3{
     align-items: center;
     display: flex;
   }
-  
+
   .nav > .ul > .li:hover > .a {
     color: #658864;
   }
-  
+
   .sous-menu > .li:hover {
     background-color: #65886461;
   }
-  
+
   .sous-menu > .li:hover > .a {
     color: #f8f8f8;
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   @keyframes apparitionSousMenu {
     0% {
       box-shadow: 0px 3px 3px 0.08vw rgba(0, 0, 0, 0);
@@ -168,15 +168,15 @@ img#plante3{
       box-shadow: 0px 3px 3px 0.08vw rgba(0, 0, 0, 0.3);
     }
   }
-  
+
   .menu-deroulant:hover > .sous-menu {
     animation: apparitionSousMenu 1s forwards;
   }
-  
+
   .nav > .ul > .li > .a > .titreMain {
     margin-left: -100%;
   }
-  
+
   .nav > .ul > .li > .a > .login-logo-mdp {
     position: absolute;
     left: -7vw;
@@ -188,9 +188,10 @@ img#plante3{
   }
 
   i {
+    margin-top: 10px;
     font-size: 1.4vw;
   }
-  
+
   span {
     position: absolute;
     left: 4.0rem;
@@ -206,7 +207,7 @@ img#plante3{
     font-size: 60%;
     color: #fff;
   }
-  
+
   .nomUser {
     font-weight: 900;
     color: #658864;
@@ -219,7 +220,7 @@ img#plante3{
     display: inline-block;
     margin-left: -27vw;
   }
-  
+
   .hover-me {
     position: relative;
     z-index: 1;
@@ -247,7 +248,7 @@ img#plante3{
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
     transition: opacity 0.3s ease-in-out;
   }
-  
+
   .tooltip::before {
     content: "";
     position: absolute;
@@ -259,7 +260,7 @@ img#plante3{
     border-color: transparent transparent #ffffff transparent;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   }
-  
+
   .container:hover .tooltip {
     top: auto;
     bottom: -10px;
@@ -267,11 +268,11 @@ img#plante3{
     visibility: visible;
     animation: goPopup 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
   }
-  
+
   .container:hover .tooltip p {
     animation: bounce 2s ease-in-out infinite;
   }
-  
+
   @keyframes goPopup {
     0% {
       transform: translateY(0) scaleY(0);
@@ -288,7 +289,7 @@ img#plante3{
       height: 30px;
     }
   }
-  
+
   @keyframes bounce {
     0%,
     20%,
@@ -321,7 +322,7 @@ img#plante3{
     margin-right: 12vw;
     display: none;
   }
-  
+
   .inputSearch {
     width: 19vw;
     height: 100vh;
@@ -329,17 +330,17 @@ img#plante3{
     outline: none;
     caret-color: rgb(255, 81, 0);
   }
-  
+
   .labelforsearch {
     cursor: text;
     padding: 0px 12px;
   }
-  
+
   .searchIcon {
     width: 16px;
     cursor: pointer;
   }
-  
+
   .searchIcon path {
     fill: rgb(114, 114, 114);
   }

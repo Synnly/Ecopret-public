@@ -27,14 +27,27 @@ class EchangeController extends AbstractController
     {
         $echanges = $em->getRepository(Echange::class)->findBy(['destinataire'=>$em->getRepository(Annonce::class)->findOneBy(['prestataire'=>$em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(['noCompte'=>$this->getUser()])])]),'etat'=>0]);
 
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/accepter.html.twig', [
             'controller_name' => 'EchangeController',
-            'echanges' => $echanges
+            'echanges' => $echanges,
+            'florins' => $user->getNbFlorains(),
+            'user' => $this->getUser(),
+            'nbNotif' => $nbNotif,
         ]);
     }
     #[Route('/echanges', name: 'app_echanges')]
     public function echanges(EntityManagerInterface $em): Response
     {
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         $prest = $em->getRepository(Prestataire::class)->findOneBy(['noUtisateur'=>$em->getRepository(Utilisateur::class)->findOneBy(["noCompte"=>$this->getUser()])]);
         $annonces = $em->getRepository(Annonce::class)->findBy(['prestataire'=>$prest]);
         $echanges = [];
@@ -45,9 +58,20 @@ class EchangeController extends AbstractController
                 }
             }
         }
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/echanges.html.twig', [
             'controller_name' => 'EchangeController',
-            'echanges' => $echanges
+            'echanges' => $echanges,
+            'florins' => $user->getNbFlorains(),
+            'user' => $this->getUser(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 
@@ -113,10 +137,20 @@ class EchangeController extends AbstractController
 
             return $this->redirectToRoute('app_main');
         }
-
+        $user = $em->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
+        $nbNotif = 0;
+        $notifications = $this->getUser()->getNotifications();
+        foreach ($notifications as $notification) {
+            if ($notification->getStatus() == 0) {
+                $nbNotif ++;
+            }
+        }
         return $this->render('echange/index.html.twig', [
             'controller_name' => 'EchangeController',
-            'form' => $form
+            'form' => $form,
+            'user' => $this->getUser(),
+            'florins' => $user->getNbFlorains(),
+            'nbNotif' => $nbNotif,
         ]);
     }
 

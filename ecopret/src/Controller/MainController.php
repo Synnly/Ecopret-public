@@ -111,8 +111,6 @@ class MainController extends AbstractController
         }else{
             $annonces = $entityManager->getRepository(Annonce::class)->findAnnoncesaAfficher();
         }
-
-        $annonces = $entityManager->getRepository(Annonce::class)->findAll();
         $bool_prix = null;
 
         $nbNotif = 0;
@@ -252,7 +250,6 @@ class MainController extends AbstractController
                 $nbNotif ++;
             }
         }
-
         $annonces = $entityManager->getRepository(Annonce::class)->findAll();
 
         $user = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()->getId()]);
