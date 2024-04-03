@@ -31,10 +31,6 @@ class PythonController extends AbstractController
     #[Route('/goofy', name: 'goofy')]
     public function index(): Response
     {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_main');
-        }
-
         return $this->render('goofy.twig', [
         ]);
     }
