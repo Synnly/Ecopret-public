@@ -62,9 +62,8 @@
 }
 
 li {
-  margin-top: -10%;
-  width: 150%;
-  margin-left: -10%;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
   font-size: 70%;
   color: red;
 }
