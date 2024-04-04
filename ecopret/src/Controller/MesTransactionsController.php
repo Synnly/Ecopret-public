@@ -20,8 +20,7 @@ class MesTransactionsController extends AbstractController
     #[Route('/mes/transactions', name: 'app_mes_transactions')]
     public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $compte = $entityManager->getRepository(Compte::class)->findOneBy(['id'=>$this->getUser()]);
-        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $compte->getId()]);
+        $utilisateur = $entityManager->getRepository(Utilisateur::class)->findOneBy(['noCompte' => $this->getUser()]);
         $prestataire = $entityManager->getRepository(Prestataire::class)->findOneBy(['noUtisateur' => $utilisateur]);
 
         $transactionsUtilisateur = array_reverse($entityManager->getRepository(Transaction::class)->findBy(['Client' => $utilisateur]));
@@ -56,7 +55,6 @@ class MesTransactionsController extends AbstractController
             'user' => $this->getUser(),
             'florins' => $user->getNbFlorains(),
             'nbNotif' => $nbNotif,
-            'transactions' => $transactions
         ]);
     }
 }

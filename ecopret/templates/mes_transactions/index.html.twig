@@ -28,36 +28,42 @@
         <div id="boutons">
             <button class="home-btn" onclick="back()">Accueil</button>
         </div>
-
-        {% if transactions %}
+        <table id="table" class="table table-hover table-mc-light-blue">
+            <thead>
+            <tr>
+                <th>Numéro annonce</th>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th></th>
+                <th>Noter</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for transaction in transactions %}
-                {% if transaction %}
-                    <div class="transaction">
-                        <div>
-                            <p>Id</p>
-                            <p class="id_transaction">{{ transaction.id }}</p>
-                        </div>
-                        <div>
-                            <p>Nom</p>
-                            <p class="nom_annonce">{{ transaction.annonce.NomAnnonce }}</p>
-                        </div>
-                        <div>
-                            <p>Statut</p>
-                            <p class="statut">{{ (transaction.EstCloture ? "Cloturée" : "En cours") }}</p>
-                        </div>
-                        <div class="cloturer">
-                            {% if transaction.annonce.prestataire.noUtisateur.noCompte == app.user and not  transaction.annonce.EstUnEmprunt %}
-                                <a href="/retour/{{ transaction.id }}"><button>Cloturer</button></a>
-                            {% elseif transaction.client.noCompte == app.user and transaction.annonce.EstUnEmprunt %}
-                                <a href="/fin/{{ transaction.id }}"><button>Cloturer</button></a>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
+                <tr  data-transaction-id="{{ transaction.getId() }}">
+                    <td data-title="id">{{ transaction.getId() }}</td>
+                    <td data-title="nom">{{ transaction.getAnnonce().getNomAnnonce() }}</td>
+                    {% if transaction.isEstCloture() == '0' %}
+                        <td data-title="statut">En cours</td>
+                        <td><a class="cloturer" href="/{{ transaction.annonce.EstUnEmprunt ? "fin" : "retour" }}/{{ transaction.id }}"><button>Cloturer</button></a></td>
+                        <td></td>
+                    {% elseif transaction.isEstCloture() == '1' %}
+                        {% if transaction.isEstNote() != '1' %}
+                            <td data-title="statut">Clôturé</td>
+                            <td><a class="cloturer" href="/{{ transaction.annonce.EstUnEmprunt ? "fin" : "retour" }}/{{ transaction.id }}"><button>Cloturer</button></a></td>
+                            <td><a href="{{ path('noter', {'idTransaction': transaction.getId()}) }}" class="noter">Noter</a></td>
+                        {% elseif transaction.isEstNote() == '1' %}
+                            <td data-title="statut">Clôturé</td>
+                            <td></td>
+                            <td data-title="statut">Déjà noté</td>
+                        {% endif %}
+                    {% endif %}
+
+                </tr>
             {% endfor %}
-        {% else %}
-            <p>Vous n'avez pas effectué de transactions</p>
-        {% endif %}
+            </tbody>
+        </table>
+
     </div>
 
 {% endblock %}

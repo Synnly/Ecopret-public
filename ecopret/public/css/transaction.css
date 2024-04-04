@@ -104,13 +104,22 @@ a {
 button {
     margin: 0 2vw 5vh;
 }
+
 .cloturer {
     display: flex;
     flex-flow: column;
     justify-content: center;
-
+    align-content: center;
 }
 
 .cloturer button {
     margin: 0;
+    text-decoration: none;
+    background-color: #658864;
+    color: white;
+    font-size: 1.5em;
+    font-weight: 900;
+    border-radius: 30px;
+    padding: 0 10px;
 }
+
